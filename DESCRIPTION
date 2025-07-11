@@ -8,8 +8,7 @@ Authors@R:
     )
 Description: Utilities for detecting statistically significant spatial clusters 
    of high acute malnutrition rates using Bernoulli spatial-scanning model.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
