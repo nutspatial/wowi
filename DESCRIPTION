@@ -7,7 +7,7 @@ Authors@R:
            comment = c(ORCID = "0000-0002-7079-3574")
     )
 Description: Utilities for detecting statistically significant spatial clusters 
-   of high acute malnutrition rates using Bernoulli spatial-scanning model.
+   of high acute malnutrition rates using SaTScan's Bernoulli spatial-scanning model.
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
@@ -23,5 +23,6 @@ Imports:
 Suggests: 
     covr (>= 3.6.4),
     mwana,
-    spelling (>= 2.3.1),
-    testthat (>= 3.2.3)
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
