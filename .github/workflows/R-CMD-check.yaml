@@ -4,7 +4,7 @@ name: R CMD Check
 
 on:
   push:
-    branches: [main, master]
+    branches: [main]
   pull_request:
 
 permissions: read-all
@@ -37,22 +37,24 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: true
+          use-public-rspm: false
 
-      - name: Install mwana from nutriverse
+      - name: Set R-universe and CRAN repositories
         run: |
-          install.packages(
-            "mwana",
-            repos = c(
-              "https://nutriverse.r-universe.dev",
-              "https://cloud.r-project.org"
-            )
-          )
+          cat('options(repos = c(
+            nutriverse = "https://nutriverse.r-universe.dev",
+            CRAN = "https://cloud.r-project.org"
+          ))\n', file = "~/.Rprofile", append = TRUE)
+        shell: Rscript {0}
+
+      - name: Install mwana from R-universe
+        run: |
+          install.packages("mwana")
         shell: Rscript {0}
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck, local::.
+          extra-packages: any::rcmdcheck
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
