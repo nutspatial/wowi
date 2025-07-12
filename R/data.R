@@ -1,32 +1,32 @@
-#' 
+#'
 #' Sample dataset
-#' 
+#'
 #' @description
 #' lorem
-#' 
+#'
 #' @format lorem
-#' 
+#'
 #' @source anonymous
-#' 
+#'
 #' @examples
 #' anthro
-#' 
+#'
 "anthro"
 
 
 #'
-#' 
-#' 
-#' Sample data 
-#' 
+#'
+#'
+#' Sample data
+#'
 #' @description
 #' lorem
-#' 
-#' @source anonymous 
-#' 
+#'
+#' @source anonymous
+#'
 #' @format lorem
-#' 
-#' @examples 
+#'
+#' @examples
 #' df
-#' 
+#'
 "df"
