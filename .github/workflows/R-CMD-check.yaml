@@ -40,10 +40,20 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Install mwana from nutriverse
+        run: |
+          install.packages(
+            "mwana",
+            repos = c(
+               "https://nutriverse.r-universe.dev",
+                "https://cloud.r-project.org"
+              )
+          )
+        shell: Rscript {0}
+  
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::rcmdcheck
-          extra-repositories: https://nutriverse.r-universe.dev
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
