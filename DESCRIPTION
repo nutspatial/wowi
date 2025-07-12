@@ -24,4 +24,5 @@ Suggests:
     covr (>= 3.6.4),
     mwana,
     spelling,
-    testthat (>= 3.2.3)
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
