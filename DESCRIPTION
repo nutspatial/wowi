@@ -23,5 +23,5 @@ Imports:
 Suggests: 
     covr (>= 3.6.4),
     mwana,
-    spelling (>= 2.3.1),
+    spelling,
     testthat (>= 3.2.3)
