@@ -65,7 +65,7 @@ if (!dir.exists(destfile)) {
   )
 } else {
   message(
-    paste0("`", destfile, "` already exists in project repo.")
+    paste0("`", basename(destfile), "` already exists in project repo.")
   )
 }
 
