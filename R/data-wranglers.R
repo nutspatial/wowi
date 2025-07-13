@@ -61,7 +61,7 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #'
 #' @param filename A quoted name identifying the analysis area.
 #'
-#' @param destfile A quoted name of the folder or directory in which the files
+#' @param dir A quoted name of the folder or directory in which the files
 #' should be saved.
 #'
 #' @param .gam_based A string indicating the criterion used to define acute
@@ -71,7 +71,7 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #'
 #' @returns
 #' Three files are created and saved in the user-defined directory as defined
-#' by `destfile`: a `.cas` file for cases, a `.ctl` for controls, and
+#' by `dir`: a `.cas` file for cases, a `.ctl` for controls, and
 #' a `.geo` file for geographical coordinates. The full filenames will incorporate
 #' the use-defined `filename` string.
 #'
@@ -109,7 +109,7 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #' ww_wrangle_data(
 #'   .data = x,
 #'   filename = "Locality",
-#'   destfile = directory,
+#'   dir = directory,
 #'   .gam_based = "wfhz"
 #' )
 #'
@@ -125,35 +125,35 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #'
 ww_wrangle_data <- function(
     .data,
-    filename = character(), destfile = character(),
+    filename = character(), dir = character(),
     .gam_based = c("wfhz", "muac", "combined")) {
   ## Enforce options in `.gam_based` ----
   .gam_based <- match.arg(.gam_based)
 
   ## Create a directory if it does not exist ----
-  if (!dir.exists(destfile)) {
+  if (!dir.exists(dir)) {
     dir.create(
-      path = destfile,
+      path = dir,
       showWarnings = TRUE,
       recursive = TRUE
     )
   } else {
     message(
-      paste0("`", basename(destfile), "` already exists in project repo.")
+      paste0("`", basename(dir), "` already exists in project repo.")
     )
   }
 
   ## Wrangle data into cases, controls and geographical files ----
   input_files <- wrangle_data(.data = .data, .gam_based = .gam_based)
 
-  ## Write file into `destfile` in which SaTScan will access them ----
+  ## Write file into `dir` in which SaTScan will access them ----
 
   ### Case file ---
   do.call(
     what = rsatscan::write.cas,
     args = list(
       x = input_files[[1]],
-      location = destfile,
+      location = dir,
       filename = filename
     )
   )
@@ -163,7 +163,7 @@ ww_wrangle_data <- function(
     what = rsatscan::write.ctl,
     args = list(
       x = input_files[[2]],
-      location = destfile,
+      location = dir,
       filename = filename
     )
   )
@@ -173,11 +173,11 @@ ww_wrangle_data <- function(
     what = rsatscan::write.geo,
     args = list(
       x = input_files[[3]],
-      location = destfile,
+      location = dir,
       filename = filename
     )
   )
 
   ## Return full path ----
-  file.path(destfile, filename)
+  file.path(dir, filename)
 }

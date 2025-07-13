@@ -27,7 +27,7 @@ testthat::test_that(
 
     ### Create a temporary directory ----
     tmp <- withr::local_tempdir() # ensures cleanup after test
-    out_dir <- file.path(tmp, "input-files") # this will be the destfile
+    out_dir <- file.path(tmp, "input-files") # this will be the dir
 
     ### Observed results ----
     #### Create input files ----
@@ -36,7 +36,7 @@ testthat::test_that(
       args = list(
         .data = x,
         filename = "localityA",
-        destfile = out_dir,
+        dir = out_dir,
         .gam_based = "wfhz"
       )
     )
@@ -46,7 +46,7 @@ testthat::test_that(
       what = ww_configure_satscan,
       args = list(
         filename = "Locality",
-        params_destfile = out_dir,
+        params_dir = out_dir,
         satscan_version = "10.3.2",
         .scan_for = "high-low-rates"
       )
@@ -59,7 +59,7 @@ testthat::test_that(
       what = ww_configure_satscan,
       args = list(
         filename = "Locality",
-        params_destfile = out_dir,
+        params_dir = out_dir,
         satscan_version = "10.3.1",
         .scan_for = "high-rates"
       )
