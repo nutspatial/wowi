@@ -64,7 +64,7 @@ testthat::test_that(
         .scan_for = "high-rates"
       )
     ), 
-    regexp = "⚠️ Your version of SaTScan is older than the latest available (v10.3.2). \nThis may cause errors. Consider updating to the latest version: https://www.satscan.org",
+    regexp = "Your version of SaTScan is older than the latest available (v10.3.2).\nThis may cause errors. Consider updating to the latest version: https://www.satscan.org",
     fixed = TRUE
     )
   }
