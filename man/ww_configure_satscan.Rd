@@ -39,7 +39,7 @@ clusters to be detected. All other parameters are pre-defined by this function.
 }
 \details{
 For more information on Bernoulli purely spatial scans, refer to the
-SaTScan technical documentation available at: \url{https://www.satscan.org/techdoc.html}
+SaTScan technical documentation available at: \url{https://www.satscan.org/techdoc.html}.
 }
 \examples{
 ## Given a temporary directory ----
