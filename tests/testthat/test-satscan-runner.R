@@ -37,6 +37,7 @@ testthat::test_that(
         filename = "Locality",
         dir = out_dir,
         sslocation = "/Applications/SaTScan.app/Contents/app",
+        ssbatchfilename = "satscan",
         satscan_version = "10.3.2",
         .scan_for = "high-low-rates",
         .gam_based = "wfhz",
