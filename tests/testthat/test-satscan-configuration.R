@@ -55,17 +55,17 @@ testthat::test_that(
     ### The tests ----
     testthat::expect_true(file.exists(file.path(out_dir, "Locality.prm")))
     testthat::expect_warning(
-      object =  do.call(
-      what = ww_configure_satscan,
-      args = list(
-        filename = "Locality",
-        params_dir = out_dir,
-        satscan_version = "10.3.1",
-        .scan_for = "high-rates"
-      )
-    ), 
-    regexp = "Your version of SaTScan is older than the latest available (v10.3.2).\nThis may cause errors. Consider updating to the latest version: https://www.satscan.org",
-    fixed = TRUE
+      object = do.call(
+        what = ww_configure_satscan,
+        args = list(
+          filename = "Locality",
+          params_dir = out_dir,
+          satscan_version = "10.3.1",
+          .scan_for = "high-rates"
+        )
+      ),
+      regexp = "Your version of SaTScan is older than the latest available (v10.3.2).\nThis may cause errors. Consider updating to the latest version: https://www.satscan.org",
+      fixed = TRUE
     )
   }
 )

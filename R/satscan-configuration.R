@@ -30,8 +30,8 @@
 #' @details
 #' For more information on Bernoulli purely spatial scans, refer to the
 #' SaTScan technical documentation available at: <https://www.satscan.org/techdoc.html>.
-#' 
-#' @references 
+#'
+#' @references
 #' Kulldorff, M. (2022) *SaTScan user guide for version 10.1*. Available at: <https://www.satscan.org/>.
 #'
 #' @examples
@@ -60,9 +60,9 @@
 #'   dir = directory,
 #'   .gam_based = "wfhz"
 #' )
-#' 
+#'
 #' library(rsatscan) # important to make `{wowi}` access `{rsatscan}`-specific eviroment
-#' 
+#'
 #' #### Configure SaTScan ----
 #' do.call(
 #'   what = ww_configure_satscan,
@@ -84,8 +84,7 @@ ww_configure_satscan <- function(
     params_dir = character(),
     satscan_version = character(),
     .scan_for = c("high-rates", "high-low-rates")) {
-  
- ## Enforce options in `.scan_for` ----
+  ## Enforce options in `.scan_for` ----
   .scan_for <- match.arg(.scan_for)
 
   ## Set start and end dates ----
