@@ -1,10 +1,11 @@
 #'
-#' Sample dataset
+#' Sample data set of district-level SMART surveys
 #'
 #' @description
-#' lorem
+#' `anthro` is a SMART survey-generated data conducted in nine districts in Uganda.
+#'  Some districts 
 #'
-#' @format lorem
+#' @format A tibble of 2,934 rows and 17 columns.
 #'
 #' @source anonymous
 #'

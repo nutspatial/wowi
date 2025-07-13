@@ -3,9 +3,9 @@
 \docType{data}
 \name{anthro}
 \alias{anthro}
-\title{Sample dataset}
+\title{Sample data set of district-level SMART surveys}
 \format{
-lorem
+A tibble of 2,934 rows and 17 columns.
 }
 \source{
 anonymous
@@ -14,7 +14,8 @@ anonymous
 anthro
 }
 \description{
-lorem
+\code{anthro} is a SMART survey-generated data conducted in nine districts in Uganda.
+Some districts
 }
 \examples{
 anthro
