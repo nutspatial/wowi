@@ -30,6 +30,7 @@ testthat::test_that(
     out_dir <- file.path(tmp, "input-files") # this will be the dir
 
     ### Observed results ----
+    skip_if_no_satscan() # Skip test if SaTScan GUI is not found during GitHub Actions
     results <- do.call(
       what = ww_run_satscan,
       args = list(
