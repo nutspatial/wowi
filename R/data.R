@@ -3,7 +3,7 @@
 #'
 #' @description
 #' `anthro` is a SMART survey-generated data conducted in nine districts in Uganda.
-#'  Some districts 
+#'  Some districts
 #'
 #' @format A tibble of 2,934 rows and 17 columns.
 #'

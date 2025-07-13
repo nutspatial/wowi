@@ -140,7 +140,7 @@ testthat::test_that(
 ## ---- SaTScan input files get created and saved accordingly ------------------
 
 testthat::test_that(
-"prepares and saves case, controls and geo files into a user-specified dir", 
+  "prepares and saves case, controls and geo files into a user-specified dir",
   {
     ### Sample data ----
     x <- df |>
@@ -157,14 +157,14 @@ testthat::test_that(
       )
 
     ### Create a temporary directory ----
-    tmp <- withr::local_tempdir()  # ensures cleanup after test
-    out_dir <- file.path(tmp, "input-files")  # this will be the destfile
+    tmp <- withr::local_tempdir() # ensures cleanup after test
+    out_dir <- file.path(tmp, "input-files") # this will be the destfile
 
     ### Observed results ----
     do.call(
       what = ww_wrangle_data,
       args = list(
-        .data = x, 
+        .data = x,
         filename = "localityA",
         destfile = out_dir,
         .gam_based = "wfhz"
@@ -176,15 +176,15 @@ testthat::test_that(
     testthat::expect_true(file.exists(file.path(out_dir, "localityA.ctl")))
     testthat::expect_true(file.exists(file.path(out_dir, "localityA.geo")))
     testthat::expect_message(
-      object =    do.call(
-      what = ww_wrangle_data,
-      args = list(
-        .data = x, 
-        filename = "localityA",
-        destfile = out_dir,
-        .gam_based = "wfhz"
-      )
-    ), regexp = paste0("`", basename(out_dir), "` already exists in project repo."), fixed = TRUE
+      object = do.call(
+        what = ww_wrangle_data,
+        args = list(
+          .data = x,
+          filename = "localityA",
+          destfile = out_dir,
+          .gam_based = "wfhz"
+        )
+      ), regexp = paste0("`", basename(out_dir), "` already exists in project repo."), fixed = TRUE
     )
   }
 )
