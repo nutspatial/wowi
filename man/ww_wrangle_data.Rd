@@ -52,6 +52,7 @@ assumes that the input anthropometric data has been pre-processed using the
 \code{{mwana}} data wrangling functions.
 }
 \examples{
+
 ## Given a temporary directory ----
 tmp <- withr::local_tempdir()
 directory <- file.path(tmp, "input-files")
@@ -80,5 +81,10 @@ ww_wrangle_data(
 
 ## Show created files ----
 list.files(file.path(tmp, "input-files"))
+
+## Display each files' content ----
+file.show(file.path(tmp, "input-files/Locality.cas"))
+file.show(file.path(tmp, "input-files/Locality.ctl"))
+file.show(file.path(tmp, "input-files/Locality.geo"))
 
 }

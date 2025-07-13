@@ -86,6 +86,7 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #' latitude, and longitude.
 #'
 #' @examples
+#' 
 #' ## Given a temporary directory ----
 #' tmp <- withr::local_tempdir()
 #' directory <- file.path(tmp, "input-files")
@@ -114,6 +115,11 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #'
 #' ## Show created files ----
 #' list.files(file.path(tmp, "input-files"))
+#' 
+#' ## Display each files' content ----
+#' file.show(file.path(tmp, "input-files/Locality.cas"))
+#' file.show(file.path(tmp, "input-files/Locality.ctl"))
+#' file.show(file.path(tmp, "input-files/Locality.geo"))
 #'
 #' @export
 #'
