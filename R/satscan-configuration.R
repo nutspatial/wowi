@@ -2,16 +2,88 @@
 #'
 #' Configure SaTScan for a Bernoulli purely spatial scan
 #'
+#' @description
+#' Defines the analysis parameters required by SaTScan's GUI to conduct a
+#' Bernoulli-based purely spatial scan, either to detect clusters of high rates
+#' of acute malnutrition or both high and low rates.
 #'
-
+#' User input is limited to specifying the analysis area filename, the destination
+#' directory for the parameters file, the SaTScan version in use, and the type of
+#' clusters to be detected. All other parameters are pre-defined by this function.
+#'
+#' @param filename A quoted name identifying the analysis area.
+#'
+#' @param params_destfile A quoted name of the folder or directory where the
+#' parameters file (produced by this function) should be saved. This can be
+#' the same directory as that specified in [ww_wrangle_data()].
+#'
+#' @param satscan_version A quoted value representing the version of SaTScan
+#' installed on the user's computer. Internally, this value is checked against
+#' the latest available version. If it is older, a warning is issued with a link
+#' to SaTScan’s website. Although the analysis is not interrupted, it is
+#' recommended to use the latest version.
+#'
+#' @param .scan_for A string indicating the type of clusters to scan for.
+#' To scan for high-rate clusters only, set `.scan_for = "high-rates"`.
+#' To scan for both high and low rates, set `.scan_for = "high-low-rates"`.
+#'
+#' @details
+#' For more information on Bernoulli purely spatial scans, refer to the
+#' SaTScan technical documentation: <https://www.satscan.org/techdoc.html>
+#'
+#' @examples
+#' ## Given a temporary directory ----
+#' tmp <- withr::local_tempdir()
+#' directory <- file.path(tmp, "input-files")
+#'
+#' ## Wrangle data with `{mwana}` ----
+#' x <- df |>
+#'   mwana::mw_wrangle_wfhz(
+#'     sex = sex,
+#'     .recode_sex = TRUE,
+#'     weight = weight,
+#'     height = height
+#'   ) |>
+#'   mwana::define_wasting(
+#'     zscores = wfhz,
+#'     .by = "zscores",
+#'     edema = edema
+#'   )
+#'
+#' ## Apply the function ----
+#' ww_wrangle_data(
+#'   .data = x,
+#'   filename = "Locality",
+#'   destfile = directory,
+#'   .gam_based = "wfhz"
+#' )
+#'
+#' #### Configure SaTScan ----
+#' do.call(
+#'   what = ww_configure_satscan,
+#'   args = list(
+#'     filename = "Locality",
+#'     params_destfile = directory,
+#'     satscan_version = "10.3.2",
+#'     .scan_for = "high-low-rates"
+#'   )
+#' )
+#'
+#' ## Show file's content ----
+#' file.show(file.path(tmp, "input-files/Locality.prm"))
+#'
+#' @export
+#'
 ww_configure_satscan <- function(
     filename = character(),
     params_destfile = character(),
     satscan_version = character(),
     .scan_for = c("high-rates", "high-low-rates")) {
-  
   ## Enforce options in `.scan_for` ----
   .scan_for <- match.arg(.scan_for)
+
+  ## Enforce that `{rsatscan}` system enviroment is not lost ----
+  ss <- get("ssenv", envir = asNamespace("rsatscan"))
 
   ## Set start and end dates ----
   startdate <- format(Sys.Date(), "%Y/%m/%d")
@@ -21,7 +93,7 @@ ww_configure_satscan <- function(
   satscan_june2025 <- "10.3.2"
   if (satscan_version < satscan_june2025) {
     warning(
-      "⚠️ Your version of SaTScan is older than the latest available (v10.3.2). \nThis may cause errors. Consider updating to the latest version: https://www.satscan.org"
+      "Your version of SaTScan is older than the latest available (v10.3.2).\nThis may cause errors. Consider updating to the latest version: https://www.satscan.org"
     )
   }
 
@@ -29,7 +101,6 @@ ww_configure_satscan <- function(
 
   ### Set the corresponding SaTScan parameter for high-rates and high-low ----
   scan_areas <- if (.scan_for == "high-rates") 1 else 3
-  print(scan_areas)
 
   ### Reset parameter file ----
   invisible(ss.options(reset = TRUE, version = satscan_version))
