@@ -8,7 +8,7 @@ analysis and save them in a user-defined working directory}
 ww_wrangle_data(
   .data,
   filename = character(),
-  destfile = character(),
+  dir = character(),
   .gam_based = c("wfhz", "muac", "combined")
 )
 }
@@ -18,7 +18,7 @@ ww_wrangle_data(
 
 \item{filename}{A quoted name identifying the analysis area.}
 
-\item{destfile}{A quoted name of the folder or directory in which the files
+\item{dir}{A quoted name of the folder or directory in which the files
 should be saved.}
 
 \item{.gam_based}{A string indicating the criterion used to define acute
@@ -28,7 +28,7 @@ is \code{wfhz}.}
 }
 \value{
 Three files are created and saved in the user-defined directory as defined
-by \code{destfile}: a \code{.cas} file for cases, a \code{.ctl} for controls, and
+by \code{dir}: a \code{.cas} file for cases, a \code{.ctl} for controls, and
 a \code{.geo} file for geographical coordinates. The full filenames will incorporate
 the use-defined \code{filename} string.
 
@@ -52,6 +52,7 @@ assumes that the input anthropometric data has been pre-processed using the
 \code{{mwana}} data wrangling functions.
 }
 \examples{
+
 ## Given a temporary directory ----
 tmp <- withr::local_tempdir()
 directory <- file.path(tmp, "input-files")
@@ -74,11 +75,16 @@ x <- df |>
 ww_wrangle_data(
   .data = x,
   filename = "Locality",
-  destfile = directory,
+  dir = directory,
   .gam_based = "wfhz"
 )
 
 ## Show created files ----
 list.files(file.path(tmp, "input-files"))
+
+## Display each files' content ----
+file.show(file.path(tmp, "input-files/Locality.cas"))
+file.show(file.path(tmp, "input-files/Locality.ctl"))
+file.show(file.path(tmp, "input-files/Locality.geo"))
 
 }

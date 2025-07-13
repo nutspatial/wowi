@@ -158,7 +158,7 @@ testthat::test_that(
 
     ### Create a temporary directory ----
     tmp <- withr::local_tempdir() # ensures cleanup after test
-    out_dir <- file.path(tmp, "input-files") # this will be the destfile
+    out_dir <- file.path(tmp, "input-files") # this will be the dir
 
     ### Observed results ----
     do.call(
@@ -166,7 +166,7 @@ testthat::test_that(
       args = list(
         .data = x,
         filename = "localityA",
-        destfile = out_dir,
+        dir = out_dir,
         .gam_based = "wfhz"
       )
     )
@@ -181,7 +181,7 @@ testthat::test_that(
         args = list(
           .data = x,
           filename = "localityA",
-          destfile = out_dir,
+          dir = out_dir,
           .gam_based = "wfhz"
         )
       ), regexp = paste0("`", basename(out_dir), "` already exists in project repo."), fixed = TRUE
