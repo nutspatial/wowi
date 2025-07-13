@@ -24,5 +24,6 @@
 #' @importFrom rsatscan write.ctl
 #' @importFrom rsatscan write.geo
 #' @importFrom rsatscan write.ss.prm
+#' @importFrom withr local_tempdir
 ## usethis namespace: end
 NULL

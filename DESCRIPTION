@@ -20,7 +20,8 @@ Imports:
     dplyr,
     rlang,
     rsatscan,
-    mwana
+    mwana,
+    withr
 Suggests: 
     covr (>= 3.6.4),
     spelling,
