@@ -59,12 +59,12 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #' @param .data A data frame object that has been wrangled using
 #'  `mwana::mw_wrangle_*()` functions.
 #'
-#' @param filename A quoted name identifying the analysis area.
+#' @param filename A quoted string identifying the analysis area.
 #'
-#' @param dir A quoted name of the folder or directory in which the files
+#' @param dir A quoted string of the folder or directory in which the files
 #' should be saved.
 #'
-#' @param .gam_based A string indicating the criterion used to define acute
+#' @param .gam_based A quoted string indicating the criterion used to define acute
 #' malnutrition. This is used to identify the right vector where flagged values
 #' are identified, and for which should be excluded from the analysis. Default
 #' is `wfhz`.
