@@ -13,7 +13,7 @@
 #'
 #' @param filename A quoted name identifying the analysis area.
 #'
-#' @param params_destfile A quoted name of the folder or directory where the
+#' @param params_dir A quoted name of the folder or directory where the
 #' parameters file (produced by this function) should be saved. This can be
 #' the same directory as that specified in [ww_wrangle_data()].
 #'
@@ -29,7 +29,10 @@
 #'
 #' @details
 #' For more information on Bernoulli purely spatial scans, refer to the
-#' SaTScan technical documentation: <https://www.satscan.org/techdoc.html>
+#' SaTScan technical documentation available at: <https://www.satscan.org/techdoc.html>
+#' 
+#' @references 
+#' Kulldorff, M. (2022) *SaTScan user guide for version 10.1*. Available at: <https://www.satscan.org/>.
 #'
 #' @examples
 #' ## Given a temporary directory ----
@@ -54,16 +57,18 @@
 #' ww_wrangle_data(
 #'   .data = x,
 #'   filename = "Locality",
-#'   destfile = directory,
+#'   dir = directory,
 #'   .gam_based = "wfhz"
 #' )
-#'
+#' 
+#' library(rsatscan) # important to make `{wowi}` access `{rsatscan}`-specific eviroment
+#' 
 #' #### Configure SaTScan ----
 #' do.call(
 #'   what = ww_configure_satscan,
 #'   args = list(
 #'     filename = "Locality",
-#'     params_destfile = directory,
+#'     params_dir = directory,
 #'     satscan_version = "10.3.2",
 #'     .scan_for = "high-low-rates"
 #'   )
@@ -76,14 +81,12 @@
 #'
 ww_configure_satscan <- function(
     filename = character(),
-    params_destfile = character(),
+    params_dir = character(),
     satscan_version = character(),
     .scan_for = c("high-rates", "high-low-rates")) {
-  ## Enforce options in `.scan_for` ----
+  
+ ## Enforce options in `.scan_for` ----
   .scan_for <- match.arg(.scan_for)
-
-  ## Enforce that `{rsatscan}` system enviroment is not lost ----
-  ss <- get("ssenv", envir = asNamespace("rsatscan"))
 
   ## Set start and end dates ----
   startdate <- format(Sys.Date(), "%Y/%m/%d")
@@ -98,7 +101,6 @@ ww_configure_satscan <- function(
   }
 
   ## Configure SaTScan ----
-
   ### Set the corresponding SaTScan parameter for high-rates and high-low ----
   scan_areas <- if (.scan_for == "high-rates") 1 else 3
 
@@ -153,7 +155,7 @@ ww_configure_satscan <- function(
   do.call(
     what = write.ss.prm,
     args = list(
-      location = params_destfile,
+      location = params_dir,
       filename = filename,
       matchout = TRUE
     )

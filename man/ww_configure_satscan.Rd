@@ -6,7 +6,7 @@
 \usage{
 ww_configure_satscan(
   filename = character(),
-  params_destfile = character(),
+  params_dir = character(),
   satscan_version = character(),
   .scan_for = c("high-rates", "high-low-rates")
 )
@@ -14,7 +14,7 @@ ww_configure_satscan(
 \arguments{
 \item{filename}{A quoted name identifying the analysis area.}
 
-\item{params_destfile}{A quoted name of the folder or directory where the
+\item{params_dir}{A quoted name of the folder or directory where the
 parameters file (produced by this function) should be saved. This can be
 the same directory as that specified in \code{\link[=ww_wrangle_data]{ww_wrangle_data()}}.}
 
@@ -39,7 +39,7 @@ clusters to be detected. All other parameters are pre-defined by this function.
 }
 \details{
 For more information on Bernoulli purely spatial scans, refer to the
-SaTScan technical documentation: \url{https://www.satscan.org/techdoc.html}
+SaTScan technical documentation available at: \url{https://www.satscan.org/techdoc.html}
 }
 \examples{
 ## Given a temporary directory ----
@@ -64,16 +64,18 @@ x <- df |>
 ww_wrangle_data(
   .data = x,
   filename = "Locality",
-  destfile = directory,
+  dir = directory,
   .gam_based = "wfhz"
 )
+
+library(rsatscan) # important to make `{wowi}` access `{rsatscan}`-specific eviroment
 
 #### Configure SaTScan ----
 do.call(
   what = ww_configure_satscan,
   args = list(
     filename = "Locality",
-    params_destfile = directory,
+    params_dir = directory,
     satscan_version = "10.3.2",
     .scan_for = "high-low-rates"
   )
@@ -82,4 +84,7 @@ do.call(
 ## Show file's content ----
 file.show(file.path(tmp, "input-files/Locality.prm"))
 
+}
+\references{
+Kulldorff, M. (2022) \emph{SaTScan user guide for version 10.1}. Available at: \url{https://www.satscan.org/}.
 }
