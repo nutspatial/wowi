@@ -29,7 +29,7 @@
 #'
 #' @details
 #' For more information on Bernoulli purely spatial scans, refer to the
-#' SaTScan technical documentation available at: <https://www.satscan.org/techdoc.html>
+#' SaTScan technical documentation available at: <https://www.satscan.org/techdoc.html>.
 #' 
 #' @references 
 #' Kulldorff, M. (2022) *SaTScan user guide for version 10.1*. Available at: <https://www.satscan.org/>.
