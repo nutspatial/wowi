@@ -11,19 +11,19 @@
 #' directory for the parameters file, the SaTScan version in use, and the type of
 #' clusters to be detected. All other parameters are pre-defined by this function.
 #'
-#' @param filename A quoted name identifying the analysis area.
+#' @param filename A quoted string identifying the analysis area.
 #'
-#' @param params_dir A quoted name of the folder or directory where the
+#' @param params_dir A quoted string of the folder or directory where the
 #' parameters file (produced by this function) should be saved. This can be
 #' the same directory as that specified in [ww_wrangle_data()].
 #'
-#' @param satscan_version A quoted value representing the version of SaTScan
+#' @param satscan_version A quoted string indicating the version of SaTScan
 #' installed on the user's computer. Internally, this value is checked against
 #' the latest available version. If it is older, a warning is issued with a link
 #' to SaTScan’s website. Although the analysis is not interrupted, it is
 #' recommended to use the latest version.
 #'
-#' @param .scan_for A string indicating the type of clusters to scan for.
+#' @param .scan_for A quoted string indicating the type of clusters to scan for.
 #' To scan for high-rate clusters only, set `.scan_for = "high-rates"`.
 #' To scan for both high and low rates, set `.scan_for = "high-low-rates"`.
 #'

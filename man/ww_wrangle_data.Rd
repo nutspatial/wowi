@@ -16,12 +16,12 @@ ww_wrangle_data(
 \item{.data}{A data frame object that has been wrangled using
 \verb{mwana::mw_wrangle_*()} functions.}
 
-\item{filename}{A quoted name identifying the analysis area.}
+\item{filename}{A quoted string identifying the analysis area.}
 
-\item{dir}{A quoted name of the folder or directory in which the files
+\item{dir}{A quoted string of the folder or directory in which the files
 should be saved.}
 
-\item{.gam_based}{A string indicating the criterion used to define acute
+\item{.gam_based}{A quoted string indicating the criterion used to define acute
 malnutrition. This is used to identify the right vector where flagged values
 are identified, and for which should be excluded from the analysis. Default
 is \code{wfhz}.}
