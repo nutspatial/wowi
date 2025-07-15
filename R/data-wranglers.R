@@ -18,6 +18,7 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
   ## Define a variable name for gam by wfhz, muac or combined ----
   gam_sym <- rlang::sym(if (.gam_based != "combined") "gam" else "cgam")
 
+  .data <- subset(.data, !is.na(latitude))
   ## Case file ----
   cases <- .data |>
     dplyr::filter(!!flag_expr, !!gam_sym != 0) |>
