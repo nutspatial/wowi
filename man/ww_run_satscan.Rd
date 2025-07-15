@@ -7,23 +7,26 @@ significant clusters of acute malnutrition}
 \usage{
 ww_run_satscan(
   .data,
-  filename = character(),
+  filename = NULL,
   dir = character(),
   params_dir = dir,
   sslocation = character(),
   ssbatchfilename = character(),
   satscan_version,
-  cleanup = TRUE,
-  verbose = FALSE,
+  .by_area = FALSE,
   .scan_for = c("high-rates", "high-low-rates"),
-  .gam_based = c("wfhz", "muac", "combined")
+  .gam_based = c("wfhz", "muac", "combined"),
+  area = NULL,
+  cleanup = TRUE,
+  verbose = FALSE
 )
 }
 \arguments{
 \item{.data}{A data frame object that has been wrangled using
 \verb{mwana::mw_wrangle_*()} functions.}
 
-\item{filename}{A quoted string identifying the analysis area.}
+\item{filename}{Optional. Used only in single-area analysis.
+Used to identify the analysis area. The string should be quoted.}
 
 \item{dir}{A quoted string of the folder or directory in which the files
 should be saved.}
@@ -43,12 +46,7 @@ name. For macOS, use \code{"satscan"}; for Windows, use \code{"SaTScanBatch64"}.
 \item{satscan_version}{A quoted string indicating the version of SaTScan
 installed on the user's computer. See \code{\link[=ww_configure_satscan]{ww_configure_satscan()}} for details.}
 
-\item{cleanup}{Logical. If \code{TRUE}, deletes all SaTScan output files from
-the directory after the function runs.}
-
-\item{verbose}{Logical. If \code{TRUE}, displays the SaTScan results in the R
-console as if run in batch mode. This is especially useful if the scan
-takes a long time.}
+\item{.by_area}{Logical. If \code{TRUE}, area-wise scan is done. Defaults to \code{FALSE}.}
 
 \item{.scan_for}{A quoted string indicating the type of clusters to scan for.
 To scan for high-rate clusters only, set \code{.scan_for = "high-rates"}.
@@ -58,6 +56,16 @@ To scan for both high and low rates, set \code{.scan_for = "high-low-rates"}.}
 malnutrition. This is used to identify the right vector where flagged values
 are identified, and for which should be excluded from the analysis. Default
 is \code{wfhz}.}
+
+\item{area}{An unquoted string for the variable containing the analysis areas
+for iteration.}
+
+\item{cleanup}{Logical. If \code{TRUE}, deletes all SaTScan output files from
+the directory after the function runs.}
+
+\item{verbose}{Logical. If \code{TRUE}, displays the SaTScan results in the R
+console as if run in batch mode. This is especially useful if the scan
+takes a long time.}
 }
 \value{
 A set of SaTScan output files, saved in the specified directory. The full
@@ -76,6 +84,12 @@ function that interacts with the SaTScan GUI via the \code{{rsatscan}} package.
 It internally calls both \code{\link[=ww_wrangle_data]{ww_wrangle_data()}} and \code{\link[=ww_configure_satscan]{ww_configure_satscan()}},
 allowing users to skip these two steps in the workflow and instead call
 \code{ww_run_satscan()} directly.
+}
+\details{
+The geographical coordinates must be provided as latitude and longitude values.
+If the input data uses different variable names, they must be renamed accordingly;
+otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis
+(north-south direction), and longitude the to X-axis (east-west direction).
 }
 \examples{
 
@@ -109,6 +123,8 @@ results <- ww_run_satscan(
   satscan_version = "10.3.2",
   .scan_for = "high-low-rates",
   .gam_based = "wfhz",
+  .by_area = FALSE,
+  area = NULL,
   verbose = FALSE,
   cleanup = FALSE
 )

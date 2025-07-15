@@ -14,7 +14,8 @@
 #' @param .data A data frame object that has been wrangled using
 #'  `mwana::mw_wrangle_*()` functions.
 #'
-#' @param filename A quoted string identifying the analysis area.
+#' @param filename Optional. Used only in single-area analysis.
+#' Used to identify the analysis area. The string should be quoted.
 #'
 #' @param dir A quoted string of the folder or directory in which the files
 #' should be saved.
@@ -34,12 +35,7 @@
 #' @param satscan_version A quoted string indicating the version of SaTScan
 #' installed on the user's computer. See [ww_configure_satscan()] for details.
 #'
-#' @param cleanup Logical. If `TRUE`, deletes all SaTScan output files from
-#' the directory after the function runs.
-#'
-#' @param verbose Logical. If `TRUE`, displays the SaTScan results in the R
-#' console as if run in batch mode. This is especially useful if the scan
-#' takes a long time.
+#' @param .by_area Logical. If `TRUE`, area-wise scan is done. Defaults to `FALSE`.
 #'
 #' @param .scan_for A quoted string indicating the type of clusters to scan for.
 #' To scan for high-rate clusters only, set `.scan_for = "high-rates"`.
@@ -50,6 +46,16 @@
 #' are identified, and for which should be excluded from the analysis. Default
 #' is `wfhz`.
 #'
+#' @param area An unquoted string for the variable containing the analysis areas
+#' for iteration.
+#'
+#' @param cleanup Logical. If `TRUE`, deletes all SaTScan output files from
+#' the directory after the function runs.
+#'
+#' @param verbose Logical. If `TRUE`, displays the SaTScan results in the R
+#' console as if run in batch mode. This is especially useful if the scan
+#' takes a long time.
+#'
 #' @returns
 #' A set of SaTScan output files, saved in the specified directory. The full
 #' file names depend on the `filename` argument:
@@ -58,6 +64,12 @@
 #' - `filename.clustermap.html`: An interactive HTML map showing detected
 #'   clusters, with red bubbles for high-rate clusters and blue for low-rate clusters.
 #' - Shapefiles: A collection of spatial files suitable for use in GIS software.
+#'
+#' @details
+#' The geographical coordinates must be provided as latitude and longitude values.
+#' If the input data uses different variable names, they must be renamed accordingly;
+#' otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis
+#' (north-south direction), and longitude the to X-axis (east-west direction).
 #'
 #'
 #' @examples
@@ -92,6 +104,8 @@
 #'   satscan_version = "10.3.2",
 #'   .scan_for = "high-low-rates",
 #'   .gam_based = "wfhz",
+#'   .by_area = FALSE,
+#'   area = NULL,
 #'   verbose = FALSE,
 #'   cleanup = FALSE
 #' )
@@ -102,23 +116,84 @@
 #'
 ww_run_satscan <- function(
     .data,
-    filename = character(),
+    filename = NULL,
     dir = character(),
     params_dir = dir,
     sslocation = character(),
     ssbatchfilename = character(),
     satscan_version,
-    cleanup = TRUE,
-    verbose = FALSE,
+    .by_area = FALSE,
     .scan_for = c("high-rates", "high-low-rates"),
-    .gam_based = c("wfhz", "muac", "combined")) {
-  ## Enforce options in `.scan_for` ----
-  .scan_for <- match.arg(.scan_for)
+    .gam_based = c("wfhz", "muac", "combined"),
+    area = NULL,
+    cleanup = TRUE,
+    verbose = FALSE) {
+  # Capture column symbol for tidy eval
+  area <- rlang::enquo(area)
+  # ---- MULTIPLE-AREA MODE ----------------------------------------------------
+  if (.by_area) {
+    if (is.null(rlang::eval_tidy(area, .data))) {
+      stop("`area` must be provided when `.by_area = TRUE`.")
+    }
 
-  ## Get SaTScan input data ready for the job ----
+    # Get unique area values
+    unique_areas <- dplyr::pull(dplyr::distinct(.data, !!area))
+
+    # Initialize results list
+    results <- list()
+
+    for (i in seq_along(unique_areas)) {
+      a <- unique_areas[i]
+      df <- dplyr::filter(.data, !!area == a)
+      area_filename <- a
+
+      # Wrangle data
+      do.call(
+        ww_wrangle_data,
+        list(
+          .data = df,
+          filename = area_filename,
+          dir = dir,
+          .gam_based = .gam_based
+        )
+      )
+
+      # Configure SaTScan
+      do.call(
+        ww_configure_satscan,
+        list(
+          filename = area_filename,
+          params_dir = params_dir,
+          satscan_version = satscan_version,
+          .scan_for = .scan_for
+        )
+      )
+
+      # Run SaTScan
+      res <- do.call(
+        rsatscan::satscan,
+        list(
+          prmlocation = params_dir,
+          prmfilename = area_filename,
+          sslocation = sslocation,
+          ssbatchfilename = ssbatchfilename,
+          verbose = verbose,
+          cleanup = cleanup
+        )
+      )
+
+      # Store in list by area name
+      results[[area_filename]] <- res
+    }
+
+    return(results)
+  }
+
+  # ---- SINGLE-AREA MODE ------------------------------------------------------
+  # Wrangle data
   do.call(
-    what = ww_wrangle_data,
-    args = list(
+    ww_wrangle_data,
+    list(
       .data = .data,
       filename = filename,
       dir = dir,
@@ -126,23 +201,23 @@ ww_run_satscan <- function(
     )
   )
 
-  ## ConfigureConfigure SaTScan for a Bernoulli purely spatial scan ----
+  # Configure SaTScan
   do.call(
-    what = ww_configure_satscan,
-    args = list(
-      filename = "Locality",
+    ww_configure_satscan,
+    list(
+      filename = filename,
       params_dir = params_dir,
       satscan_version = satscan_version,
       .scan_for = .scan_for
     )
   )
 
-  ## Run de facto SaTScan ----
-  results <- do.call(
-    what = rsatscan::satscan,
-    args = list(
+  # Run SaTScan
+  result <- do.call(
+    rsatscan::satscan,
+    list(
       prmlocation = params_dir,
-      prmfilename = do.call(basename, list(filename)),
+      prmfilename = filename,
       sslocation = sslocation,
       ssbatchfilename = ssbatchfilename,
       verbose = verbose,
@@ -150,6 +225,5 @@ ww_run_satscan <- function(
     )
   )
 
-  ## Return
-  results
+  result
 }
