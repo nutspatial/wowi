@@ -64,13 +64,13 @@
 #' - `filename.clustermap.html`: An interactive HTML map showing detected
 #'   clusters, with red bubbles for high-rate clusters and blue for low-rate clusters.
 #' - Shapefiles: A collection of spatial files suitable for use in GIS software.
-#' 
+#'
 #' @details
-#' The geographical coordinates must be provided as latitude and longitude values. 
+#' The geographical coordinates must be provided as latitude and longitude values.
 #' If the input data uses different variable names, they must be renamed accordingly;
-#' otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis 
+#' otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis
 #' (north-south direction), and longitude the to X-axis (east-west direction).
-#' 
+#'
 #'
 #' @examples
 #'
