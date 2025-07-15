@@ -101,24 +101,87 @@
 #' @export
 #'
 ww_run_satscan <- function(
-    .data,
-    filename = character(),
-    dir = character(),
-    params_dir = dir,
-    sslocation = character(),
-    ssbatchfilename = character(),
-    satscan_version,
-    cleanup = TRUE,
-    verbose = FALSE,
-    .scan_for = c("high-rates", "high-low-rates"),
-    .gam_based = c("wfhz", "muac", "combined")) {
-  ## Enforce options in `.scan_for` ----
-  .scan_for <- match.arg(.scan_for)
+  .data,
+  filename = character(),
+  dir = character(),
+  params_dir = dir,
+  sslocation = character(),
+  ssbatchfilename = character(),
+  satscan_version,
+  cleanup = TRUE,
+  verbose = FALSE,
+  .scan_for = c("high-rates", "high-low-rates"),
+  .gam_based = c("wfhz", "muac", "combined"),
+  .many_areas = FALSE,
+  area = NULL
+) {
 
-  ## Get SaTScan input data ready for the job ----
+      # Capture column symbol for tidy eval
+    area <- rlang::enquo(area)
+  # ---- MULTIPLE-AREA MODE ----------------------------------------------------
+  if (.many_areas) {
+    if (is.null(area)) {
+      stop("`area` must be provided when `.many_areas = TRUE`.")
+    }
+
+    # Get unique area values
+    unique_areas <- dplyr::pull(dplyr::distinct(.data, !!area))
+
+    # Initialize results list
+    results <- list()
+
+    for (i in seq_along(unique_areas)) {
+      a <- unique_areas[i]
+      df <- dplyr::filter(.data, !!area == a)
+      area_filename <- a
+
+      # Wrangle data
+      do.call(
+        ww_wrangle_data,
+        list(
+          .data = df,
+          filename = area_filename,
+          dir = dir,
+          .gam_based = .gam_based
+        )
+      )
+
+      # Configure SaTScan
+      do.call(
+        ww_configure_satscan,
+        list(
+          filename = area_filename,
+          params_dir = params_dir,
+          satscan_version = satscan_version,
+          .scan_for = .scan_for
+        )
+      )
+
+      # Run SaTScan
+      res <- do.call(
+        rsatscan::satscan,
+        list(
+          prmlocation = params_dir,
+          prmfilename = area_filename,
+          sslocation = sslocation,
+          ssbatchfilename = ssbatchfilename,
+          verbose = verbose,
+          cleanup = cleanup
+        )
+      )
+
+      # Store in list by area name
+      results[[area_filename]] <- res
+    }
+
+    return(results)
+  }
+
+  # ---- SINGLE-AREA MODE ------------------------------------------------------
+  # Wrangle data
   do.call(
-    what = ww_wrangle_data,
-    args = list(
+    ww_wrangle_data,
+    list(
       .data = .data,
       filename = filename,
       dir = dir,
@@ -126,23 +189,23 @@ ww_run_satscan <- function(
     )
   )
 
-  ## ConfigureConfigure SaTScan for a Bernoulli purely spatial scan ----
+  # Configure SaTScan
   do.call(
-    what = ww_configure_satscan,
-    args = list(
-      filename = "Locality",
+    ww_configure_satscan,
+    list(
+      filename = filename,
       params_dir = params_dir,
       satscan_version = satscan_version,
       .scan_for = .scan_for
     )
   )
 
-  ## Run de facto SaTScan ----
-  results <- do.call(
-    what = rsatscan::satscan,
-    args = list(
+  # Run SaTScan
+  result <- do.call(
+    rsatscan::satscan,
+    list(
       prmlocation = params_dir,
-      prmfilename = do.call(basename, list(filename)),
+      prmfilename = filename,
       sslocation = sslocation,
       ssbatchfilename = ssbatchfilename,
       verbose = verbose,
@@ -150,6 +213,5 @@ ww_run_satscan <- function(
     )
   )
 
-  ## Return
-  results
+  result
 }
