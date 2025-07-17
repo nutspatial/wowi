@@ -39,17 +39,13 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: false
 
-      - name: Set R-universe and CRAN repositories
-        run: |
-          cat('options(repos = c(
-            nutriverse = "https://nutriverse.r-universe.dev",
-            CRAN = "https://cloud.r-project.org"
-          ))\n', file = "~/.Rprofile", append = TRUE)
-        shell: Rscript {0}
-
+      # Install mwana from R-universe with explicit repos every time
       - name: Install mwana from R-universe
         run: |
-          install.packages("mwana")
+          install.packages("mwana", repos = c(
+            nutriverse = "https://nutriverse.r-universe.dev",
+            CRAN = "https://cloud.r-project.org"
+          ))
         shell: Rscript {0}
 
       - uses: r-lib/actions/setup-r-dependencies@v2
