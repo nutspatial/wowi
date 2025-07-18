@@ -36,11 +36,9 @@ jobs:
 
       - name: Install mwana and required tools from nutriverse and CRAN
         run: |
-          options(repos = c(
-            nutriverse = "https://nutriverse.r-universe.dev",
-            CRAN = "https://cloud.r-project.org"
-          ))
           install.packages("pak")
+          pak::repo_add("nutriverse", "https://nutriverse.r-universe.dev")
+          pak::repo_add("CRAN", "https://cloud.r-project.org")
           pak::pkg_install(c("mwana", "sessioninfo", "rcmdcheck"))
         shell: Rscript {0}
 
