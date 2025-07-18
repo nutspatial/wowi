@@ -34,32 +34,6 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
-      # === Install SaTScan ===
-      # For macOS: download and unzip SaTScan
-      - name: Install SaTScan (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          curl -L -o SaTScanMac.zip "https://www.satscan.org/cgi-bin/satscan/register.pl/SaTScanMac.zip"
-          unzip SaTScanMac.zip -d $HOME/SaTScan
-          echo "$HOME/SaTScan/SaTScan.app/Contents/app" >> $GITHUB_PATH
-
-      # For Ubuntu: download and unzip SaTScan (replace with actual Linux link)
-      - name: Install SaTScan (Ubuntu)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y xvfb
-          curl -L -o SaTScan.tar.gz "https://www.satscan.org/cgi-bin/satscan/register.pl/SaTScanLinux.tar.gz"
-          mkdir -p $HOME/SaTScan
-          tar -xzvf SaTScan.tar.gz -C $HOME/SaTScan
-          echo "$HOME/SaTScan" >> $GITHUB_PATH
-
-      # --- Optionally test SaTScan is callable
-      - name: Test SaTScan command
-        run: |
-          which SaTScan || true
-          SaTScan -version || true
-
       - name: Install mwana from R-universe
         run: |
           install.packages("mwana", repos = c(
