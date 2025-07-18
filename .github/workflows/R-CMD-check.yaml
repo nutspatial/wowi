@@ -34,12 +34,14 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
-      - name: Install mwana from R-universe
+      - name: Install mwana and required tools from nutriverse and CRAN
         run: |
-          install.packages("mwana", repos = c(
+          options(repos = c(
             nutriverse = "https://nutriverse.r-universe.dev",
             CRAN = "https://cloud.r-project.org"
           ))
+          install.packages("pak")
+          pak::pkg_install(c("mwana", "sessioninfo", "rcmdcheck"))
         shell: Rscript {0}
 
       - uses: r-lib/actions/setup-r-dependencies@v2
