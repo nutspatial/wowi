@@ -27,7 +27,7 @@ Suggests:
     spelling,
     testthat (>= 3.0.0)
 Remotes:
-    mwana
+    nutriverse/mwana
 Config/testthat/edition: 3
 Depends: 
     R (>= 3.5)

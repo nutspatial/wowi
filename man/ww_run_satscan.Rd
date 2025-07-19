@@ -114,21 +114,21 @@ directory <- file.path(tmp, "input-files")
 ## Run satscan ----
 library(rsatscan) # important to make `{wowi}` access `{rsatscan}`-specific eviroment
 
-results <- ww_run_satscan(
-  .data = x,
-  filename = "Locality",
-  dir = directory,
-  sslocation = "/Applications/SaTScan.app/Contents/app",
-  ssbatchfilename = "satscan",
-  satscan_version = "10.3.2",
-  .scan_for = "high-low-rates",
-  .gam_based = "wfhz",
-  .by_area = FALSE,
-  area = NULL,
-  verbose = FALSE,
-  cleanup = FALSE
-)
-
-results
+if (file.exists("/Applications/SaTScan.app/Contents/app/satscan")) {
+  results <- ww_run_satscan(
+    .data = x,
+    filename = "Locality",
+    dir = directory,
+    sslocation = "/Applications/SaTScan.app/Contents/app",
+    ssbatchfilename = "satscan",
+    satscan_version = "10.3.2",
+    .scan_for = "high-low-rates",
+    .gam_based = "wfhz",
+    .by_area = FALSE,
+    area = NULL,
+    verbose = FALSE,
+    cleanup = FALSE
+  )
+}
 
 }
