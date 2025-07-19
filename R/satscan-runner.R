@@ -111,7 +111,6 @@
 #'     cleanup = FALSE
 #'   )
 #' }
-#' results
 #'
 #' @export
 #'

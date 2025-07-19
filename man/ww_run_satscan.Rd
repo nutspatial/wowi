@@ -130,6 +130,5 @@ if (file.exists("/Applications/SaTScan.app/Contents/app/satscan")) {
     cleanup = FALSE
   )
 }
-results
 
 }
