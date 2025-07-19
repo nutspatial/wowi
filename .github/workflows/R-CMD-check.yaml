@@ -7,12 +7,13 @@ on:
     branches: [main, master]
   pull_request:
 
-permissions: read-all
+permissions:
+  contents: read
 
 jobs:
   R-CMD-check:
     runs-on: ${{ matrix.config.os }}
-    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+    name: ${{ matrix.config.os }} (R ${{ matrix.config.r }})
 
     strategy:
       fail-fast: false
@@ -37,8 +38,9 @@ jobs:
 
       - name: Install mwana and required tools from nutriverse and CRAN
         run: |
-          install.packages("pak")
+          install.packages("pak", repos = "https://cran.r-project.org")
           pak::pak("nutriverse/mwana")
+        shell: Rscript {0}  # 🔧 Important to ensure R is used as the shell
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
@@ -49,4 +51,4 @@ jobs:
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
-          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+          build_args: 'c("--no-manual", "--compact-vignettes=gs+qpdf")'
