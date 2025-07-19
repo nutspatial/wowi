@@ -36,16 +36,12 @@ jobs:
         with:
           r-version: ${{ matrix.config.r }}
 
-      - name: Install mwana and required tools from nutriverse and CRAN
-        run: |
-          install.packages("pak", repos = "https://cran.r-project.org")
-          pak::pak("nutriverse/mwana")
-        shell: Rscript {0}  # 🔧 Important to ensure R is used as the shell
-
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           cache: true
-          extra-packages: any::rcmdcheck
+          extra-packages: |
+            nutriverse/mwana
+            any::rcmdcheck
           needs: check
 
       - uses: r-lib/actions/check-r-package@v2
