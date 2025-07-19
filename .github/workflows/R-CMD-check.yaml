@@ -20,6 +20,7 @@ jobs:
         config:
           - {os: macos-latest,   r: 'release'}
           - {os: ubuntu-latest,  r: 'release'}
+          - {os: windows-latest, r: 'release'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -37,13 +38,11 @@ jobs:
       - name: Install mwana and required tools from nutriverse and CRAN
         run: |
           install.packages("pak")
-          pak::repo_add("nutriverse", "https://nutriverse.r-universe.dev")
-          pak::repo_add("CRAN", "https://cloud.r-project.org")
-          pak::pkg_install(c("mwana", "sessioninfo", "rcmdcheck"))
-        shell: Rscript {0}
+          pak::pak("nutriverse/mwana")
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
+          cache: true
           extra-packages: any::rcmdcheck
           needs: check
 
