@@ -128,53 +128,56 @@ ww_run_satscan <- function(
     area = NULL,
     cleanup = TRUE,
     verbose = FALSE) {
-  # Capture column symbol for tidy eval
+  # Capture column symbol for tidy eval ----
   area <- rlang::enquo(area)
-  # ---- MULTIPLE-AREA MODE ----------------------------------------------------
+
+  ## ---- Multiple-area logic --------------------------------------------------
   if (.by_area) {
     if (is.null(rlang::eval_tidy(area, .data))) {
       stop("`area` must be provided when `.by_area = TRUE`.")
     }
 
-    # Get unique area values
+    ### Get unique area values ----
     unique_areas <- dplyr::pull(dplyr::distinct(.data, !!area))
 
-    # Initialize results list
+    ### Initialize results list ----
     results <- list()
+    parsed_results <- list()
+    txt_outputs <- list()
 
     for (i in seq_along(unique_areas)) {
       a <- unique_areas[i]
       df <- dplyr::filter(.data, !!area == a)
-      area_filename <- a
+      filename <- a
 
-      # Wrangle data
+      ### Wrangle data ----
       do.call(
         ww_wrangle_data,
         list(
           .data = df,
-          filename = area_filename,
+          filename = filename,
           dir = dir,
           .gam_based = .gam_based
         )
       )
 
-      # Configure SaTScan
+      ### Configure SaTScan ----
       do.call(
         ww_configure_satscan,
         list(
-          filename = area_filename,
+          filename = filename,
           params_dir = params_dir,
           satscan_version = satscan_version,
           .scan_for = .scan_for
         )
       )
 
-      # Run SaTScan
+      ### Run SaTScan ----
       res <- do.call(
         rsatscan::satscan,
         list(
           prmlocation = params_dir,
-          prmfilename = area_filename,
+          prmfilename = filename,
           sslocation = sslocation,
           ssbatchfilename = ssbatchfilename,
           verbose = verbose,
@@ -182,48 +185,55 @@ ww_run_satscan <- function(
         )
       )
 
-      # Store in list by area name
-      results[[area_filename]] <- res
+      parsed <- tryCatch(parse_clusters(res), error = function(e) NULL)
+      if (!is.null(parsed)) {
+        parsed$area <- a
+        parsed_results[[a]] <- parsed
+      }
+
+      txt_outputs[[a]] <- res$main
     }
 
-    return(results)
+    list(.df = dplyr::bind_rows(parsed_results), .txt = txt_outputs)
+  } else {
+    ## ---- Single-area logic ----------------------------------------------------
+
+    ### Wrangle data ----
+    do.call(
+      ww_wrangle_data,
+      list(
+        .data = .data,
+        filename = filename,
+        dir = dir,
+        .gam_based = .gam_based
+      )
+    )
+
+    ### Configure SaTScan ----
+    do.call(
+      ww_configure_satscan,
+      list(
+        filename = filename,
+        params_dir = params_dir,
+        satscan_version = satscan_version,
+        .scan_for = .scan_for
+      )
+    )
+
+    ### Run SaTScan ----
+    result <- do.call(
+      rsatscan::satscan,
+      list(
+        prmlocation = params_dir,
+        prmfilename = filename,
+        sslocation = sslocation,
+        ssbatchfilename = ssbatchfilename,
+        verbose = verbose,
+        cleanup = cleanup
+      )
+    )
+    df <- tryCatch(parse_clusters(result), error = function(e) NULL)
+
+    list(.df = df, .txt = result$main)
   }
-
-  # ---- SINGLE-AREA MODE ------------------------------------------------------
-  # Wrangle data
-  do.call(
-    ww_wrangle_data,
-    list(
-      .data = .data,
-      filename = filename,
-      dir = dir,
-      .gam_based = .gam_based
-    )
-  )
-
-  # Configure SaTScan
-  do.call(
-    ww_configure_satscan,
-    list(
-      filename = filename,
-      params_dir = params_dir,
-      satscan_version = satscan_version,
-      .scan_for = .scan_for
-    )
-  )
-
-  # Run SaTScan
-  result <- do.call(
-    rsatscan::satscan,
-    list(
-      prmlocation = params_dir,
-      prmfilename = filename,
-      sslocation = sslocation,
-      ssbatchfilename = ssbatchfilename,
-      verbose = verbose,
-      cleanup = cleanup
-    )
-  )
-
-  result
 }
