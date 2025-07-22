@@ -50,6 +50,41 @@ preprocessing anthropometric data.
 pak::pak(pkg = "nutspatial/wowi")
 ```
 
+## What does `wowi` do?
+
+It takes a dataset with GPS coordinates (latitude and longitude), scans
+for clusters of acute malnutrition—either high or low, depending on the
+user’s specification—across the survey area, and returns three main
+outputs: (1) an interactive HTML map displaying the detected clusters
+(previewed below); (2) a .txt file containing the results; and (3) a
+table with summary statistics and metadata parsed from the .txt file.
+
+This package is particularly handy when working with datasets that span
+multiple areas or administrative units, enabling consistent, area-wise
+detection of hotspots and coldspots. It also generates additional
+GIS-based files (e.g., shapefiles), which can be useful for further
+geospatial manipulation or integration into other mapping workflows.
+
+### A glimpse of detected hotspots and coldspots
+
+<figure>
+<img src="data-raw/detected-clusters.png"
+alt="Red bubble: hotspot; blue bubble: coldspot" />
+<figcaption aria-hidden="true">Red bubble: hotspot; blue bubble:
+coldspot</figcaption>
+</figure>
+
+### A glimpse of the summary table
+
+``` r
+## # A tibble: 2 × 18
+##  survey_area nr_EAs total_children total_cases `%_cases` location_ids   geo   radius span  children n_cases expected_cases observedExpected relative_risk
+##  <chr>        <int>          <int>       <int>     <dbl> <chr>          <chr> <chr>  <chr>    <int>   <int>          <dbl>            <dbl>         <dbl>
+## 1 District        36            532         104        19 23,24,26,25,3… 13.6… 1.43 … 1.88…      170       4           33.2             0.12         0.085
+## 2 District        36            532         104        19 16,20,14,12,1… 13.8… 26.24… 43.5…      258      84           50.4             1.67         4.46 
+## # ℹ 4 more variables: `%_cases_in_area` <dbl>, log_lik_ratio <dbl>, pvalue <dbl>, ipc_amn <chr>
+```
+
 ## Citation
 
 If you use `wowi` package in your work, please cite using the suggested
@@ -74,3 +109,10 @@ citation("wowi")
 #>     url = {https://github.com/nutspatial/wowi},
 #>   }
 ```
+
+## Community guidelines
+
+Feedback, bug reports and feature requests are welcome; file issues or
+seek support [here](https://github.com/nutspatial/wowi/issues). If you
+would like to contribute to the package, please see the [contributing
+guidelines](https://github.com/nutspatial/wowi/CONTRIBUTING.html).
