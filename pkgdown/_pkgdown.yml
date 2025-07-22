@@ -1,0 +1,34 @@
+title: wowi
+
+url: ~
+
+template:
+  bootstrap: 5
+destination: docs
+
+home:
+  links:
+  - text: Read more about rsatscan
+    href: https://cran.r-project.org/web/packages/rsatscan/index.html
+  - text: Read more about SaTScan
+    href: https://www.satscan.org
+  - text: Read more about mwana
+    href: https://nutriverse.io/mwana/
+
+reference: 
+   - title: Description
+     contents: 
+     - wowi
+
+   - title: Main function
+     contents: 
+     - ww_run_satscan
+   
+   - title: Other functions
+     contents: 
+     - ww_wrangle_data
+     - ww_configure_satscan
+
+   - title: Dataset 
+     contents: 
+     - anthro
