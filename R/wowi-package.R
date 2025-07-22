@@ -24,6 +24,8 @@
 #' @importFrom rsatscan write.ctl
 #' @importFrom rsatscan write.geo
 #' @importFrom rsatscan write.ss.prm
+#' @importFrom stringr str_extract
+#' @importFrom stringr str_extract_all
 #' @importFrom withr local_tempdir
 ## usethis namespace: end
 NULL
