@@ -6,10 +6,12 @@
 <!-- badges: start -->  
 [![Project Status: WIP – Initial development is in progress, but there
 has not yet been a stable, usable release suitable for the
-public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)  
+public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![R-CMD-check](https://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/nutspatial/wowi/graph/badge.svg)](https://app.codecov.io/gh/nutspatial/wowi)  
-[![R-CMD-check](https://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml/badge.svghttps://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml)  
 <!-- badges: end -->
 
 Child acute malnutrition can lead to death if not identified and treated
@@ -54,17 +56,19 @@ If you use `wowi` package in your work, please cite using the suggested
 citation provided by a call to `citation()` function as follows:
 
 ``` r
-citation("wowi") 
+citation("wowi")
 #> To cite wowi in publications use:
 #> 
-#>   model wUfdssscohamruSBs (2025). _Tomás Zaba_. R package version
-#>   0.0.0, <https://github.com/nutspatial/wowi>.
+#>   Tomás Zaba (2025). _wowi: Utilities for detecting statistically
+#>   significant spatial clusters of high acute malnutrition rates using
+#>   SaTScan's Bernoulli spatial-scan model_. R package version 0.0.0,
+#>   <https://github.com/nutspatial/wowi>.
 #> 
 #> A BibTeX entry for LaTeX users is
 #> 
 #>   @Manual{,
-#>     title = {Tomás Zaba},
-#>     author = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scanning model},
+#>     title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model},
+#>     author = {{Tomás Zaba}},
 #>     year = {2025},
 #>     note = {R package version 0.0.0},
 #>     url = {https://github.com/nutspatial/wowi},
