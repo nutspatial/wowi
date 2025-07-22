@@ -94,8 +94,8 @@ otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis
 \examples{
 
 ## Wrangle data with `{mwana}` ----
-x <- anthro |> 
-dplyr::rename(longitude = x, latitude = y) |>
+x <- anthro |>
+  dplyr::rename(longitude = x, latitude = y) |>
   mwana::mw_wrangle_wfhz(
     sex = sex,
     .recode_sex = TRUE,
