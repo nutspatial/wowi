@@ -26,6 +26,7 @@
 #' @importFrom rsatscan write.ss.prm
 #' @importFrom stringr str_extract
 #' @importFrom stringr str_extract_all
+#' @importFrom tibble tibble
 #' @importFrom withr local_tempdir
 ## usethis namespace: end
 NULL
