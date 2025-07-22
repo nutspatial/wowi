@@ -48,7 +48,7 @@ parse_clusters <- function(file) {
       log_lik_ratio = stringr::str_extract(block[10], "[0-9]+\\.\\d+") |> as.double(),
       pvalue = stringr::str_extract(block[11], "[0-9]+[.]+[0-9]+") |> as.double(),
       ipc_amn = ifelse(
-        test = length(strsplit(location_ids, ",\\s*")[[1]]) >= 5 & as.numeric(children) > 100,
+        test = length(strsplit(.data$location_ids, ",\\s*")[[1]]) >= 5 & as.numeric(.data$children) > 100,
         yes = "yes",
         no = "no"
       )

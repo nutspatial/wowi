@@ -59,8 +59,9 @@ testthat::test_that(
     )
 
     ### The tests ----
-    testthat::expect_true(class(results) == "satscan")
-    testthat::expect_false(is.null(results))
+    testthat::expect_true(inherits(results$.df, "tbl_df"))
+    testthat::expect_true(inherits(results$.txt, "character"))
+    testthat::expect_false(is.null(results[[2]]))
     testthat::expect_type(results, "list")
     testthat::expect_equal(
       object = length(list.files(file.path(tmp, "input-files"))),
@@ -131,7 +132,8 @@ testthat::test_that(
     )
 
     ### The tests ----
-    testthat::expect_true(class(results[[1]]) == "satscan")
+    testthat::expect_true(inherits(results[[2]], "list"))
+    testthat::expect_true(inherits(results[[1]], "tbl"))
     testthat::expect_false(is.null(results))
     testthat::expect_type(results, "list")
     testthat::expect_equal(
