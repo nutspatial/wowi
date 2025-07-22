@@ -12,7 +12,6 @@ skip_if_no_satscan <- function(ss_path = "/Applications/SaTScan.app/Contents/app
 #'
 #'
 parse_clusters <- function(file) {
-
   ## Access the txt-based results ----
   txt <- file$main
 

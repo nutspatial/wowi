@@ -47,7 +47,7 @@ testthat::test_that(
       area = district
     )
 
-  
+
     ### The tests ----
     testthat::expect_type(r, "list")
     testthat::expect_true(length(r) == 2)
@@ -55,11 +55,13 @@ testthat::test_that(
     testthat::expect_true(inherits(r$.txt, "list"))
     testthat::expect_true(unique(dplyr::pull(r[[1]][1]) %in% c("Kotido", "Abim")))
     testthat::expect_true(all(names(r[[1]]) %in% c(
-      c("survey_area", "nr_EAs", "total_children", "total_cases", "%_cases", 
-      "location_ids", "geo", "radius", "span", "children", "n_cases", "expected_cases",
-      "observedExpected", "relative_risk", "%_cases_in_area", "log_lik_ratio", 
-      "pvalue", "ipc_amn", "area"
-    ))))
+      c(
+        "survey_area", "nr_EAs", "total_children", "total_cases", "%_cases",
+        "location_ids", "geo", "radius", "span", "children", "n_cases", "expected_cases",
+        "observedExpected", "relative_risk", "%_cases_in_area", "log_lik_ratio",
+        "pvalue", "ipc_amn", "area"
+      )
+    )))
     testthat::expect_true(is.character(dplyr::pull(r[[1]][1])))
     testthat::expect_true(is.integer(dplyr::pull(r[[1]][2])))
     testthat::expect_true(is.integer(dplyr::pull(r[[1]][3])))
