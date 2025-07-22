@@ -12,7 +12,9 @@ testthat::test_that(
   {
     library(rsatscan)
     ### Sample data ----
-    x <- df |>
+    x <- anthro |>
+       dplyr::filter(district == "Kotido") |>
+      dplyr::rename(longitude = x, latitude = y) |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
         .recode_sex = TRUE,
@@ -22,7 +24,7 @@ testthat::test_that(
       mwana::define_wasting(
         zscores = wfhz,
         .by = "zscores",
-        edema = edema
+        edema = oedema
       )
 
     ### Create a temporary directory ----
