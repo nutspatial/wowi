@@ -2,8 +2,10 @@ Package: wowi
 Title: Detect Spatial Clusters of High Acute Malnutrition Rates
 Version: 0.0.0.9000
 Authors@R: 
-    person("Tomás", "Zaba", , "tomas.zaba@outlook.com", 
+    person(given = "Tomás", 
+            family = "Zaba",
            role = c("aut", "cre", "cph"), 
+           email = "tomas.zaba@outlook.com", 
            comment = c(ORCID = "0000-0002-7079-3574")
     )
 Description: Utilities for detecting statistically significant spatial clusters 
