@@ -13,7 +13,7 @@ testthat::test_that(
     library(rsatscan)
     ### Sample data ----
     x <- anthro |>
-       dplyr::filter(district == "Kotido") |>
+      dplyr::filter(district == "Kotido") |>
       dplyr::rename(longitude = x, latitude = y) |>
       mwana::mw_wrangle_wfhz(
         sex = sex,

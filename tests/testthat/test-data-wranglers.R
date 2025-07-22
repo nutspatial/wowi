@@ -13,8 +13,8 @@ testthat::test_that(
   {
     ## Sample data ----
     x <- anthro |>
-      dplyr::rename(longitude = x, latitude = y) |> 
-      dplyr::filter(district == "Kotido") |> 
+      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::filter(district == "Kotido") |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
         .recode_sex = FALSE,
@@ -52,9 +52,9 @@ testthat::test_that(
   {
     ## Sample data ----
     x <- anthro |>
-            dplyr::rename(longitude = x, latitude = y) |> 
-      dplyr::filter(district == "Kotido") |> 
-      mwana::mw_wrangle_age(age = age) |> 
+      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::filter(district == "Kotido") |>
+      mwana::mw_wrangle_age(age = age) |>
       mwana::mw_wrangle_muac(
         sex = sex,
         .recode_sex = FALSE,
@@ -95,15 +95,15 @@ testthat::test_that(
   {
     ### Observed data ----
     x <- anthro |>
-                  dplyr::rename(longitude = x, latitude = y) |> 
-      dplyr::filter(district == "Kotido") |> 
+      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::filter(district == "Kotido") |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
         .recode_sex = FALSE,
         weight = weight,
         height = height
       ) |>
-      mwana::mw_wrangle_age(age = age) |> 
+      mwana::mw_wrangle_age(age = age) |>
       mwana::mw_wrangle_muac(
         sex = sex,
         .recode_sex = FALSE,
@@ -152,8 +152,8 @@ testthat::test_that(
   {
     ### Sample data ----
     x <- anthro |>
-      dplyr::rename(longitude = x, latitude = y) |> 
-      dplyr::filter(district == "Kotido") |> 
+      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::filter(district == "Kotido") |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
         .recode_sex = FALSE,
