@@ -47,7 +47,8 @@ tmp <- withr::local_tempdir()
 directory <- file.path(tmp, "input-files")
 
 ## Wrangle data with `{mwana}` ----
-x <- df |>
+x <- anthro |>
+dplyr::rename(longitude = x, latitude = y) |>
   mwana::mw_wrangle_wfhz(
     sex = sex,
     .recode_sex = TRUE,
@@ -57,7 +58,7 @@ x <- df |>
   mwana::define_wasting(
     zscores = wfhz,
     .by = "zscores",
-    edema = edema
+    edema = oedema
   )
 
 ## Apply the function ----

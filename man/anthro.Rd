@@ -3,9 +3,22 @@
 \docType{data}
 \name{anthro}
 \alias{anthro}
-\title{Sample data set of district-level SMART surveys}
+\title{Sample data set of district-level SMART surveys with geographical coordinates}
 \format{
-A tibble of 2,934 rows and 17 columns.
+A tibble of 2,934 rows and 17 columns.\tabular{ll}{
+   \strong{Variable} \tab \strong{Description} \cr
+   \emph{district} \tab Location in which the survey was undertaken \cr
+   \emph{cluster} \tab Primary sampling unit \cr
+   \emph{sex} \tab Sex; "1" = boys, "2" = girls \cr
+   \emph{age} \tab Calculated age in months with two decimal places \cr
+   \emph{weight} \tab Weight in kilograms \cr
+   \emph{height} \tab Height in centimetres \cr
+   \emph{oedema} \tab Oedema; "n" = no oedema, "y" = with oedema \cr
+   \emph{muac} \tab Mid upper-arm circumference in millimetres \cr
+   \emph{y} \tab Geographical coordinates: Latitude \cr
+   \emph{x} \tab Geographical coordinates: Longitude \cr
+   \emph{precision} \tab Estimated spatial accuracy of the recorded GPS coordinates, in meters. \cr
+}
 }
 \source{
 anonymous
@@ -15,7 +28,6 @@ anthro
 }
 \description{
 \code{anthro} is a SMART survey-generated data conducted in nine districts in Uganda.
-Some districts
 }
 \examples{
 anthro

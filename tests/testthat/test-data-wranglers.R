@@ -12,17 +12,19 @@ testthat::test_that(
   "returns the expected outputs when `.gam_based` is set to 'flag_wfhz' ",
   {
     ## Sample data ----
-    x <- df |>
+    x <- anthro |>
+      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::filter(district == "Kotido") |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
-        .recode_sex = TRUE,
+        .recode_sex = FALSE,
         weight = weight,
         height = height
       ) |>
       mwana::define_wasting(
         zscores = wfhz,
         .by = "zscores",
-        edema = edema
+        edema = oedema
       )
 
     ## Observed results ----
@@ -38,8 +40,8 @@ testthat::test_that(
     testthat::expect_true(all(c("locationid", "cases") %in% names(r[[1]])))
     testthat::expect_true(all(c("locationid", "ctrls") %in% names(r[[2]])))
     testthat::expect_true(all(c("locationid", "longitude", "latitude") %in% names(r[[3]])))
-    testthat::expect_true(sum(r[[1]][2]) == 104)
-    testthat::expect_true(sum(r[[2]][2]) == 428)
+    testthat::expect_true(sum(r[[1]][2]) == 26)
+    testthat::expect_true(sum(r[[2]][2]) == 307)
   }
 )
 
@@ -49,17 +51,20 @@ testthat::test_that(
   "returns the expected outputs when `.gam_based` is set to 'flag_mfaz' ",
   {
     ## Sample data ----
-    x <- df |>
+    x <- anthro |>
+      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::filter(district == "Kotido") |>
+      mwana::mw_wrangle_age(age = age) |>
       mwana::mw_wrangle_muac(
         sex = sex,
-        .recode_sex = TRUE,
+        .recode_sex = FALSE,
         age = age,
         muac = muac,
         .recode_muac = TRUE,
         .to = "cm"
       ) |>
       dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
-      mwana::define_wasting(muac = muac, .by = "muac", edema = edema)
+      mwana::define_wasting(muac = muac, .by = "muac", edema = oedema)
 
 
     ## Observed results ----
@@ -78,8 +83,8 @@ testthat::test_that(
     testthat::expect_true(all(c("locationid", "cases") %in% names(r[[1]])))
     testthat::expect_true(all(c("locationid", "ctrls") %in% names(r[[2]])))
     testthat::expect_true(all(c("locationid", "longitude", "latitude") %in% names(r[[3]])))
-    testthat::expect_true(sum(r[[1]][2]) == 115)
-    testthat::expect_true(sum(r[[2]][2]) == 430)
+    testthat::expect_true(sum(r[[1]][2]) == 70)
+    testthat::expect_true(sum(r[[2]][2]) == 261)
   }
 )
 
@@ -89,13 +94,16 @@ testthat::test_that(
   "returns the expected outputs when `.gam_based` is set to 'combined' ",
   {
     ### Observed data ----
-    x <- df |>
+    x <- anthro |>
+      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::filter(district == "Kotido") |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
-        .recode_sex = TRUE,
+        .recode_sex = FALSE,
         weight = weight,
         height = height
       ) |>
+      mwana::mw_wrangle_age(age = age) |>
       mwana::mw_wrangle_muac(
         sex = sex,
         .recode_sex = FALSE,
@@ -109,7 +117,7 @@ testthat::test_that(
         zscores = wfhz,
         muac = muac,
         .by = "combined",
-        edema = edema
+        edema = oedema
       )
 
     ### Observed results ----
@@ -128,8 +136,8 @@ testthat::test_that(
     testthat::expect_true(all(c("locationid", "cases") %in% names(r[[1]])))
     testthat::expect_true(all(c("locationid", "ctrls") %in% names(r[[2]])))
     testthat::expect_true(all(c("locationid", "longitude", "latitude") %in% names(r[[3]])))
-    testthat::expect_true(sum(r[[1]][2]) == 174)
-    testthat::expect_true(sum(r[[2]][2]) == 373)
+    testthat::expect_true(sum(r[[1]][2]) == 87)
+    testthat::expect_true(sum(r[[2]][2]) == 259)
   }
 )
 
@@ -143,17 +151,19 @@ testthat::test_that(
   "prepares and saves case, controls and geo files into a user-specified dir",
   {
     ### Sample data ----
-    x <- df |>
+    x <- anthro |>
+      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::filter(district == "Kotido") |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
-        .recode_sex = TRUE,
+        .recode_sex = FALSE,
         weight = weight,
         height = height
       ) |>
       mwana::define_wasting(
         zscores = wfhz,
         .by = "zscores",
-        edema = edema
+        edema = oedema
       )
 
     ### Create a temporary directory ----

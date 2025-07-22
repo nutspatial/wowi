@@ -21,7 +21,9 @@ Imports:
     rlang,
     rsatscan,
     mwana,
-    withr
+    withr,
+    stringr (>= 1.5.1),
+    tibble
 Suggests: 
     covr (>= 3.6.4),
     spelling,

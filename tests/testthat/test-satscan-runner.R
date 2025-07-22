@@ -11,18 +11,22 @@ testthat::test_that(
   "Check if the function returns all expected outputs",
   {
     library(rsatscan)
+    ### Observed results ----
+    skip_if_no_satscan() # Skip test if SaTScan GUI is not found during GitHub Actions
     ### Sample data ----
-    x <- df |>
+    w <- anthro |>
+      dplyr::filter(district == "Kotido") |>
+      dplyr::rename(longitude = x, latitude = y) |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
-        .recode_sex = TRUE,
+        .recode_sex = FALSE,
         weight = weight,
         height = height
       ) |>
       mwana::define_wasting(
         zscores = wfhz,
         .by = "zscores",
-        edema = edema
+        edema = oedema
       )
 
     ### Create a temporary directory ----
@@ -31,36 +35,34 @@ testthat::test_that(
 
     ### Observed results ----
     skip_if_no_satscan() # Skip test if SaTScan GUI is not found during GitHub Actions
-    results <- do.call(
-      what = ww_run_satscan,
-      args = list(
-        .data = x,
-        filename = "Locality",
-        dir = out_dir,
-        sslocation = "/Applications/SaTScan.app/Contents/app",
-        ssbatchfilename = "satscan",
-        satscan_version = "10.3.2",
-        .scan_for = "high-low-rates",
-        .gam_based = "wfhz",
-        verbose = FALSE,
-        cleanup = FALSE,
-        .by_area = FALSE,
-        area = NULL
-      )
+    results <- ww_run_satscan(
+      .data = w,
+      filename = "Kotido",
+      dir = out_dir,
+      sslocation = "/Applications/SaTScan.app/Contents/app",
+      ssbatchfilename = "satscan",
+      satscan_version = "10.3.2",
+      .scan_for = "high-low-rates",
+      .gam_based = "wfhz",
+      verbose = FALSE,
+      cleanup = FALSE,
+      .by_area = FALSE,
+      area = NULL
     )
 
     ## Expected files in the directory ----
     expected_files <- c(
-      "Locality.cas", "Locality.clustermap.html", "Locality.col.dbf",
-      "Locality.col.prj", "Locality.col.shp", "Locality.col.shx",
-      "Locality.ctl", "Locality.geo", "Locality.gis.dbf", "Locality.gis.prj",
-      "Locality.gis.shp", "Locality.gis.shx", "Locality.prm",
-      "Locality.rr.dbf", "Locality.sci.dbf", "Locality.txt"
+      "Kotido.cas", "Kotido.clustermap.html", "Kotido.col.dbf",
+      "Kotido.col.prj", "Kotido.col.shp", "Kotido.col.shx",
+      "Kotido.ctl", "Kotido.geo", "Kotido.gis.dbf", "Kotido.gis.prj",
+      "Kotido.gis.shp", "Kotido.gis.shx", "Kotido.prm",
+      "Kotido.rr.dbf", "Kotido.sci.dbf", "Kotido.txt"
     )
 
     ### The tests ----
-    testthat::expect_true(class(results) == "satscan")
-    testthat::expect_false(is.null(results))
+    testthat::expect_true(inherits(results$.df, "tbl_df"))
+    testthat::expect_true(inherits(results$.txt, "character"))
+    testthat::expect_false(is.null(results[[2]]))
     testthat::expect_type(results, "list")
     testthat::expect_equal(
       object = length(list.files(file.path(tmp, "input-files"))),
@@ -131,7 +133,8 @@ testthat::test_that(
     )
 
     ### The tests ----
-    testthat::expect_true(class(results[[1]]) == "satscan")
+    testthat::expect_true(inherits(results[[2]], "list"))
+    testthat::expect_true(inherits(results[[1]], "tbl"))
     testthat::expect_false(is.null(results))
     testthat::expect_type(results, "list")
     testthat::expect_equal(
