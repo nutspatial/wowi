@@ -66,4 +66,4 @@ citation("wowi")
 
 ## Community guidelines  
 
-Feedback, bug reports and feature requests are welcome; file issues or seek support [here](https://github.com/nutspatial/wowi/issues). If you would like to contribute to the package, please see the [contributing guidelines](https://github.com/nutspatial/wowi/CONTRIBUTING.html).
+Feedback, bug reports and feature requests are welcome; file issues or seek support [here](https://github.com/nutspatial/wowi/issues). If you would like to contribute to the package, please see the [contributing guidelines](https://nutspatial.github.io/wowi/CONTRIBUTING.html).

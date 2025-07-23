@@ -1,6 +1,6 @@
 title: wowi
 
-url: https://github.com/nutspatial/wowi
+url: https://nutspatial.github.io/wowi/
 
 template:
   bootstrap: 5
@@ -32,3 +32,4 @@ reference:
    - title: Dataset 
      contents: 
      - anthro
+

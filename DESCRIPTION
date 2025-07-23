@@ -1,6 +1,6 @@
 Package: wowi
 Title: Detect Spatial Clusters of High Acute Malnutrition Rates
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: 
     person(given = "Tomás", 
             family = "Zaba",
@@ -16,7 +16,7 @@ LazyData: true
 Language: en-GB
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
-URL: https://github.com/nutspatial/wowi
+URL: https://github.com/nutspatial/wowi, https://nutspatial.github.io/wowi/
 BugReports: https://github.com/nutspatial/wowi/issues
 Imports: 
     dplyr,
