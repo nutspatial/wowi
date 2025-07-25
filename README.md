@@ -68,7 +68,7 @@ geospatial manipulation or integration into other mapping workflows.
 ### A glimpse of detected hotspots and coldspots
 
 <figure>
-<img src="data-raw/detected-clusters.png"
+<img src="man/figures/detected-clusters.png"
 alt="Red bubble: hotspot; blue bubble: coldspot" />
 <figcaption aria-hidden="true">Red bubble: hotspot; blue bubble:
 coldspot</figcaption>

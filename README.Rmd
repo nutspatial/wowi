@@ -44,7 +44,7 @@ It takes a dataset with GPS coordinates (latitude and longitude), scans for clus
 This package is particularly handy when working with datasets that span multiple areas or administrative units, enabling consistent, area-wise detection of hotspots and coldspots. It also generates additional GIS-based files (e.g., shapefiles), which can be useful for further geospatial manipulation or integration into other mapping workflows.
 
 ### A glimpse of detected hotspots and coldspots
-![Red bubble: hotspot; blue bubble: coldspot](data-raw/detected-clusters.png)
+![Red bubble: hotspot; blue bubble: coldspot](man/figures/detected-clusters.png)
 
 ### A glimpse of the summary table
 ```{r}
