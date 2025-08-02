@@ -37,6 +37,12 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/introduction-to-wowi.html">Introduction to wowi</a></li>
+  </ul>
+</li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
       </ul>
 <ul class="navbar-nav">
@@ -60,7 +66,7 @@
 <p>Child acute malnutrition can lead to death if not identified and treated in time. Driven by a combination of diverse factors, it often exhibits spatial variation. The levels of acute malnutrition are commonly measured through surveys that are representative of the area of interest. These survey results are then used to inform programme responses — to find and treat affected children. To that end, programme managers require actionable insights on where acute malnutrition is most prevalent. This is essential for prioritising interventions, especially when resources are limited.</p>
 <p><code>wowi</code> - an expression meaning <em>“where”</em> in Elómwè, a local language spoken in central-northern Mozambique - provides convenient utilities for this purpose. It identifies locations across the survey area where acute malnutrition is significantly high (hotspots) or low (coldspots), and unlikely to be due to chance alone.</p>
 <p><code>wowi</code> is a wrapper package built on top of the <a href="https://cran.r-project.org/web/packages/rsatscan/index.html" class="external-link"><code>rsatscan</code></a> package, which enables the use of the <a href="https://www.satscan.org" class="external-link"><code>SaTScan</code></a> software from within R. While <code>rsatscan</code> provides general-purpose functionality, wowi was specifically made for acute malnutrition analysis, tailoring the tools to the needs of nutrition-focused spatial investigations.</p>
-<p>To use <code>wowi</code>, you must have SaTScan installed on your machine, along with the <a href="https://nutriverse.io/mwana/" class="external-link"><code>mwana</code></a> R package for preprocessing anthropometric data.</p>
+<p>To use <code>wowi</code>, you must have SaTScan installed on your machine, along with the <a href="https://nutriverse.io/mwana/dev/" class="external-link"><code>mwana</code></a> R package for preprocessing anthropometric data.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -128,7 +134,7 @@ Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot
 <li><a href="https://github.com/nutspatial/wowi/issues" class="external-link">Report a bug</a></li>
 <li><a href="https://cran.r-project.org/web/packages/rsatscan/index.html" class="external-link">Read more about rsatscan</a></li>
 <li><a href="https://www.satscan.org" class="external-link">Read more about SaTScan</a></li>
-<li><a href="https://nutriverse.io/mwana/" class="external-link">Read more about mwana</a></li>
+<li><a href="https://nutriverse.io/mwana/dev/" class="external-link">Read more about mwana</a></li>
 </ul>
 </div>
 
