@@ -39,7 +39,7 @@ made for acute malnutrition analysis, tailoring the tools to the needs
 of nutrition-focused spatial investigations.
 
 To use `wowi`, you must have SaTScan installed on your machine, along
-with the [`mwana`](https://nutriverse.io/mwana/) R package for
+with the [`mwana`](https://nutriverse.io/mwana/dev/) R package for
 preprocessing anthropometric data.
 
 ## Installation

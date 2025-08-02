@@ -28,7 +28,7 @@ Child acute malnutrition can lead to death if not identified and treated in time
 
 `wowi` is a wrapper package built on top of the [`rsatscan`](https://cran.r-project.org/web/packages/rsatscan/index.html) package, which enables the use of the [`SaTScan`](https://www.satscan.org) software from within R. While `rsatscan` provides general-purpose functionality, wowi was specifically made for acute malnutrition analysis, tailoring the tools to the needs of nutrition-focused spatial investigations. 
 
-To use `wowi`, you must have SaTScan installed on your machine, along with the [`mwana`](https://nutriverse.io/mwana/) R package for preprocessing anthropometric data.
+To use `wowi`, you must have SaTScan installed on your machine, along with the [`mwana`](https://nutriverse.io/mwana/dev/) R package for preprocessing anthropometric data.
 
 ## Installation  
 
