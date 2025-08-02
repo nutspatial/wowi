@@ -222,3 +222,5 @@ We can also obtain the tidy data frame:
 ```{r multiple-area-show-df}
 multiple_area$.df
 ```
+
+## References 
