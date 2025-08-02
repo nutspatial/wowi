@@ -8,3 +8,7 @@
 ^docs$
 ^pkgdown$
 ^CITATION\.cff$
+^doc$
+^Meta$
+^vignettes/\.quarto$
+^vignettes/*_files$

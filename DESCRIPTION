@@ -28,6 +28,8 @@ Imports:
     tibble
 Suggests: 
     covr (>= 3.6.4),
+    knitr,
+    rmarkdown,
     spelling,
     testthat (>= 3.0.0)
 Remotes:
@@ -35,3 +37,4 @@ Remotes:
 Config/testthat/edition: 3
 Depends: 
     R (>= 3.5)
+VignetteBuilder: knitr
