@@ -29,60 +29,70 @@ ui <- page_navbar(
           style = "width: 350px;",
           fileInput(
             inputId = "upload",
-            label = p("Upload a CSV file"),
+            label = "Upload a CSV file",
             buttonLabel = "Browse...",
             accept = ".csv"
           ),
-          #### Progress bar for file processing ----
           conditionalPanel(
             condition = "output.showProgress",
             hr(),
             h4("Processing File..."),
             uiOutput("uploadProgress")
           ),
-          #### Show file info when uploaded ----
           conditionalPanel(
             condition = "output.fileUploaded",
             hr(),
             h5("File Information"),
-            verbatimTextOutput(outputId = "fileInfo")
+            verbatimTextOutput("fileInfo")
           )
         )
       ),
-
-      #### Main content area ----
       card(
         card_header("Uploaded Data Preview"),
-        conditionalPanel(
-          condition = "output.fileUploaded",
-          DTOutput("uploadedDataTable")
-        ),
-        conditionalPanel(
-          condition = "output.showProgress",
-          div(
-            style = "text-align: center; padding: 50px;",
-            div(class = "spinner-border text-primary", role = "status"),
-            h4("Loading data...", style = "color: #007bff; margin-top: 20px;"),
-            p("Please wait while we process your file.")
-          )
-        ),
-        conditionalPanel(
-          condition = "!output.fileUploaded",
-          div(
-            style = "text-align: center; padding: 50px;",
-            h4("No file uploaded yet", style = "color: #6c757d;"),
-            p("Please upload a CSV file to see the data preview.")
-          )
-        )
+        conditionalPanel("output.fileUploaded", DTOutput("uploadedDataTable")),
+        conditionalPanel("output.showProgress", div(
+          style = "text-align: center; padding: 50px;",
+          div(class = "spinner-border text-primary", role = "status"),
+          h4("Loading data...", style = "color: #007bff; margin-top: 20px;"),
+          p("Please wait while we process your file.")
+        )),
+        conditionalPanel("!output.fileUploaded", div(
+          style = "text-align: center; padding: 50px;",
+          h4("No file uploaded yet", style = "color: #6c757d;"),
+          p("Please upload a CSV file to see the data preview.")
+        ))
       )
     )
   ),
 
-  ### Tab 2: Data wrangling ----
+  ### Tab 2: Data Wrangling ----
   nav_panel(
-    title = "Data wrangling"
+    title = "Data wrangling",
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        card(
+          card_header("Data wrangling"),
+          radioButtons(
+            inputId = "wrangle",
+            label = "Which method should be used for data wrangling?",
+            choices = c("WHZ", "MFAZ", "MUAC"), selected = "WHZ"
+          ),
+          uiOutput("variableSelectors"),
+          br(),
+          actionButton(
+            inputId = "apply_wrangle",
+            label = "Apply Data Wrangling",
+            class = "btn-primary"
+          )
+        )
+      ),
+      card(
+        card_header("Wrangled Data"),
+        DTOutput("wrangled_data")
+      )
+    )
   ),
-
 
   ### Tab 3: Run Spatial Scan ----
   nav_panel(

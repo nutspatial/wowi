@@ -1,33 +1,27 @@
 # ==============================================================================
-#                               Server Interface
+#                               SERVER LOGIC
 # ==============================================================================
 
 ## ---- Server's definitions ---------------------------------------------------
 
-### Tab 1: ----
 server <- function(input, output, session) {
-  
-  #### Reactive values to manage state ----
   values <- reactiveValues(
     data = NULL,
     processing = FALSE,
-    file_uploaded = FALSE
+    file_uploaded = FALSE,
+    wrangled = NULL
   )
 
-  #### Show progress indicator ----
   output$showProgress <- reactive({
-    return(values$processing)
+    values$processing
   })
-
   outputOptions(output, "showProgress", suspendWhenHidden = FALSE)
 
-  #### Check if file is uploaded (for conditional panels)
   output$fileUploaded <- reactive({
-    return(values$file_uploaded)
+    values$file_uploaded
   })
   outputOptions(output, "fileUploaded", suspendWhenHidden = FALSE)
 
-  #### Progress bar output ----
   output$uploadProgress <- renderUI({
     if (values$processing) {
       div(
@@ -41,38 +35,29 @@ server <- function(input, output, session) {
     }
   })
 
-  #### Reactive value to store uploaded data with progress
   observe({
     req(input$upload)
-
-    ##### Start processing
     values$processing <- TRUE
     values$file_uploaded <- FALSE
 
-    ##### Simulate progress with delay (you can remove this for real use)
     progress <- Progress$new(session, min = 0, max = 100)
     on.exit(progress$close())
 
     progress$set(message = "Reading file...", value = 20)
-    Sys.sleep(0.5) # Remove this in production
+    Sys.sleep(0.5)
 
     progress$set(message = "Processing data...", value = 50)
 
-    ##### Read the uploaded CSV file ----
     tryCatch(
       {
         df <- read.csv(input$upload$datapath, stringsAsFactors = FALSE)
-
         progress$set(message = "Finalizing...", value = 80)
-        Sys.sleep(0.3) # Remove this in production
+        Sys.sleep(0.3)
 
-        ###### Store the data ----
         values$data <- df
-
         progress$set(message = "Complete!", value = 100)
-        Sys.sleep(0.2) # Remove this in production
+        Sys.sleep(0.2)
 
-        ###### Update state ----
         values$processing <- FALSE
         values$file_uploaded <- TRUE
       },
@@ -88,7 +73,6 @@ server <- function(input, output, session) {
     )
   })
 
-  ### Display file information ----
   output$fileInfo <- renderText({
     req(input$upload, values$data)
     paste0(
@@ -99,32 +83,138 @@ server <- function(input, output, session) {
     )
   })
 
-  #### Display uploaded data table (max 20 rows) ----
-  output$uploadedDataTable <- renderDT({
+  output$uploadedDataTable <- renderDataTable({
     req(values$data)
-
-    ##### Show at most 20 rows ----
     df_preview <- head(values$data, 30)
-
-    datatable(
-      df_preview,
+    datatable(df_preview,
       rownames = FALSE,
       options = list(
-        pageLength = 30,
-        scrollX = TRUE,
-        scrollY = "800px",
-        #dom = "t", # Only show table (no search, pagination, etc.)
+        pageLength = 30, scrollX = TRUE, scrollY = "800px",
         columnDefs = list(list(className = "dt-center", targets = "_all"))
       ),
       caption = if (nrow(values$data) > 30) {
         paste(
-          "Showing first 30 rows of", format(
-            nrow(values$data), big.mark = ","
-          ), "total rows")
+          "Showing first 30 rows of",
+          format(nrow(values$data), big.mark = ","),
+          "total rows"
+        )
       } else {
         paste("Showing all", nrow(values$data), "rows")
       }
-    ) |> 
-      formatStyle(columns = colnames(df_preview), fontSize = "12px")
+    ) |> formatStyle(columns = colnames(df_preview), fontSize = "12px")
+  })
+
+  output$variableSelectors <- renderUI({
+    req(values$data)
+    cols <- names(values$data)
+
+    switch(input$wrangle,
+      "WHZ" = tagList(
+        selectInput("sex_var", "Sex variable", choices = cols),
+        selectInput("weight_var", "Weight variable", choices = cols),
+        selectInput("height_var", "Height variable", choices = cols)
+      ),
+      "MFAZ" = tagList(
+        selectInput("sex_var", "Sex variable", choices = cols),
+        selectInput("muac_var_mfaz", "MUAC variable", choices = cols),
+        selectInput("age_var", "Age variable", choices = cols)
+      ),
+      "MUAC" = tagList(
+        selectInput("sex_var", "Sex variable", choices = cols),
+        selectInput("muac_var", "MUAC variable", choices = cols)
+      )
+    )
+  })
+
+  observeEvent(input$apply_wrangle, {
+    req(values$data)
+    data <- values$data
+    valid <- TRUE
+    msg <- ""
+
+    if (input$wrangle == "WHZ") {
+      if (input$sex_var == "" || input$weight_var == "" || input$height_var == "") {
+        valid <- FALSE
+        msg <- "Please select all required variables (Sex, Weight, Height) for WHZ method."
+      }
+    } else if (input$wrangle == "MFAZ") {
+      if (input$sex_var == "" || input$muac_var_mfaz == "" || input$age_var == "") {
+        valid <- FALSE
+        msg <- "Please select all required variables (Sex, MUAC, Age) for MFAZ method."
+      }
+    } else if (input$wrangle == "MUAC") {
+      if (input$sex_var == "" || input$muac_var == "") {
+        valid <- FALSE
+        msg <- "Please select all required variables (Sex, MUAC) for MUAC method."
+      }
+    }
+
+    if (!valid) {
+      showNotification(msg, type = "error")
+      return()
+    }
+
+    tryCatch(
+      {
+        result <- switch(input$wrangle,
+          "WHZ" = mw_wrangle_wfhz(
+            df = data,
+            sex = data[[input$sex_var]],
+            weight = data[[input$weight_var]],
+            height = data[[input$height_var]]
+          ),
+          "MFAZ" = {
+            req(input$age_var, input$muac_var_mfaz, input$sex_var)
+
+            df <- data
+
+            # Defensive assignment
+            if (input$muac_var_mfaz %in% names(df)) {
+              df$muac <- df[[input$muac_var_mfaz]]
+            } else {
+              showNotification("MUAC variable not found in dataset.", type = "error")
+              return(NULL)
+            }
+
+            df$age <- df[[input$age_var]]
+            df$sex <- df[[input$sex_var]]
+
+            # Apply age wrangling
+            df <- mw_wrangle_age(df = df, age = df$age)
+
+            # Apply MUAC wrangling
+            mw_wrangle_muac(
+              df = df,
+              sex = df$sex,
+              muac = df$muac,
+              age = df$age,
+              .recode_sex = FALSE,
+              .recode_muac = FALSE,
+              .to = "none"
+            )
+          },
+          "MUAC" = mw_wrangle_muac(
+            df = data,
+            sex = data[[input$sex_var]],
+            muac = data[[input$muac_var]],
+            .recode_muac = TRUE,
+            .to = "cm",
+            .recode_sex = FALSE
+          )
+        )
+
+        values$wrangled <- result
+      },
+      error = function(e) {
+        showNotification(paste("Wrangling error:", e$message), type = "error")
+      }
+    )
+  })
+
+  output$wrangled_data <- renderDT({
+    req(values$wrangled)
+    datatable(values$wrangled, options = list(
+      pageLength = 30, scrollX = TRUE
+    ))
   })
 }
