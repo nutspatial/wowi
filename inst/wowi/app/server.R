@@ -359,4 +359,147 @@ server <- function(input, output, session) {
       )
     )
   })
+
+  ## ---- Logic for Tab 3: Run Spatial Scan ------------------------------------
+
+  output$hyperparameters <- renderUI({
+    req(values$data)
+
+    ### Collect user-defined parameters based on scope of analysis ----
+  switch(
+    input$analysis_scope,
+    "single-area" = tagList(
+      textInput(
+        inputId = "filename", 
+        label = tagList(
+          strong("Area of Analysis"),
+          tags$div(
+            style = "font-size: 0.85em; color: #6c757d;",
+              'Name of a district, county, etc, as in your dataset'
+          )
+        )
+      ), 
+      textInput(
+        inputId = "directory",
+        label = strong(
+          "Directory where the parameters files should be saved in"
+        ),
+        value = ""
+      ),
+      textInput(
+        inputId = "sslocation",
+        label = tagList(
+          strong("Path to where SaTScan GUI is installed on your computer"),
+          tags$div(
+            style = "font-size: 0.85em; color: #6c757d;",
+              'e.g., macOS: "/Applications/SaTScan.app/Contents/app";
+            Windows: "C:/Program Files/SaTScan"'
+          )
+        ),
+        value = "",
+        width = NULL
+      ),
+      textInput(
+        inputId = "ssbatchfilename",
+        label = tagList(
+          strong("SaTScan batch file name"),
+          tags$div(
+            style = "font-size: 0.85em; color: #6c757d;",
+              'e.g., macOS: "satscan"; Windows: "SaTScanBatch64"'
+          )
+        ) 
+      ),
+      textInput(
+        inputId = "satscan_version",
+        label = tagList(
+          strong("Version of SaTScan"),
+          tags$div(
+            style = "font-size: 0.85em; color: #6c757d;",
+              'e.g., "10.3.2"'
+          )
+        )
+      ),
+      radioButtons(
+        inputId = "scan_for",
+        label = strong("Which type of cluster should be scanned for?"),
+        choices = list(
+          "Clusters of High Rates" = "high-rates",
+          "Cluster of High and Low Rates" = "high-low-rates"
+        ),
+        selected = "high-low-rates"
+      ), 
+      radioButtons(
+        inputId = "gam_based",
+        label = strong("Which acute malnutrition's case-definition should be used?"),
+        choices = list(
+          "Weight-for-Height z-scores" = "wfhz",
+          "Mid-upper Arm Circumference" = "MUAC", 
+          "Combined Case Definition" = "combined"
+        ),
+        selected = "wfhz"
+      )
+    ), 
+    "multiple-area" = tagList( 
+      textInput(
+        inputId = "directory",
+        label = strong(
+          "Directory where the parameters files should be saved in"
+        ),
+        value = ""
+      ),
+      textInput(
+        inputId = "sslocation",
+        label = tagList(
+          strong("Path to where SaTScan GUI is installed on your computer"),
+          tags$div(
+            style = "font-size: 0.85em; color: #6c757d;",
+              'e.g., macOS: "/Applications/SaTScan.app/Contents/app";
+            Windows: "C:/Program Files/SaTScan"'
+          )
+        ),
+        value = "",
+        width = NULL
+      ),
+      textInput(
+        inputId = "ssbatchfilename",
+        label = tagList(
+          strong("SaTScan batch file name"),
+          tags$div(
+            style = "font-size: 0.85em; color: #6c757d;",
+              'e.g., macOS: "satscan"; Windows: "SaTScanBatch64"'
+          )
+        ) 
+      ),
+      textInput(
+        inputId = "satscan_version",
+        label = tagList(
+          strong("Version of SaTScan"),
+          tags$div(
+            style = "font-size: 0.85em; color: #6c757d;",
+              'e.g., "10.3.2"'
+          )
+        )
+      ),
+      radioButtons(
+        inputId = "scan_for",
+        label = strong("Which type of cluster should be scanned for?"),
+        choices = list(
+          "Clusters of High Rates" = "high-rates",
+          "Cluster of High and Low Rates" = "high-low-rates"
+        ),
+        selected = "high-low-rates"
+      ), 
+      radioButtons(
+        inputId = "gam_based",
+        label = strong("Which acute malnutrition's case-definition should be used?"),
+        choices = list(
+          "Weight-for-Height z-scores" = "wfhz",
+          "Mid-upper Arm Circumference" = "MUAC", 
+          "Combined Case Definition" = "combined"
+        ),
+        selected = "wfhz"
+      )
+    )
+  )
+  })
 }
