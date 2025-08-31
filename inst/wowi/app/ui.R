@@ -71,15 +71,15 @@ ui <- page_navbar(
     title = "Data Wrangling",
     layout_sidebar(
       sidebar = sidebar(
-        width = 400,
+        width = 500,
         card(
           card_header("Data Wrangling"),
           radioButtons(
             inputId = "wrangle",
             label = "Which method should be used for data wrangling?",
-            choices = c(
-              "Weight-for-Height z-score" = "WHZ", 
-              "MUAC-for-Age z-score" = "MFAZ", 
+            choices = list(
+              "Weight-for-Height z-score" = "WHZ",
+              "MUAC-for-Age z-score" = "MFAZ",
               "Raw MUAC" = "MUAC"
             ), selected = "WHZ"
           ),
@@ -102,6 +102,32 @@ ui <- page_navbar(
 
   ### Tab 3: Run Spatial Scan ----
   nav_panel(
-    title = "Run Spatial Scan"
+    title = "Run Spatial Scan",
+    layout_sidebar(
+      sidebar = sidebar(
+        width = 400,
+        card(
+          card_header("Set wowi Hyperparameters for Analysis"),
+          radioButtons(
+            inputId = "analysis_scope",
+            label = strong("What is the analysis scope that wowi should consider?"),
+            choices = c(
+              "Single-area analysis" = "single-area",
+              "Multiple-area analysis" = "multiple-area"
+            ),
+            selected = "single-area"
+          ),
+
+          #### Container in UI to store outputs derived from the server ----
+          uiOutput("hyperparameters"),
+          hr()
+        ),
+        card("Created Files")
+      ),
+      card(card_header("Results: Map")),
+      plotOutput("cluster_map"),
+      card(card_header("Results: Table")),
+      DTOutput("cluster_df")
+    )
   )
 )
