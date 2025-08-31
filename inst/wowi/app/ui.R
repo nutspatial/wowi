@@ -132,7 +132,7 @@ ui <- page_navbar(
     plotOutput("cluster_map"), 
     card(card_header("Results: Table")),
     DTOutput("cluster_df")
-    )
+    ),
     title = "Run Spatial Scan",
     layout_sidebar(
       sidebar = sidebar(
@@ -161,4 +161,5 @@ ui <- page_navbar(
       DTOutput("cluster_df")
     )
   )
+)
 )
