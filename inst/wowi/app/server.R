@@ -110,18 +110,18 @@ server <- function(input, output, session) {
 
     switch(input$wrangle,
       "WHZ" = tagList(
-        selectInput("sex_var", "Sex variable", choices = cols),
-        selectInput("weight_var", "Weight variable", choices = cols),
-        selectInput("height_var", "Height variable", choices = cols)
+        selectInput(inputId = "sex_var", label = "Sex", choices = cols),
+        selectInput(inputId = "weight_var", label = "Weight (kg)", choices = cols),
+        selectInput(inputId = "height_var", label = "Height (cm)", choices = cols)
       ),
       "MFAZ" = tagList(
-        selectInput("sex_var", "Sex variable", choices = cols),
-        selectInput("muac_var_mfaz", "MUAC variable", choices = cols),
-        selectInput("age_var", "Age variable", choices = cols)
+        selectInput(inputId = "age_var", label = "Age (months)", choices = cols),
+        selectInput(inputId = "sex_var", label = "Sex", choices = cols),
+        selectInput(inputId = "muac_var_mfaz", label = "MUAC (cm)", choices = cols)
       ),
       "MUAC" = tagList(
-        selectInput("sex_var", "Sex variable", choices = cols),
-        selectInput("muac_var", "MUAC variable", choices = cols)
+        selectInput(inputId = "sex_var", label = "Sex", choices = cols),
+        selectInput(inputId = "muac_var", label = "MUAC (cm)", choices = cols)
       )
     )
   })

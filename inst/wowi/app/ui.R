@@ -20,7 +20,8 @@ ui <- page_navbar(
 
   ### Tab 1: Data Uploading ----
   nav_panel(
-    title = "Data uploading",
+    title = "Data Uploading",
+    icon = icon(name = "home"),
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
@@ -67,17 +68,22 @@ ui <- page_navbar(
 
   ### Tab 2: Data Wrangling ----
   nav_panel(
-    title = "Data wrangling",
+    title = "Data Wrangling",
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
         card(
-          card_header("Data wrangling"),
+          card_header("Data Wrangling"),
           radioButtons(
             inputId = "wrangle",
             label = "Which method should be used for data wrangling?",
-            choices = c("WHZ", "MFAZ", "MUAC"), selected = "WHZ"
+            choices = c(
+              "Weight-for-Height z-score" = "WHZ", 
+              "MUAC-for-Age z-score" = "MFAZ", 
+              "Raw MUAC" = "MUAC"
+            ), selected = "WHZ"
           ),
+          helpText(strong("Select the variables")),
           uiOutput("variableSelectors"),
           br(),
           actionButton(
