@@ -17,13 +17,13 @@ library(DT)
 
 ui <- page_navbar(
   title = div(
-    style = "display: flex; align-items: center;",
-    span("wowi", style = "margin-right: 10px;"),
-    a(
-      href = "https://nutspatial.github.io/wowi/"
-    ),
-    img(src = "logo.jpg", hight = "40px"),
-  ),
+  style = "display: flex; align-items: center;",
+  span("wowi", style = "margin-right: 10px;"),
+  a(
+    href = "https://nutspatial.github.io/wowi/",
+    img(src = "logo.jpg", height = "25px")  
+  )
+),
 
   ### Tab 1: Data Uploading ----
   nav_panel(
