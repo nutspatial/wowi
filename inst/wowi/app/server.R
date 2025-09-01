@@ -104,12 +104,14 @@ server <- function(input, output, session) {
     ) |> formatStyle(columns = colnames(df_preview), fontSize = "12px")
   })
 
+  ## ---- Logic for Data Wrangling Tab -----------------------------------------
+
   output$variableSelectors <- renderUI({
     req(values$data)
     cols <- names(values$data)
 
     switch(input$wrangle,
-      "WHZ" = tagList(
+      "wfhz" = tagList(
         selectInput(
           inputId = "sex_var",
           label = "Sex",
@@ -124,36 +126,19 @@ server <- function(input, output, session) {
           inputId = "height_var",
           label = "Height (cm)",
           choices = c("", cols)
-        ), 
+        ),
         selectInput(
           inputId = "oedema",
           label = "Oedema",
           choices = c("", cols)
         )
       ),
-      "MFAZ" = tagList(
+      "muac" = tagList(
         selectInput(
           inputId = "age_var",
           label = "Age (months)",
           choices = c("", cols)
         ),
-        selectInput(
-          inputId = "sex_var",
-          label = "Sex",
-          choices = c("", cols)
-        ),
-        selectInput(
-          inputId = "muac_var_mfaz",
-          label = "MUAC (cm)",
-          choices = c("", cols)
-        ),
-        selectInput(
-          inputId = "oedema",
-          label = "Oedema",
-          choices = c("", cols)
-        )
-      ),
-      "MUAC" = tagList(
         selectInput(
           inputId = "sex_var",
           label = "Sex",
@@ -168,16 +153,38 @@ server <- function(input, output, session) {
           inputId = "oedema",
           label = "Oedema",
           choices = c("", cols)
+        )
+      ),
+      "combined" = tagList(
+        selectInput(
+          inputId = "sex_var",
+          label = "Sex",
+          choices = c("", cols)
         ),
-        radioButtons(
-          inputId = "gam_based",
-          label = strong("Which method should be used for acute malnutrition case-definition?"),
-          choices = list(
-            "Weight-for-Height z-score" = "wfhz",
-            "Mid-upper Arm Circumference" = "MUAC",
-            "Combined Case Definition" = "combined"
-          ),
-          selected = "wfhz"
+        selectInput(
+          inputId = "age_var",
+          label = "Age (months)",
+          choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "weight_var",
+          label = "Weight (kg)",
+          choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "height_var",
+          label = "Height (cm)",
+          choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "muac_var",
+          label = "MUAC (cm)",
+          choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "oedema",
+          label = "Oedema",
+          choices = c("", cols)
         )
       )
     )
@@ -190,7 +197,7 @@ server <- function(input, output, session) {
 
     # msg <- ""
 
-    # if (input$wrangle == "WHZ") {
+    # if (input$wrangle == "WFHZ") {
     #   if (input$sex_var == "" || input$weight_var == "" || input$height_var == "") {
     #     valid <- FALSE
     #     msg <- "Please select all required variables (Sex, Weight, Height) for WHZ method."
@@ -214,63 +221,90 @@ server <- function(input, output, session) {
 
     tryCatch(
       {
-        oedema <- data[[input$oedema]]
+    
         result <- switch(input$wrangle,
-          "WHZ" = {
+          "wfhz" = {
             req(input$sex_var, input$weight_var, input$height_var)
 
-mw_wrangle_wfhz(
-            df = data,
-            sex = data[[input$sex_var]],
-            weight = data[[input$weight_var]],
-            height = data[[input$height_var]]
-          ) |> 
-            mwana::define_wasting(
-        zscores = wfhz,
-        .by = "zscores",
-        edema = oedema
-      )
+            sex <- data[[input$sex_var]]
+            weight <- data[[input$weight_var]]
+        height <- data[[input$height_var]]
+            oedema <- data[[input$oedema]]
+            
+            data |> 
+            mw_wrangle_wfhz(
+              sex = sex,
+              .recode_sex = FALSE,
+              weight = weight,
+              height = height
+            ) |>
+              mwana::define_wasting(
+                zscores = wfhz,
+                .by = "zscores",
+                edema = oedema
+              )
           },
-          "MFAZ" = {
-            req(input$age_var, input$muac_var_mfaz, input$sex_var)
+          "muac" = {
+            req(input$age_var, input$muac_var, input$sex_var)
 
-            df <- data
-
-            # Defensive assignment
-            if (input$muac_var_mfaz %in% names(df)) {
-              df$muac <- df[[input$muac_var_mfaz]]
-            } else {
-              showNotification("MUAC variable not found in dataset.", type = "error")
-              return(NULL)
-            }
-
-            df$age <- df[[input$age_var]]
-            df$sex <- df[[input$sex_var]]
+                    age <- data[[input$age_var]]
+        
+        muac <- data[[input$muac_var]]
+                        sex <- data[[input$sex_var]]
+            oedema <- data[[input$oedema]]
 
             # Apply age wrangling
-            df <- mw_wrangle_age(df = df, age = df$age)
-
-            # Apply MUAC wrangling
+            data |> 
+            mw_wrangle_age(age = age) |> 
             mw_wrangle_muac(
-              df = df,
-              sex = df$sex,
-              muac = df$muac,
-              age = df$age,
+              sex = sex,
+              muac = muac,
+              age = age,
               .recode_sex = FALSE,
               .recode_muac = FALSE,
               .to = "none"
-            ) |> 
-              #dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
-      mwana::define_wasting(muac = muac, .by = "muac", edema = oedema)
+            ) |>
+              dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
+              mwana::define_wasting(muac = muac, .by = "muac", edema = oedema)
           },
-          "MUAC" = mw_wrangle_muac(
-            df = data,
-            sex = data[[input$sex_var]],
-            muac = data[[input$muac_var]],
-            .recode_muac = TRUE,
-            .to = "cm",
-            .recode_sex = FALSE
-          )
+          "combined" = {
+            req(
+              input$sex_var, input$weight_var, input$height_var,
+              input$age_var, input$muac_var
+            )
+
+                                age <- data[[input$age_var]]
+        
+        muac <- data[[input$muac_var]]
+                        sex <- data[[input$sex_var]]
+                        weight <- data[[input$weight_var]]
+        height <- data[[input$height_var]]
+            oedema <- data[[input$oedema]]
+            
+            data |>
+              mwana::mw_wrangle_wfhz(
+                sex = sex,
+                .recode_sex = FALSE,
+                weight = weight,
+                height = height
+              ) |>
+              mwana::mw_wrangle_age(age = age) |>
+              mwana::mw_wrangle_muac(
+                sex = sex,
+                .recode_sex = FALSE,
+                muac = muac,
+                .recode_muac = FALSE,
+                .to = "none",
+                age = age
+              ) |>
+              dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
+              mwana::define_wasting(
+                zscores = wfhz,
+                muac = muac,
+                .by = "combined",
+                edema = oedema
+              )
+          }
         )
 
         values$wrangled <- result
@@ -354,16 +388,6 @@ mw_wrangle_wfhz(
             "Cluster of High and Low Rates" = "high-low-rates"
           ),
           selected = "high-low-rates"
-        ),
-        radioButtons(
-          inputId = "gam_based",
-          label = strong("Which acute malnutrition's case-definition should be used?"),
-          choices = list(
-            "Weight-for-Height z-scores" = "wfhz",
-            "Mid-upper Arm Circumference" = "MUAC",
-            "Combined Case Definition" = "combined"
-          ),
-          selected = "wfhz"
         )
       ),
 
@@ -422,16 +446,6 @@ mw_wrangle_wfhz(
             "Cluster of High and Low Rates" = "high-low-rates"
           ),
           selected = "high-low-rates"
-        ),
-        radioButtons(
-          inputId = "gam_based",
-          label = strong("Which acute malnutrition's case-definition should be used?"),
-          choices = list(
-            "Weight-for-Height z-scores" = "wfhz",
-            "Mid-upper Arm Circumference" = "MUAC",
-            "Combined Case Definition" = "combined"
-          ),
-          selected = "wfhz"
         )
       )
     )
@@ -460,9 +474,9 @@ mw_wrangle_wfhz(
         batchfilename <- as.character(input$ssbatchfilename)
         version <- as.character(input$satscan_version)
         scan_for <- as.character(input$scan_for)
-        gam_based <- as.character(input$gam_based)
+        gam_based <- as.character(input$wrangle)
 
-        data <- values$wrangled |> 
+        data <- values$wrangled |>
           dplyr::rename(longitude = x, latitude = y)
         #### Run scan ----
         result <- ww_run_satscan(
@@ -474,6 +488,7 @@ mw_wrangle_wfhz(
           satscan_version = version,
           .by_area = FALSE,
           .scan_for = scan_for,
+          .gam_based = gam_based,
           area = NULL
         )
 
@@ -500,10 +515,10 @@ mw_wrangle_wfhz(
         batchfilename <- as.character(input$ssbatchfilename)
         version <- as.character(input$satscan_version)
         scan_for <- as.character(input$scan_for)
-        gam_based <- as.character(input$gam_based)
+        gam_based <- as.character(input$wrangle)
 
         #### Run scan ----
-        data <- values$wrangled |> 
+        data <- values$wrangled |>
           dplyr::rename(longitude = x, latitude = y)
         result <- ww_run_satscan(
           .data = data,
@@ -514,18 +529,18 @@ mw_wrangle_wfhz(
           satscan_version = version,
           .by_area = TRUE,
           .scan_for = scan_for,
+          .gam_based = gam_based,
           area = data[[input$area]]
         )
 
         output$files_created <- renderText({
           files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
           paste(files, collapse = "\n")
-          
         })
-          #### Display a summary table of detected cluster ----
-          output$cluster_df <- renderDataTable(
-            result$.df,
-            options = list(pageLength = 30)
+        #### Display a summary table of detected cluster ----
+        output$cluster_df <- renderDataTable(
+          result$.df,
+          options = list(pageLength = 30)
         )
       }
     }

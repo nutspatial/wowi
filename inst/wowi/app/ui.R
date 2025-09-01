@@ -83,13 +83,22 @@ ui <- page_navbar(
           card_header("Data Wrangling"),
           radioButtons(
             inputId = "wrangle",
-            label = "Which method should be used for data wrangling?",
+            label = strong("How should acute malnutrition be defined?"),
             choices = list(
-              "Weight-for-Height z-score" = "WHZ",
-              "MUAC-for-Age z-score" = "MFAZ",
-              "Raw MUAC" = "MUAC"
-            ), selected = "WHZ"
+               "Weight-for-Height z-score" = "wfhz",
+            "Mid-Upper Arm Circumference" = "muac",
+            "Combined Case Definition" = "combined"
+            ), selected = "wfhz"
           ),
+          # radioButtons(
+          #   inputId = "case_def",
+          #   label = strong("How should acute malnutrition be defined?"),
+          #   choices = list(
+          #     "Weight-for-Height z-score" = "WFHZ",
+          #   "Mid-Upper Arm Circumference" = "MUAC",
+          #   "Combined Case Definition" = "combined"
+          #   )
+          # ),
           helpText(strong("Select the variables")),
           uiOutput("variableSelectors"),
           br(),
