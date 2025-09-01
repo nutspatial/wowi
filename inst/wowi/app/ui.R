@@ -90,15 +90,6 @@ ui <- page_navbar(
             "Combined Case Definition" = "combined"
             ), selected = "wfhz"
           ),
-          # radioButtons(
-          #   inputId = "case_def",
-          #   label = strong("How should acute malnutrition be defined?"),
-          #   choices = list(
-          #     "Weight-for-Height z-score" = "WFHZ",
-          #   "Mid-Upper Arm Circumference" = "MUAC",
-          #   "Combined Case Definition" = "combined"
-          #   )
-          # ),
           helpText(strong("Select the variables")),
           uiOutput("variableSelectors"),
           br(),

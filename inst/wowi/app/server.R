@@ -193,51 +193,53 @@ server <- function(input, output, session) {
   observeEvent(input$apply_wrangle, {
     req(values$data)
     data <- values$data
-    # valid <- TRUE
+    valid <- TRUE
 
-    # msg <- ""
+    msg <- ""
 
-    # if (input$wrangle == "WFHZ") {
-    #   if (input$sex_var == "" || input$weight_var == "" || input$height_var == "") {
-    #     valid <- FALSE
-    #     msg <- "Please select all required variables (Sex, Weight, Height) for WHZ method."
-    #   }
-    # } else if (input$wrangle == "MFAZ") {
-    #   if (input$sex_var == "" || input$muac_var_mfaz == "" || input$age_var == "") {
-    #     valid <- FALSE
-    #     msg <- "Please select all required variables (Sex, MUAC, Age) for MFAZ method."
-    #   }
-    # } else if (input$wrangle == "MUAC") {
-    #   if (input$sex_var == "" || input$muac_var == "") {
-    #     valid <- FALSE
-    #     msg <- "Please select all required variables (Sex, MUAC) for MUAC method."
-    #   }
-    # }
+    if (input$wrangle == "wfhz") {
+      if (input$sex_var == "" || input$weight_var == "" || input$height_var == "") {
+        valid <- FALSE
+        msg <- "😬 Please select all required variables (Sex, Weight, Height) and try again."
+      }
+    } else if (input$wrangle == "muac") {
+      if (input$sex_var == "" || input$muac_var == "" || input$age_var == "") {
+        valid <- FALSE
+        msg <- "😬 Please select all required variables (Sex, MUAC, Age) and try again."
+      }
+    } else if (input$wrangle == "combined") {
+      if (
+        any(c(input$age_var, input$sex_var, input$muac_var, input$weight_var, 
+          input$height_var) == "")) {
+        valid <- FALSE
+        msg <- 
+          "😬 Please select all required variables (Age, Sex, Weight, Height, MUAC)."
+      }
+    }
 
-    # if (!valid) {
-    #   showNotification(msg, type = "error")
-    #   return()
-    # }
+    if (!valid) {
+      showNotification(msg, type = "error")
+      return()
+    }
 
     tryCatch(
       {
-    
         result <- switch(input$wrangle,
           "wfhz" = {
             req(input$sex_var, input$weight_var, input$height_var)
 
             sex <- data[[input$sex_var]]
             weight <- data[[input$weight_var]]
-        height <- data[[input$height_var]]
+            height <- data[[input$height_var]]
             oedema <- data[[input$oedema]]
-            
-            data |> 
-            mw_wrangle_wfhz(
-              sex = sex,
-              .recode_sex = FALSE,
-              weight = weight,
-              height = height
-            ) |>
+
+            data |>
+              mw_wrangle_wfhz(
+                sex = sex,
+                .recode_sex = FALSE,
+                weight = weight,
+                height = height
+              ) |>
               mwana::define_wasting(
                 zscores = wfhz,
                 .by = "zscores",
@@ -247,23 +249,23 @@ server <- function(input, output, session) {
           "muac" = {
             req(input$age_var, input$muac_var, input$sex_var)
 
-                    age <- data[[input$age_var]]
-        
-        muac <- data[[input$muac_var]]
-                        sex <- data[[input$sex_var]]
+            age <- data[[input$age_var]]
+
+            muac <- data[[input$muac_var]]
+            sex <- data[[input$sex_var]]
             oedema <- data[[input$oedema]]
 
             # Apply age wrangling
-            data |> 
-            mw_wrangle_age(age = age) |> 
-            mw_wrangle_muac(
-              sex = sex,
-              muac = muac,
-              age = age,
-              .recode_sex = FALSE,
-              .recode_muac = FALSE,
-              .to = "none"
-            ) |>
+            data |>
+              mw_wrangle_age(age = age) |>
+              mw_wrangle_muac(
+                sex = sex,
+                muac = muac,
+                age = age,
+                .recode_sex = FALSE,
+                .recode_muac = FALSE,
+                .to = "none"
+              ) |>
               dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
               mwana::define_wasting(muac = muac, .by = "muac", edema = oedema)
           },
@@ -273,14 +275,14 @@ server <- function(input, output, session) {
               input$age_var, input$muac_var
             )
 
-                                age <- data[[input$age_var]]
-        
-        muac <- data[[input$muac_var]]
-                        sex <- data[[input$sex_var]]
-                        weight <- data[[input$weight_var]]
-        height <- data[[input$height_var]]
+            age <- data[[input$age_var]]
+
+            muac <- data[[input$muac_var]]
+            sex <- data[[input$sex_var]]
+            weight <- data[[input$weight_var]]
+            height <- data[[input$height_var]]
             oedema <- data[[input$oedema]]
-            
+
             data |>
               mwana::mw_wrangle_wfhz(
                 sex = sex,
@@ -498,10 +500,9 @@ server <- function(input, output, session) {
         })
 
         #### Display a summary table of detected cluster ----
-        output$cluster_df <- renderDataTable(
-          result$.df,
-          options = list(pageLength = 30)
-        )
+        output$cluster_df <- renderDT({
+          datatable(result$.df, options = list(pageLength = 20, scrollX = TRUE))
+        })
       } else {
         #### Ensure that all parameters for single-area analysis are given ----
         req(
@@ -538,10 +539,9 @@ server <- function(input, output, session) {
           paste(files, collapse = "\n")
         })
         #### Display a summary table of detected cluster ----
-        output$cluster_df <- renderDataTable(
-          result$.df,
-          options = list(pageLength = 30)
-        )
+        output$cluster_df <- renderDT({
+          datatable(result$.df, options = list(pageLength = 20, scrollX = TRUE))
+        })
       }
     }
   )
