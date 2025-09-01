@@ -17,13 +17,13 @@ library(DT)
 
 ui <- page_navbar(
   title = div(
-  style = "display: flex; align-items: center;",
-  span("wowi", style = "margin-right: 10px;"),
-  a(
-    href = "https://nutspatial.github.io/wowi/",
-    img(src = "logo.jpg", height = "25px")  
-  )
-),
+    style = "display: flex; align-items: center;",
+    span("wowi", style = "margin-right: 10px;"),
+    a(
+      href = "https://nutspatial.github.io/wowi/",
+      img(src = "logo.jpg", height = "25px")
+    )
+  ),
 
   ### Tab 1: Data Uploading ----
   nav_panel(
@@ -85,9 +85,9 @@ ui <- page_navbar(
             inputId = "wrangle",
             label = strong("How should acute malnutrition be defined?"),
             choices = list(
-               "Weight-for-Height z-score" = "wfhz",
-            "Mid-Upper Arm Circumference" = "muac",
-            "Combined Case Definition" = "combined"
+              "Weight-for-Height z-score" = "wfhz",
+              "Mid-Upper Arm Circumference" = "muac",
+              "Combined Case Definition" = "combined"
             ), selected = "wfhz"
           ),
           helpText(strong("Select the variables")),
@@ -130,14 +130,30 @@ ui <- page_navbar(
             label = "Run Scan",
             class = "btn-primary"
           )
-        ),
-        card("Created Files"),
-        verbatimTextOutput("files_created")
+        )
       ),
-      card(card_header("Results: Map")),
-      plotOutput("cluster_map"),
-      card(card_header("Results: Table")),
-      DTOutput("cluster_df")
+      layout_column_wrap(
+        width = "100%",
+        layout_columns(
+          col_widths = c(3, 9), # First column narrower
+          row_heights = NULL, # Let height flow naturally
+
+          ### First column: full-height card
+          div(
+            style = "height: 100vh;", # Full viewport height
+            card(
+              card_header("Files Created"),
+              verbatimTextOutput("files_created")
+            )
+          ),
+
+          ### Second column: table card
+          card(
+            card_header("Results: Table"),
+            DTOutput("clusters")
+          )
+        )
+      )
     )
   )
 )

@@ -465,8 +465,7 @@ server <- function(input, output, session) {
         #### Ensure that all parameters for single-area analysis are given ----
         req(
           input$filename, input$directory, input$sslocation,
-          input$ssbatchfilename, input$satscan_version, input$scan_for,
-          input$gam_based
+          input$ssbatchfilename, input$satscan_version, input$scan_for
         )
 
         #### Make user-defined parameters R objects ----
@@ -500,14 +499,14 @@ server <- function(input, output, session) {
         })
 
         #### Display a summary table of detected cluster ----
-        output$cluster_df <- renderDT({
+        output$clusters <- renderDT({
           datatable(result$.df, options = list(pageLength = 20, scrollX = TRUE))
         })
       } else {
         #### Ensure that all parameters for single-area analysis are given ----
         req(
           input$directory, input$sslocation, input$ssbatchfilename,
-          input$satscan_version, input$scan_for, input$gam_based
+          input$satscan_version, input$scan_for
         )
 
         #### Make user-defined parameters R objects ----
@@ -539,7 +538,7 @@ server <- function(input, output, session) {
           paste(files, collapse = "\n")
         })
         #### Display a summary table of detected cluster ----
-        output$cluster_df <- renderDT({
+        output$clusters <- renderDT({
           datatable(result$.df, options = list(pageLength = 20, scrollX = TRUE))
         })
       }
