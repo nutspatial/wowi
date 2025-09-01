@@ -25,7 +25,8 @@ Imports:
     mwana,
     withr,
     stringr (>= 1.5.1),
-    tibble
+    tibble,
+    shiny
 Suggests: 
     covr (>= 3.6.4),
     knitr,
