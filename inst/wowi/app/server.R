@@ -110,18 +110,50 @@ server <- function(input, output, session) {
 
     switch(input$wrangle,
       "WHZ" = tagList(
-        selectInput(inputId = "sex_var", label = "Sex", choices = cols),
-        selectInput(inputId = "weight_var", label = "Weight (kg)", choices = cols),
-        selectInput(inputId = "height_var", label = "Height (cm)", choices = cols)
+        selectInput(
+          inputId = "sex_var",
+          label = "Sex",
+          choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "weight_var",
+          label = "Weight (kg)",
+          choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "height_var",
+          label = "Height (cm)",
+          choices = c("", cols)
+        )
       ),
       "MFAZ" = tagList(
-        selectInput(inputId = "age_var", label = "Age (months)", choices = cols),
-        selectInput(inputId = "sex_var", label = "Sex", choices = cols),
-        selectInput(inputId = "muac_var_mfaz", label = "MUAC (cm)", choices = cols)
+        selectInput(
+          inputId = "age_var",
+          label = "Age (months)",
+          choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "sex_var",
+          label = "Sex",
+          choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "muac_var_mfaz",
+          label = "MUAC (cm)",
+          choices = c("", cols)
+        )
       ),
       "MUAC" = tagList(
-        selectInput(inputId = "sex_var", label = "Sex", choices = cols),
-        selectInput(inputId = "muac_var", label = "MUAC (cm)", choices = cols)
+        selectInput(
+          inputId = "sex_var",
+          label = "Sex",
+          choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "muac_var",
+          label = "MUAC (cm)",
+          choices = c("", cols)
+        )
       )
     )
   })
@@ -221,7 +253,7 @@ server <- function(input, output, session) {
   ## ---- Logic for Tab 3: Run Spatial Scan ------------------------------------
 
   output$hyperparameters <- renderUI({
-    req(values$data)
+    req(values$wrangled)
 
     ### Collect user-defined parameters based on scope of analysis ----
     switch(input$analysis_scope,
@@ -296,7 +328,14 @@ server <- function(input, output, session) {
           selected = "wfhz"
         )
       ),
+
+      ### Multiple-area analysis ----
       "multiple-area" = tagList(
+        selectInput(
+          inputId = "area",
+          label = strong("Area"),
+          choices = c("", names(values$wrangled))
+        ),
         textInput(
           inputId = "directory",
           label = strong(
@@ -359,4 +398,94 @@ server <- function(input, output, session) {
       )
     )
   })
+
+  ### Logic for calculations ----
+  observeEvent(
+    eventExpr = input$run_scan,
+    {
+      #### Use wrangled dataset ----
+      req(values$wrangled)
+
+      #### Logic for single-area spatial scan ----
+      if (input$analysis_scope == "single-area") {
+        #### Ensure that all parameters for single-area analysis are given ----
+        req(
+          input$filename, input$directory, input$sslocation,
+          input$ssbatchfilename, input$satscan_version, input$scan_for,
+          input$gam_based
+        )
+
+        #### Make user-defined parameters R objects ----
+        area <- as.character(input$filename)
+        dir <- as.character(input$directory)
+        satscan_location <- as.character(input$sslocation)
+        batchfilename <- as.character(input$ssbatchfilename)
+        version <- as.character(input$satscan_version)
+        scan_for <- as.character(input$scan_for)
+        gam_based <- as.character(input$gam_based)
+
+        #### Run scan ----
+        result <- ww_run_satscan(
+          .data = values$wrangled,
+          filename = area,
+          dir = dir,
+          sslocation = satscan_location,
+          ssbatchfilename = batchfilename,
+          satscan_version = version,
+          .by_area = FALSE,
+          .scan_for = scan_for,
+          area = NULL
+        )
+
+        output$files_created <- renderText({
+          files <- list.files(path = dir, all.files = TRUE, full.names = TRUE)
+          paste(files, collapse = "\n")
+        })
+
+        #### Display a summary table of detected cluster ----
+        output$cluster_df <- renderDataTable(
+          result$.df,
+          options = list(pageLength = 30)
+        )
+      } else {
+        #### Ensure that all parameters for single-area analysis are given ----
+        req(
+          input$directory, input$sslocation, input$ssbatchfilename,
+          input$satscan_version, input$scan_for, input$gam_based
+        )
+
+        #### Make user-defined parameters R objects ----
+        dir <- as.character(input$directory)
+        satscan_location <- as.character(input$sslocation)
+        batchfilename <- as.character(input$ssbatchfilename)
+        version <- as.character(input$satscan_version)
+        scan_for <- as.character(input$scan_for)
+        gam_based <- as.character(input$gam_based)
+
+        #### Run scan ----
+        result <- ww_run_satscan(
+          .data = values$wrangled,
+          filename = NULL,
+          dir = dir,
+          sslocation = satscan_location,
+          ssbatchfilename = batchfilename,
+          satscan_version = version,
+          .by_area = TRUE,
+          .scan_for = scan_for,
+          area = values$wrangled[[input$area]]
+        )
+
+        output$files_created <- renderText({
+          files <- list.files(path = dir, all.files = TRUE, full.names = TRUE)
+          paste(files, collapse = "\n")
+
+          #### Display a summary table of detected cluster ----
+          output$cluster_df <- renderDataTable(
+            result$.df,
+            options = list(pageLength = 30)
+          )
+        })
+      }
+    }
+  )
 }
