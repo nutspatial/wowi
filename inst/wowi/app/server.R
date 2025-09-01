@@ -124,6 +124,11 @@ server <- function(input, output, session) {
           inputId = "height_var",
           label = "Height (cm)",
           choices = c("", cols)
+        ), 
+        selectInput(
+          inputId = "oedema",
+          label = "Oedema",
+          choices = c("", cols)
         )
       ),
       "MFAZ" = tagList(
@@ -141,6 +146,11 @@ server <- function(input, output, session) {
           inputId = "muac_var_mfaz",
           label = "MUAC (cm)",
           choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "oedema",
+          label = "Oedema",
+          choices = c("", cols)
         )
       ),
       "MUAC" = tagList(
@@ -153,6 +163,21 @@ server <- function(input, output, session) {
           inputId = "muac_var",
           label = "MUAC (cm)",
           choices = c("", cols)
+        ),
+        selectInput(
+          inputId = "oedema",
+          label = "Oedema",
+          choices = c("", cols)
+        ),
+        radioButtons(
+          inputId = "gam_based",
+          label = strong("Which method should be used for acute malnutrition case-definition?"),
+          choices = list(
+            "Weight-for-Height z-score" = "wfhz",
+            "Mid-upper Arm Circumference" = "MUAC",
+            "Combined Case Definition" = "combined"
+          ),
+          selected = "wfhz"
         )
       )
     )
@@ -161,40 +186,51 @@ server <- function(input, output, session) {
   observeEvent(input$apply_wrangle, {
     req(values$data)
     data <- values$data
-    valid <- TRUE
-    msg <- ""
+    # valid <- TRUE
 
-    if (input$wrangle == "WHZ") {
-      if (input$sex_var == "" || input$weight_var == "" || input$height_var == "") {
-        valid <- FALSE
-        msg <- "Please select all required variables (Sex, Weight, Height) for WHZ method."
-      }
-    } else if (input$wrangle == "MFAZ") {
-      if (input$sex_var == "" || input$muac_var_mfaz == "" || input$age_var == "") {
-        valid <- FALSE
-        msg <- "Please select all required variables (Sex, MUAC, Age) for MFAZ method."
-      }
-    } else if (input$wrangle == "MUAC") {
-      if (input$sex_var == "" || input$muac_var == "") {
-        valid <- FALSE
-        msg <- "Please select all required variables (Sex, MUAC) for MUAC method."
-      }
-    }
+    # msg <- ""
 
-    if (!valid) {
-      showNotification(msg, type = "error")
-      return()
-    }
+    # if (input$wrangle == "WHZ") {
+    #   if (input$sex_var == "" || input$weight_var == "" || input$height_var == "") {
+    #     valid <- FALSE
+    #     msg <- "Please select all required variables (Sex, Weight, Height) for WHZ method."
+    #   }
+    # } else if (input$wrangle == "MFAZ") {
+    #   if (input$sex_var == "" || input$muac_var_mfaz == "" || input$age_var == "") {
+    #     valid <- FALSE
+    #     msg <- "Please select all required variables (Sex, MUAC, Age) for MFAZ method."
+    #   }
+    # } else if (input$wrangle == "MUAC") {
+    #   if (input$sex_var == "" || input$muac_var == "") {
+    #     valid <- FALSE
+    #     msg <- "Please select all required variables (Sex, MUAC) for MUAC method."
+    #   }
+    # }
+
+    # if (!valid) {
+    #   showNotification(msg, type = "error")
+    #   return()
+    # }
 
     tryCatch(
       {
+        oedema <- data[[input$oedema]]
         result <- switch(input$wrangle,
-          "WHZ" = mw_wrangle_wfhz(
+          "WHZ" = {
+            req(input$sex_var, input$weight_var, input$height_var)
+
+mw_wrangle_wfhz(
             df = data,
             sex = data[[input$sex_var]],
             weight = data[[input$weight_var]],
             height = data[[input$height_var]]
-          ),
+          ) |> 
+            mwana::define_wasting(
+        zscores = wfhz,
+        .by = "zscores",
+        edema = oedema
+      )
+          },
           "MFAZ" = {
             req(input$age_var, input$muac_var_mfaz, input$sex_var)
 
@@ -223,7 +259,9 @@ server <- function(input, output, session) {
               .recode_sex = FALSE,
               .recode_muac = FALSE,
               .to = "none"
-            )
+            ) |> 
+              #dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
+      mwana::define_wasting(muac = muac, .by = "muac", edema = oedema)
           },
           "MUAC" = mw_wrangle_muac(
             df = data,
@@ -424,9 +462,11 @@ server <- function(input, output, session) {
         scan_for <- as.character(input$scan_for)
         gam_based <- as.character(input$gam_based)
 
+        data <- values$wrangled |> 
+          dplyr::rename(longitude = x, latitude = y)
         #### Run scan ----
         result <- ww_run_satscan(
-          .data = values$wrangled,
+          .data = data,
           filename = area,
           dir = dir,
           sslocation = satscan_location,
@@ -438,7 +478,7 @@ server <- function(input, output, session) {
         )
 
         output$files_created <- renderText({
-          files <- list.files(path = dir, all.files = TRUE, full.names = TRUE)
+          files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
           paste(files, collapse = "\n")
         })
 
@@ -463,8 +503,10 @@ server <- function(input, output, session) {
         gam_based <- as.character(input$gam_based)
 
         #### Run scan ----
+        data <- values$wrangled |> 
+          dplyr::rename(longitude = x, latitude = y)
         result <- ww_run_satscan(
-          .data = values$wrangled,
+          .data = data,
           filename = NULL,
           dir = dir,
           sslocation = satscan_location,
@@ -472,19 +514,19 @@ server <- function(input, output, session) {
           satscan_version = version,
           .by_area = TRUE,
           .scan_for = scan_for,
-          area = values$wrangled[[input$area]]
+          area = data[[input$area]]
         )
 
         output$files_created <- renderText({
-          files <- list.files(path = dir, all.files = TRUE, full.names = TRUE)
+          files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
           paste(files, collapse = "\n")
-
+          
+        })
           #### Display a summary table of detected cluster ----
           output$cluster_df <- renderDataTable(
             result$.df,
             options = list(pageLength = 30)
-          )
-        })
+        )
       }
     }
   )
