@@ -13,6 +13,7 @@ server <- function(input, output, session) {
     scan_result = NULL
   )
 
+  ### Show input data upload progress bar ----
   output$showProgress <- reactive({
     values$processing
   })
@@ -36,6 +37,7 @@ server <- function(input, output, session) {
     }
   })
 
+  ### Dynamic content for use/display over input data uploading process ----
   observe({
     req(input$upload)
     values$processing <- TRUE
@@ -74,6 +76,7 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Display details about input data ----
   output$fileInfo <- renderText({
     req(input$upload, values$data)
     paste0(
@@ -84,6 +87,7 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Display and prettify input data ----
   output$uploadedDataTable <- renderDataTable({
     req(values$data)
     df_preview <- head(values$data, 30)
@@ -107,11 +111,14 @@ server <- function(input, output, session) {
 
   ## ---- Logic for Data Wrangling Tab -----------------------------------------
 
+  ### List of variables to be displayed to user based on wrangling method ----
   output$variableSelectors <- renderUI({
     req(values$data)
     cols <- names(values$data)
 
     switch(input$wrangle,
+
+      #### Weight-for-heigh ----
       "wfhz" = tagList(
         selectInput(
           inputId = "sex_var",
@@ -134,6 +141,8 @@ server <- function(input, output, session) {
           choices = c("", cols)
         )
       ),
+
+      #### Mid-Upper Arm Circumference (wrangling based on MUAC-for-age ) ----
       "muac" = tagList(
         selectInput(
           inputId = "age_var",
@@ -156,6 +165,8 @@ server <- function(input, output, session) {
           choices = c("", cols)
         )
       ),
+
+      #### Both weight-for-height and MUAC ----
       "combined" = tagList(
         selectInput(
           inputId = "sex_var",
@@ -192,10 +203,13 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$apply_wrangle, {
+
+    #### Ensure input data from Tab 1 exists before rendering ----
     req(values$data)
     data <- values$data
     valid <- TRUE
 
+    #### Manage errors gracefully ----
     msg <- ""
 
     if (input$wrangle == "wfhz") {
@@ -225,6 +239,7 @@ server <- function(input, output, session) {
       return()
     }
 
+    #### Apply data wrangling and manage errors gracefully ----
     tryCatch(
       {
         result <- switch(input$wrangle,
@@ -320,6 +335,7 @@ server <- function(input, output, session) {
     )
   })
 
+  #### Display wrangled data ----
   output$wrangled_data <- renderDT({
     req(values$wrangled)
     datatable(
@@ -347,6 +363,7 @@ server <- function(input, output, session) {
   ## ---- Logic for Tab 3: Run Spatial Scan ------------------------------------
 
   output$hyperparameters <- renderUI({
+    ### Ensure data exists before rendering ----
     req(values$wrangled)
 
     ### Collect user-defined parameters based on scope of analysis ----
@@ -477,7 +494,7 @@ server <- function(input, output, session) {
   observeEvent(
     eventExpr = input$run_scan,
     {
-      #### Use wrangled dataset ----
+      #### Ensure data exists before rendering ----
       req(values$wrangled)
 
       #### Logic for single-area spatial scan ----
@@ -488,7 +505,7 @@ server <- function(input, output, session) {
           input$ssbatchfilename, input$satscan_version, input$scan_for
         )
 
-        #### Make user-defined parameters R objects ----
+        #### Make user-defined parameters wowi-usable inputs ----
         area <- as.character(input$filename)
         dir <- as.character(input$directory)
         satscan_location <- as.character(input$sslocation)
@@ -499,6 +516,7 @@ server <- function(input, output, session) {
 
         data <- values$wrangled |>
           dplyr::rename(longitude = x, latitude = y)
+
         #### Run scan ----
         result <- ww_run_satscan(
           .data = data,
@@ -515,6 +533,7 @@ server <- function(input, output, session) {
 
         values$scan_result <- result
 
+        #### Display the list of files in the given directory ----
         output$files_created <- renderText({
           files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
           paste(files, collapse = "\n")
@@ -526,7 +545,7 @@ server <- function(input, output, session) {
           input$satscan_version, input$scan_for
         )
 
-        #### Make user-defined parameters R objects ----
+        #### Make user-defined parameters wowi-usable inputs ----
         dir <- as.character(input$directory)
         satscan_location <- as.character(input$sslocation)
         batchfilename <- as.character(input$ssbatchfilename)
@@ -560,9 +579,12 @@ server <- function(input, output, session) {
     }
   )
 
-  #### Display a summary table of detected cluster ----
+  #### Display a summary table of detected cluster and prettified ----
   output$clusters <- renderDT({
+    # Ensure data exists before rendering ----
     req(values$scan_result)
+
+    ##### Display the first 8 rows only ----
     datatable(
       data = head(values$scan_result$.df, 5),
       rownames = FALSE,
@@ -584,16 +606,22 @@ server <- function(input, output, session) {
     ) |> formatStyle(columns = colnames(values$scan_result$.df), fontSize = "12px")
   })
 
-
+  #### Download button to download table of detected clusters in .xlsx ----
+  ##### Output into the UI ----
   output$download <- renderUI({
     req(values$scan_result)
-    downloadButton(
-      outputId = "downloadResults",
-      label = "Download Clusters",
-      class = "btn-primary",
-      icon = icon(name = "download", class = "fa-lg")
+    div(
+      style = "margin-bottom: 15px; text-align: right;",
+      downloadButton(
+        outputId = "downloadResults",
+        label = "Download Clusters",
+        class = "btn-primary",
+        icon = icon(name = "download", class = "fa-lg")
+      )
     )
   })
+
+  ##### Downloadable results by clicking on the download button ----
   output$downloadResults <- downloadHandler(
     filename = function() {
       paste0("detected-clusters_", Sys.Date(), ".xlsx", sep = "")
