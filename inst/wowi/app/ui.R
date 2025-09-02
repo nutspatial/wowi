@@ -5,7 +5,6 @@
 ## ---- Load required libraries ------------------------------------------------
 
 library(shiny)
-library(shinythemes)
 library(bslib)
 library(mwana)
 library(rsatscan)
@@ -25,10 +24,15 @@ ui <- page_navbar(
     )
   ),
 
-  ### Tab 1: Data Uploading ----
+  ### Tab 1: wowi Home ----
   nav_panel(
-    title = "Data Uploading",
-    icon = icon(name = "home"),
+    title = strong("Home"), 
+    icon = icon(name = "home")
+  ),
+
+  ### Tab 2: Data Uploading ----
+  nav_panel(
+    title = strong("Data Uploading"),
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
@@ -73,9 +77,9 @@ ui <- page_navbar(
     )
   ),
 
-  ### Tab 2: Data Wrangling ----
+  ### Tab 3: Data Wrangling ----
   nav_panel(
-    title = "Data Wrangling",
+    title = strong("Data Wrangling"),
     layout_sidebar(
       sidebar = sidebar(
         width = 500,
@@ -106,9 +110,10 @@ ui <- page_navbar(
       )
     )
   ),
-  ### Tab 3: Run Spatial Scan ----
+
+  ### Tab 4: Run Spatial Scan ----
   nav_panel(
-    title = "Run Spatial Scan",
+    title = strong("Run Spatial Scan"),
     layout_sidebar(
       sidebar = sidebar(
         width = 400,
