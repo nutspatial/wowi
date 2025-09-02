@@ -9,7 +9,8 @@ server <- function(input, output, session) {
     data = NULL,
     processing = FALSE,
     file_uploaded = FALSE,
-    wrangled = NULL
+    wrangled = NULL,
+    scan_result = NULL
   )
 
   output$showProgress <- reactive({
@@ -89,7 +90,7 @@ server <- function(input, output, session) {
     datatable(df_preview,
       rownames = FALSE,
       options = list(
-        pageLength = 30, scrollX = TRUE, scrollY = "800px",
+        pageLength = 30, scrollX = FALSE, scrollY = "800px",
         columnDefs = list(list(className = "dt-center", targets = "_all"))
       ),
       caption = if (nrow(values$data) > 30) {
@@ -209,10 +210,12 @@ server <- function(input, output, session) {
       }
     } else if (input$wrangle == "combined") {
       if (
-        any(c(input$age_var, input$sex_var, input$muac_var, input$weight_var, 
-          input$height_var) == "")) {
+        any(c(
+          input$age_var, input$sex_var, input$muac_var, input$weight_var,
+          input$height_var
+        ) == "")) {
         valid <- FALSE
-        msg <- 
+        msg <-
           "😬 Please select all required variables (Age, Sex, Weight, Height, MUAC)."
       }
     }
@@ -319,9 +322,26 @@ server <- function(input, output, session) {
 
   output$wrangled_data <- renderDT({
     req(values$wrangled)
-    datatable(values$wrangled, options = list(
-      pageLength = 30, scrollX = TRUE
-    ))
+    datatable(
+      data = head(values$wrangled, 30),
+      rownames = FALSE,
+      options = list(
+        pageLength = 30,
+        scrollX = FALSE,
+        scrolly = "800px",
+        columnDefs = list(list(className = "dt-center", targets = "_all"))
+      ),
+      caption = if (nrow(values$wrangled) > 30) {
+        paste(
+          "Showing first 30 rows of", format(nrow(values$wrangled), big.mark = ","),
+          "total rows"
+        )
+      } else {
+        paste("showing all", nrow(values$wrangled), "rows")
+      },
+      style = "default",
+      filter = "top"
+    ) |> formatStyle(columns = colnames(values$wrangled), fontSize = "12px")
   })
 
   ## ---- Logic for Tab 3: Run Spatial Scan ------------------------------------
@@ -493,14 +513,11 @@ server <- function(input, output, session) {
           area = NULL
         )
 
+        values$scan_result <- result
+
         output$files_created <- renderText({
           files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
           paste(files, collapse = "\n")
-        })
-
-        #### Display a summary table of detected cluster ----
-        output$clusters <- renderDT({
-          datatable(result$.df, options = list(pageLength = 20, scrollX = TRUE))
         })
       } else {
         #### Ensure that all parameters for single-area analysis are given ----
@@ -533,15 +550,65 @@ server <- function(input, output, session) {
           area = data[[input$area]]
         )
 
+        values$scan_result <- result
+
         output$files_created <- renderText({
           files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
           paste(files, collapse = "\n")
         })
-        #### Display a summary table of detected cluster ----
-        output$clusters <- renderDT({
-          datatable(result$.df, options = list(pageLength = 20, scrollX = TRUE))
-        })
       }
+    }
+  )
+
+  #### Display a summary table of detected cluster ----
+  output$clusters <- renderDT({
+    req(values$scan_result)
+    datatable(
+      data = head(values$scan_result$.df, 5),
+      rownames = FALSE,
+      options = list(
+        scrollX = FALSE,
+        scrolly = "800px",
+        columnDefs = list(list(className = "dt-center", targets = "_all"))
+      ),
+      caption = if (nrow(values$scan_result$.df) > 5) {
+        paste(
+          "Showing first 5 rows of", format(nrow(values$scan_result$.df), big.mark = ","),
+          "total rows"
+        )
+      } else {
+        paste("showing all", nrow(values$scan_result$.df), "rows")
+      },
+      style = "default",
+      filter = "top"
+    ) |> formatStyle(columns = colnames(values$scan_result$.df), fontSize = "12px")
+  })
+
+
+  output$download <- renderUI({
+    req(values$scan_result)
+    downloadButton(
+      outputId = "downloadResults",
+      label = "Download Clusters",
+      class = "btn-primary",
+      icon = icon(name = "download", class = "fa-lg")
+    )
+  })
+  output$downloadResults <- downloadHandler(
+    filename = function() {
+      paste0("detected-clusters_", Sys.Date(), ".xlsx", sep = "")
+    },
+    content = function(file) {
+      req(values$scan_result) # Ensure results exist
+      tryCatch(
+        {
+          openxlsx::write.xlsx(values$scan_result$.df, file)
+          showNotification("File downloaded successfully! 🎉 ", type = "message")
+        },
+        error = function(e) {
+          showNotification(paste("Error creating file:", e$message), type = "error")
+        }
+      )
     }
   )
 }

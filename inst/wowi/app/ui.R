@@ -11,6 +11,7 @@ library(rsatscan)
 library(wowi)
 library(shinyFeedback)
 library(DT)
+library(openxlsx)
 
 ## ---- User's navigation bars -------------------------------------------------
 
@@ -155,7 +156,8 @@ ui <- page_navbar(
           ### Second column: table card
           card(
             card_header("Results: Table"),
-            DTOutput("clusters")
+            DTOutput("clusters"), 
+            uiOutput(outputId = "download")
           )
         )
       )
