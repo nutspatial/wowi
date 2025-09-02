@@ -25,13 +25,14 @@ ui <- page_navbar(
     )
   ),
 
-  ### Tab 1: wowi Home ----
+  ## ---- Tab 1: wowi Home -----------------------------------------------------
+
   nav_panel(
     title = strong("Home"), 
     icon = icon(name = "home")
   ),
 
-  ### Tab 2: Data Uploading ----
+  ## ---- Tab 2: Data Uploading ------------------------------------------------
   nav_panel(
     title = strong("Data Uploading"),
     layout_sidebar(
@@ -78,7 +79,8 @@ ui <- page_navbar(
     )
   ),
 
-  ### Tab 3: Data Wrangling ----
+  ## ---- Tab 3: Data Wrangling -----------------------------------------------
+
   nav_panel(
     title = strong("Data Wrangling"),
     layout_sidebar(
@@ -112,7 +114,7 @@ ui <- page_navbar(
     )
   ),
 
-  ### Tab 4: Run Spatial Scan ----
+  ## ---- Tab 4: Run Spatial Scan ----------------------------------------------
   nav_panel(
     title = strong("Run Spatial Scan"),
     layout_sidebar(
@@ -153,7 +155,7 @@ ui <- page_navbar(
             )
           ),
 
-          ### Second column: table card
+          ### Second column: table card ----
           card(
             card_header("Results: Table"),
             DTOutput("clusters"), 
