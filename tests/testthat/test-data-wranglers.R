@@ -28,7 +28,12 @@ testthat::test_that(
       )
 
     ## Observed results ----
-    r <- do.call(what = wrangle_data, args = list(.data = x, .gam_based = "wfhz"))
+    r <- wrangle_data(
+      .data = x,
+      latitude = latitude,
+      longitude = longitude,
+      .gam_based = "wfhz"
+    )
 
     ## Test checks ----
     testthat::expect_type(object = r, type = "list")
@@ -68,9 +73,11 @@ testthat::test_that(
 
 
     ## Observed results ----
-    r <- do.call(
-      what = wrangle_data,
-      args = list(.data = x, .gam_based = "muac")
+    r <- wrangle_data(
+      .data = x, 
+      latitude = latitude,
+      longitude = longitude,
+      .gam_based = "muac"
     )
 
     ## Test checks ----
@@ -121,9 +128,11 @@ testthat::test_that(
       )
 
     ### Observed results ----
-    r <- do.call(
-      what = wrangle_data,
-      args = list(.data = x, .gam_based = "combined")
+    r <- wrangle_data(
+      .data = x, 
+      latitude = latitude,
+      longitude = longitude,
+      .gam_based = "combined"
     )
 
     ### Test checks ----
@@ -171,30 +180,28 @@ testthat::test_that(
     out_dir <- file.path(tmp, "input-files") # this will be the dir
 
     ### Observed results ----
-    do.call(
-      what = ww_wrangle_data,
-      args = list(
+   ww_wrangle_data(
         .data = x,
         filename = "localityA",
         dir = out_dir,
-        .gam_based = "wfhz"
+        .gam_based = "wfhz",
+            latitude = latitude, 
+    longitude = longitude
       )
-    )
 
     ## The tests ----
     testthat::expect_true(file.exists(file.path(out_dir, "localityA.cas")))
     testthat::expect_true(file.exists(file.path(out_dir, "localityA.ctl")))
     testthat::expect_true(file.exists(file.path(out_dir, "localityA.geo")))
     testthat::expect_message(
-      object = do.call(
-        what = ww_wrangle_data,
-        args = list(
+ ww_wrangle_data(
           .data = x,
           filename = "localityA",
           dir = out_dir,
+                      latitude = latitude, 
+    longitude = longitude,
           .gam_based = "wfhz"
-        )
-      ), regexp = paste0("`", basename(out_dir), "` already exists in project repo."), fixed = TRUE
+        ), regexp = paste0("`", basename(out_dir), "` already exists in project repo."), fixed = TRUE
     )
   }
 )

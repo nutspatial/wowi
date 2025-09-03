@@ -2,7 +2,12 @@
 #'
 #' @keywords internal
 #'
-wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
+wrangle_data <- function(
+  .data, 
+  .gam_based = c("wfhz", "muac", "combined"),
+  latitude,
+  longitude
+) {
   ## Enforce options in `.gam_based` ----
   .gam_based <- match.arg(.gam_based)
 
@@ -18,7 +23,9 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
   ## Define a variable name for gam by wfhz, muac or combined ----
   gam_sym <- rlang::sym(if (.gam_based != "combined") "gam" else "cgam")
 
-  .data <- subset(.data, !is.na(.data$latitude))
+  ## Filter out all missing values in latitude ----
+  .data <- dplyr::filter(.data, !is.na({{ latitude }} | !is.na({{ longitude }})))
+
   ## Case file ----
   cases <- .data |>
     dplyr::filter(!!flag_expr, !!gam_sym != 0) |>
@@ -34,8 +41,8 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 
   ## Geographical coordinates file ----
   geo <- .data |>
-    dplyr::select(locationid = .data$cluster, .data$latitude, .data$longitude) |>
-    dplyr::relocate(.data$longitude, .after = .data$locationid) |>
+    dplyr::select(locationid = .data$cluster, {{ latitude }}, {{ longitude }}) |>
+    dplyr::relocate({{ longitude }}, .after = .data$locationid) |>
     dplyr::slice_head(by = .data$locationid, n = 1) |>
     dplyr::arrange(.data$locationid)
 
@@ -127,8 +134,11 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #'
 ww_wrangle_data <- function(
     .data,
+      latitude,
+  longitude,
     filename = character(), dir = character(),
     .gam_based = c("wfhz", "muac", "combined")) {
+  
   ## Enforce options in `.gam_based` ----
   .gam_based <- match.arg(.gam_based)
 
@@ -146,7 +156,12 @@ ww_wrangle_data <- function(
   }
 
   ## Wrangle data into cases, controls and geographical files ----
-  input_files <- wrangle_data(.data = .data, .gam_based = .gam_based)
+  input_files <- wrangle_data(
+    .data = .data,
+    latitude = latitude, 
+    longitude = longitude,
+    .gam_based = .gam_based
+  )
 
   ## Write file into `dir` in which SaTScan will access them ----
 
