@@ -250,9 +250,6 @@ server <- function(input, output, session) {
                 sex = !!sym(input$sex),
                 weight = !!sym(input$weight),
                 height = !!sym(input$height)
-              ) |>
-              mutate(
-                oedema = if (input$oedema != "") !!sym(input$oedema) else NULL
               ) |> 
               mw_wrangle_wfhz(
                 sex = sex,
@@ -263,7 +260,7 @@ server <- function(input, output, session) {
               define_wasting(
                 zscores = wfhz,
                 .by = "zscores",
-                edema = oedema
+                edema = if (input$oedema != "") !!sym(input$oedema) else NULL
               )
           },
           "muac" = {
@@ -277,7 +274,6 @@ server <- function(input, output, session) {
                 sex = !!sym(input$sex)
               ) |>
               mutate(
-                oedema = if (input$oedema == "") NULL else !!sym(input$oedema),
                 muac = as.numeric(muac)
               ) |> 
               mw_wrangle_age(age = age) |>
@@ -290,7 +286,11 @@ server <- function(input, output, session) {
                 age = age
               ) |>
               mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
-              define_wasting(muac = muac, .by = "muac", edema = oedema)
+              define_wasting(
+                muac = muac, 
+                .by = "muac", 
+                edema = if (input$oedema != "") !!sym(input$oedema) else NULL
+              )
           },
           "combined" = {
             req(
@@ -307,7 +307,6 @@ server <- function(input, output, session) {
                 muac = !!sym(input$muac)
               ) |>
               mutate(
-                oedema = if (input$oedema != "") !!sym(input$oedema) else NULL,
                 muac = as.numeric(muac)
               ) |> 
               mw_wrangle_wfhz(
@@ -330,7 +329,7 @@ server <- function(input, output, session) {
                 zscores = wfhz,
                 muac = muac,
                 .by = "combined",
-                edema = oedema
+                edema = if (input$oedema != "") !!sym(input$oedema) else NULL
               )
           }
         )
