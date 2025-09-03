@@ -121,17 +121,17 @@ server <- function(input, output, session) {
       #### Weight-for-heigh ----
       "wfhz" = tagList(
         selectInput(
-          inputId = "sex_var",
+          inputId = "sex",
           label = "Sex",
           choices = c("", cols)
         ),
         selectInput(
-          inputId = "weight_var",
+          inputId = "weight",
           label = "Weight (kg)",
           choices = c("", cols)
         ),
         selectInput(
-          inputId = "height_var",
+          inputId = "height",
           label = "Height (cm)",
           choices = c("", cols)
         ),
@@ -145,17 +145,17 @@ server <- function(input, output, session) {
       #### Mid-Upper Arm Circumference (wrangling based on MUAC-for-age ) ----
       "muac" = tagList(
         selectInput(
-          inputId = "age_var",
+          inputId = "age",
           label = "Age (months)",
           choices = c("", cols)
         ),
         selectInput(
-          inputId = "sex_var",
+          inputId = "sex",
           label = "Sex",
           choices = c("", cols)
         ),
         selectInput(
-          inputId = "muac_var",
+          inputId = "muac",
           label = "MUAC (cm)",
           choices = c("", cols)
         ),
@@ -169,27 +169,27 @@ server <- function(input, output, session) {
       #### Both weight-for-height and MUAC ----
       "combined" = tagList(
         selectInput(
-          inputId = "sex_var",
+          inputId = "sex",
           label = "Sex",
           choices = c("", cols)
         ),
         selectInput(
-          inputId = "age_var",
+          inputId = "age",
           label = "Age (months)",
           choices = c("", cols)
         ),
         selectInput(
-          inputId = "weight_var",
+          inputId = "weight",
           label = "Weight (kg)",
           choices = c("", cols)
         ),
         selectInput(
-          inputId = "height_var",
+          inputId = "height",
           label = "Height (cm)",
           choices = c("", cols)
         ),
         selectInput(
-          inputId = "muac_var",
+          inputId = "muac",
           label = "MUAC (cm)",
           choices = c("", cols)
         ),
@@ -203,7 +203,6 @@ server <- function(input, output, session) {
   })
 
   observeEvent(input$apply_wrangle, {
-
     #### Ensure input data from Tab 1 exists before rendering ----
     req(values$data)
     data <- values$data
@@ -213,20 +212,20 @@ server <- function(input, output, session) {
     msg <- ""
 
     if (input$wrangle == "wfhz") {
-      if (input$sex_var == "" || input$weight_var == "" || input$height_var == "") {
+      if (input$sex == "" || input$weight == "" || input$height == "") {
         valid <- FALSE
         msg <- "😬 Please select all required variables (Sex, Weight, Height) and try again."
       }
     } else if (input$wrangle == "muac") {
-      if (input$sex_var == "" || input$muac_var == "" || input$age_var == "") {
+      if (input$sex == "" || input$muac == "" || input$age == "") {
         valid <- FALSE
         msg <- "😬 Please select all required variables (Sex, MUAC, Age) and try again."
       }
     } else if (input$wrangle == "combined") {
       if (
         any(c(
-          input$age_var, input$sex_var, input$muac_var, input$weight_var,
-          input$height_var
+          input$age, input$sex, input$muac, input$weight,
+          input$height
         ) == "")) {
         valid <- FALSE
         msg <-
@@ -244,14 +243,16 @@ server <- function(input, output, session) {
       {
         result <- switch(input$wrangle,
           "wfhz" = {
-            req(input$sex_var, input$weight_var, input$height_var)
-
-            sex <- data[[input$sex_var]]
-            weight <- data[[input$weight_var]]
-            height <- data[[input$height_var]]
-            oedema <- data[[input$oedema]]
+            req(input$sex, input$weight, input$height)
 
             data |>
+              dplyr::select(
+                sex = !!sym(input$sex),
+                weight = !!sym(input$weight),
+                height = !!sym(input$height),
+                oedema = if (input$oedema != "") !!sym(input$oedema) else NULL,
+                everything()
+              ) |>
               mw_wrangle_wfhz(
                 sex = sex,
                 .recode_sex = FALSE,
@@ -265,43 +266,45 @@ server <- function(input, output, session) {
               )
           },
           "muac" = {
-            req(input$age_var, input$muac_var, input$sex_var)
+            req(input$age, input$muac, input$sex)
 
-            age <- data[[input$age_var]]
-
-            muac <- data[[input$muac_var]]
-            sex <- data[[input$sex_var]]
-            oedema <- data[[input$oedema]]
-
-            # Apply age wrangling
+            # Create a working dataset with standardized column names
             data |>
+              dplyr::select(
+                age = !!sym(input$age),
+                muac = !!sym(input$muac),
+                sex = !!sym(input$sex),
+                everything()
+              ) |>
+              dplyr::mutate(muac = as.numeric(muac)) |>
               mw_wrangle_age(age = age) |>
               mw_wrangle_muac(
                 sex = sex,
-                muac = muac,
-                age = age,
                 .recode_sex = FALSE,
+                muac = muac,
                 .recode_muac = FALSE,
-                .to = "none"
+                .to = "none",
+                age = age
               ) |>
               dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
-              mwana::define_wasting(muac = muac, .by = "muac", edema = oedema)
+              define_wasting(muac = muac, .by = "muac", edema = oedema)
           },
           "combined" = {
             req(
-              input$sex_var, input$weight_var, input$height_var,
-              input$age_var, input$muac_var
+              input$sex, input$weight, input$height,
+              input$age, input$muac
             )
 
-            age <- data[[input$age_var]]
-
-            muac <- data[[input$muac_var]]
-            sex <- data[[input$sex_var]]
-            weight <- data[[input$weight_var]]
-            height <- data[[input$height_var]]
-            oedema <- data[[input$oedema]]
-
             data |>
+              dplyr::select(
+                sex = !!sym(input$sex),
+                weight = !!sym(input$weight),
+                height = !!sym(input$height),
+                age = !!sym(input$age),
+                muac = !!sym(input$muac),
+                oedema = if (input$oedema != "") !!sym(input$oedema) else NULL,
+                everything()
+              ) |>
               mwana::mw_wrangle_wfhz(
                 sex = sex,
                 .recode_sex = FALSE,

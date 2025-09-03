@@ -9,9 +9,10 @@ library(bslib)
 library(mwana)
 library(rsatscan)
 library(wowi)
-library(shinyFeedback)
+library(dplyr)
 library(DT)
 library(openxlsx)
+library(rlang)
 
 ## ---- User's navigation bars -------------------------------------------------
 
