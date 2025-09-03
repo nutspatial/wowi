@@ -274,6 +274,7 @@ server <- function(input, output, session) {
                 age = !!sym(input$age),
                 muac = !!sym(input$muac),
                 sex = !!sym(input$sex),
+                oedema = if (input$oedema == "") NULL else !!sym(input$oedema),
                 everything()
               ) |>
               dplyr::mutate(muac = as.numeric(muac)) |>
