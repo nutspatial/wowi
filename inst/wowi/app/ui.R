@@ -151,14 +151,14 @@ ui <- page_navbar(
           div(
             style = "height: 100vh;", # Full viewport height
             card(
-              card_header("Files Created"),
+              card_header("Created Files"),
               verbatimTextOutput("files_created")
             )
           ),
 
           ### Second column: table card ----
           card(
-            card_header("Results: Table"),
+            card_header("Summary Results of Detected Clusters"),
             DTOutput("clusters"), 
             uiOutput(outputId = "download")
           )

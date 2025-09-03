@@ -246,20 +246,21 @@ server <- function(input, output, session) {
             req(input$sex, input$weight, input$height)
 
             data |>
-              dplyr::select(
+              rename(
                 sex = !!sym(input$sex),
                 weight = !!sym(input$weight),
-                height = !!sym(input$height),
-                oedema = if (input$oedema != "") !!sym(input$oedema) else NULL,
-                everything()
+                height = !!sym(input$height)
               ) |>
+              mutate(
+                oedema = if (input$oedema != "") !!sym(input$oedema) else NULL
+              ) |> 
               mw_wrangle_wfhz(
                 sex = sex,
                 .recode_sex = FALSE,
                 weight = weight,
                 height = height
               ) |>
-              mwana::define_wasting(
+              define_wasting(
                 zscores = wfhz,
                 .by = "zscores",
                 edema = oedema
@@ -270,14 +271,15 @@ server <- function(input, output, session) {
 
             # Create a working dataset with standardized column names
             data |>
-              dplyr::select(
+              rename(
                 age = !!sym(input$age),
                 muac = !!sym(input$muac),
-                sex = !!sym(input$sex),
-                oedema = if (input$oedema == "") NULL else !!sym(input$oedema),
-                everything()
+                sex = !!sym(input$sex)
               ) |>
-              dplyr::mutate(muac = as.numeric(muac)) |>
+              mutate(
+                oedema = if (input$oedema == "") NULL else !!sym(input$oedema),
+                muac = as.numeric(muac)
+              ) |> 
               mw_wrangle_age(age = age) |>
               mw_wrangle_muac(
                 sex = sex,
@@ -287,7 +289,7 @@ server <- function(input, output, session) {
                 .to = "none",
                 age = age
               ) |>
-              dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
+              mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
               define_wasting(muac = muac, .by = "muac", edema = oedema)
           },
           "combined" = {
@@ -297,23 +299,25 @@ server <- function(input, output, session) {
             )
 
             data |>
-              dplyr::select(
+              rename(
                 sex = !!sym(input$sex),
                 weight = !!sym(input$weight),
                 height = !!sym(input$height),
                 age = !!sym(input$age),
-                muac = !!sym(input$muac),
-                oedema = if (input$oedema != "") !!sym(input$oedema) else NULL,
-                everything()
+                muac = !!sym(input$muac)
               ) |>
-              mwana::mw_wrangle_wfhz(
+              mutate(
+                oedema = if (input$oedema != "") !!sym(input$oedema) else NULL,
+                muac = as.numeric(muac)
+              ) |> 
+              mw_wrangle_wfhz(
                 sex = sex,
                 .recode_sex = FALSE,
                 weight = weight,
                 height = height
               ) |>
-              mwana::mw_wrangle_age(age = age) |>
-              mwana::mw_wrangle_muac(
+              mw_wrangle_age(age = age) |>
+              mw_wrangle_muac(
                 sex = sex,
                 .recode_sex = FALSE,
                 muac = muac,
@@ -321,8 +325,8 @@ server <- function(input, output, session) {
                 .to = "none",
                 age = age
               ) |>
-              dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
-              mwana::define_wasting(
+              mutate(muac = recode_muac(muac, .to = "mm")) |>
+              define_wasting(
                 zscores = wfhz,
                 muac = muac,
                 .by = "combined",
@@ -386,9 +390,19 @@ server <- function(input, output, session) {
         textInput(
           inputId = "directory",
           label = strong(
-            "Directory where the parameters files should be saved in"
+            "Directory where files should be saved in"
           ),
           value = ""
+        ),
+        selectInput(
+          inputId = "latitude",
+          label = strong("Latitude"),
+          choices = c("", names(values$wrangled))
+        ),
+        selectInput(
+          inputId = "longitude",
+          label = strong("Longitude"),
+          choices = c("", names(values$wrangled))
         ),
         textInput(
           inputId = "sslocation",
@@ -438,7 +452,13 @@ server <- function(input, output, session) {
       "multiple-area" = tagList(
         selectInput(
           inputId = "area",
-          label = strong("Area"),
+          label = tagList(
+            strong("Area of Analysis"),
+            tags$div(
+              style = "font-size: 0.85em; color: #6c757d;",
+              "Name of a district, county, etc, as in your dataset"
+            )
+          ),
           choices = c("", names(values$wrangled))
         ),
         textInput(
@@ -447,6 +467,16 @@ server <- function(input, output, session) {
             "Directory where the parameters files should be saved in"
           ),
           value = ""
+        ),
+        selectInput(
+          inputId = "latitude",
+          label = strong("Latitude"),
+          choices = c("", names(values$wrangled))
+        ),
+        selectInput(
+          inputId = "longitude",
+          label = strong("Longitude"),
+          choices = c("", names(values$wrangled))
         ),
         textInput(
           inputId = "sslocation",
@@ -518,12 +548,12 @@ server <- function(input, output, session) {
         scan_for <- as.character(input$scan_for)
         gam_based <- as.character(input$wrangle)
 
-        data <- values$wrangled |>
-          dplyr::rename(longitude = x, latitude = y)
-
-        #### Run scan ----
-        result <- ww_run_satscan(
-          .data = data,
+        result <- values$wrangled |>
+          rename(
+            longitude = !!sym(input$longitude), 
+            latitude = !!sym(input$latidude)
+          ) |>
+          ww_run_satscan(
           filename = area,
           dir = dir,
           sslocation = satscan_location,
@@ -532,6 +562,8 @@ server <- function(input, output, session) {
           .by_area = FALSE,
           .scan_for = scan_for,
           .gam_based = gam_based,
+          latitude = latitude,
+          longitude = longitude,
           area = NULL
         )
 
@@ -558,19 +590,24 @@ server <- function(input, output, session) {
         gam_based <- as.character(input$wrangle)
 
         #### Run scan ----
-        data <- values$wrangled |>
-          dplyr::rename(longitude = x, latitude = y)
-        result <- ww_run_satscan(
-          .data = data,
+        result <- values$wrangled |> 
+          rename(
+            latitude = !!sym(input$latitude),
+            longitude = !!sym(input$longitude),
+            area = !!sym(input$area)
+          ) |> 
+        ww_run_satscan(
           filename = NULL,
           dir = dir,
           sslocation = satscan_location,
           ssbatchfilename = batchfilename,
           satscan_version = version,
           .by_area = TRUE,
+          latitude = latitude,
+          longitude = longitude,
           .scan_for = scan_for,
           .gam_based = gam_based,
-          area = data[[input$area]]
+          area = area
         )
 
         values$scan_result <- result
