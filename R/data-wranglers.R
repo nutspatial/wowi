@@ -3,11 +3,10 @@
 #' @keywords internal
 #'
 wrangle_data <- function(
-  .data, 
-  .gam_based = c("wfhz", "muac", "combined"),
-  latitude,
-  longitude
-) {
+    .data,
+    .gam_based = c("wfhz", "muac", "combined"),
+    latitude,
+    longitude) {
   ## Enforce options in `.gam_based` ----
   .gam_based <- match.arg(.gam_based)
 
@@ -77,6 +76,14 @@ wrangle_data <- function(
 #' are identified, and for which should be excluded from the analysis. Default
 #' is `wfhz`.
 #'
+#' @param latitude Geographical coordinates. An unquoted string for the variable
+#'  containing the Y-axis, also known as latitude (north-south direction). The
+#' variable must be named "latitude".
+#'
+#' @param longitude Geographical coordinates. An unquoted string for the variable
+#' containing the X-axis, also know as longitude (east-west direction). The
+#' variable must be named "latitude".
+#'
 #' @returns
 #' Three files are created and saved in the user-defined directory as defined
 #' by `dir`: a `.cas` file for cases, a `.ctl` for controls, and
@@ -119,7 +126,9 @@ wrangle_data <- function(
 #'   .data = x,
 #'   filename = "Locality",
 #'   dir = directory,
-#'   .gam_based = "wfhz"
+#'   .gam_based = "wfhz",
+#'   latitude = latitude,
+#'   longitude = longitude
 #' )
 #'
 #' ## Show created files ----
@@ -134,11 +143,10 @@ wrangle_data <- function(
 #'
 ww_wrangle_data <- function(
     .data,
-      latitude,
-  longitude,
+    latitude,
+    longitude,
     filename = character(), dir = character(),
     .gam_based = c("wfhz", "muac", "combined")) {
-  
   ## Enforce options in `.gam_based` ----
   .gam_based <- match.arg(.gam_based)
 
@@ -158,7 +166,7 @@ ww_wrangle_data <- function(
   ## Wrangle data into cases, controls and geographical files ----
   input_files <- wrangle_data(
     .data = .data,
-    latitude = latitude, 
+    latitude = latitude,
     longitude = longitude,
     .gam_based = .gam_based
   )

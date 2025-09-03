@@ -66,7 +66,9 @@ ww_wrangle_data(
   .data = x,
   filename = "Locality",
   dir = directory,
-  .gam_based = "wfhz"
+  .gam_based = "wfhz",
+  latitude = latitude,
+  longitude = longitude
 )
 
 library(rsatscan) # important to make `{wowi}` access `{rsatscan}`-specific eviroment

@@ -74,7 +74,7 @@ testthat::test_that(
 
     ## Observed results ----
     r <- wrangle_data(
-      .data = x, 
+      .data = x,
       latitude = latitude,
       longitude = longitude,
       .gam_based = "muac"
@@ -129,7 +129,7 @@ testthat::test_that(
 
     ### Observed results ----
     r <- wrangle_data(
-      .data = x, 
+      .data = x,
       latitude = latitude,
       longitude = longitude,
       .gam_based = "combined"
@@ -180,28 +180,29 @@ testthat::test_that(
     out_dir <- file.path(tmp, "input-files") # this will be the dir
 
     ### Observed results ----
-   ww_wrangle_data(
-        .data = x,
-        filename = "localityA",
-        dir = out_dir,
-        .gam_based = "wfhz",
-            latitude = latitude, 
-    longitude = longitude
-      )
+    ww_wrangle_data(
+      .data = x,
+      filename = "localityA",
+      dir = out_dir,
+      .gam_based = "wfhz",
+      latitude = latitude,
+      longitude = longitude
+    )
 
     ## The tests ----
     testthat::expect_true(file.exists(file.path(out_dir, "localityA.cas")))
     testthat::expect_true(file.exists(file.path(out_dir, "localityA.ctl")))
     testthat::expect_true(file.exists(file.path(out_dir, "localityA.geo")))
     testthat::expect_message(
- ww_wrangle_data(
-          .data = x,
-          filename = "localityA",
-          dir = out_dir,
-                      latitude = latitude, 
-    longitude = longitude,
-          .gam_based = "wfhz"
-        ), regexp = paste0("`", basename(out_dir), "` already exists in project repo."), fixed = TRUE
+      ww_wrangle_data(
+        .data = x,
+        filename = "localityA",
+        dir = out_dir,
+        latitude = latitude,
+        longitude = longitude,
+        .gam_based = "wfhz"
+      ),
+      regexp = paste0("`", basename(out_dir), "` already exists in project repo."), fixed = TRUE
     )
   }
 )

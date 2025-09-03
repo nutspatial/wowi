@@ -145,6 +145,8 @@ results <- ww_run_satscan(
   .scan_for = "high-low-rates",
   .gam_based = "wfhz",
   area = NULL,
+  latitude = latitude,
+  longitude = longitude,
   cleanup = TRUE,
   verbose = FALSE
 )
@@ -162,8 +164,8 @@ results <- ww_run_satscan(
 The code above will generate seven files in the folder you specified using the `dir` argument. These files will share a common base name, as defined by the string provided in the `filename` argument.
 
 ```{r single-area-show-files}
-#> [1] "Kotido.cas"             "Kotido.clustermap.html" "Kotido.col.prj"        
-#> [4] "Kotido.ctl"             "Kotido.geo"             "Kotido.gis.prj"        
+#> [1] "Kotido.cas"             "Kotido.clustermap.html" "Kotido.col.prj"
+#> [4] "Kotido.ctl"             "Kotido.geo"             "Kotido.gis.prj"
 #> [7] "Kotido.gis.shp"         "Kotido.gis.shx"         "Kotido.prm"
 ```
 
@@ -176,53 +178,53 @@ Furthermore, we can view the results in a text-based format. To do this, we acce
 To see the text-based results, we use `results$.txt`. As this file is quite long, for the purposes of this demo we will only display the first 48 rows.
 
 ```{r single-area-show-txt}
-#>  [1] "                                 _____________________________"                                 
-#>  [2] ""                                                                                               
-#>  [3] "                                        SaTScan v10.3.2"                                        
-#>  [4] "                                 _____________________________"                                 
-#>  [5] ""                                                                                               
-#>  [6] "results"                                                                                        
-#>  [7] ""                                                                                               
-#>  [8] "Program run on: Sat Aug  2 16:20:17 2025"                                                       
-#>  [9] ""                                                                                               
-#> [10] "Purely Spatial analysis"                                                                        
-#> [11] "scanning for clusters with high or low rates"                                                   
-#> [12] "using the Bernoulli model."                                                                     
+#>  [1] "                                 _____________________________"
+#>  [2] ""
+#>  [3] "                                        SaTScan v10.3.2"
+#>  [4] "                                 _____________________________"
+#>  [5] ""
+#>  [6] "results"
+#>  [7] ""
+#>  [8] "Program run on: Sat Aug  2 16:20:17 2025"
+#>  [9] ""
+#> [10] "Purely Spatial analysis"
+#> [11] "scanning for clusters with high or low rates"
+#> [12] "using the Bernoulli model."
 #> [13] "_______________________________________________________________________________________________"
-#> [14] ""                                                                                               
-#> [15] "SUMMARY OF DATA"                                                                                
-#> [16] ""                                                                                               
-#> [17] "Study period.......................: 2025/08/02 to 2025/08/02"                                  
-#> [18] "Number of locations................: 36"                                                        
-#> [19] "Total population...................: 333"                                                       
-#> [20] "Total number of cases..............: 26"                                                        
-#> [21] "Percent cases......................: 7.8"                                                       
+#> [14] ""
+#> [15] "SUMMARY OF DATA"
+#> [16] ""
+#> [17] "Study period.......................: 2025/08/02 to 2025/08/02"
+#> [18] "Number of locations................: 36"
+#> [19] "Total population...................: 333"
+#> [20] "Total number of cases..............: 26"
+#> [21] "Percent cases......................: 7.8"
 #> [22] "_______________________________________________________________________________________________"
-#> [23] ""                                                                                               
-#> [24] "CLUSTERS DETECTED"                                                                              
-#> [25] ""                                                                                               
-#> [26] "1.Location IDs included.: 10, 9"                                                                
-#> [27] "  Coordinates / radius..: (34.113909 N, 3.087933 E) / 1.20 km"                                  
-#> [28] "  Span..................: 1.20 km"                                                              
-#> [29] "  Population............: 25"                                                                   
-#> [30] "  Number of cases.......: 6"                                                                    
-#> [31] "  Expected cases........: 1.95"                                                                 
-#> [32] "  Observed / expected...: 3.07"                                                                 
-#> [33] "  Relative risk.........: 3.70"                                                                 
-#> [34] "  Percent cases in area.: 24.0"                                                                 
-#> [35] "  Log likelihood ratio..: 3.458213"                                                             
-#> [36] "  P-value...............: 0.55"                                                                 
-#> [37] ""                                                                                               
-#> [38] "2.Location IDs included.: 2, 3, 1"                                                              
-#> [39] "  Coordinates / radius..: (33.930353 N, 3.172303 E) / 4.00 km"                                  
-#> [40] "  Span..................: 5.88 km"                                                              
-#> [41] "  Population............: 35"                                                                   
-#> [42] "  Number of cases.......: 0"                                                                    
-#> [43] "  Expected cases........: 2.73"                                                                 
-#> [44] "  Observed / expected...: 0"                                                                    
-#> [45] "  Relative risk.........: 0"                                                                    
-#> [46] "  Percent cases in area.: 0"                                                                    
-#> [47] "  Log likelihood ratio..: 3.013494"                                                             
+#> [23] ""
+#> [24] "CLUSTERS DETECTED"
+#> [25] ""
+#> [26] "1.Location IDs included.: 10, 9"
+#> [27] "  Coordinates / radius..: (34.113909 N, 3.087933 E) / 1.20 km"
+#> [28] "  Span..................: 1.20 km"
+#> [29] "  Population............: 25"
+#> [30] "  Number of cases.......: 6"
+#> [31] "  Expected cases........: 1.95"
+#> [32] "  Observed / expected...: 3.07"
+#> [33] "  Relative risk.........: 3.70"
+#> [34] "  Percent cases in area.: 24.0"
+#> [35] "  Log likelihood ratio..: 3.458213"
+#> [36] "  P-value...............: 0.55"
+#> [37] ""
+#> [38] "2.Location IDs included.: 2, 3, 1"
+#> [39] "  Coordinates / radius..: (33.930353 N, 3.172303 E) / 4.00 km"
+#> [40] "  Span..................: 5.88 km"
+#> [41] "  Population............: 35"
+#> [42] "  Number of cases.......: 0"
+#> [43] "  Expected cases........: 2.73"
+#> [44] "  Observed / expected...: 0"
+#> [45] "  Relative risk.........: 0"
+#> [46] "  Percent cases in area.: 0"
+#> [47] "  Log likelihood ratio..: 3.013494"
 #> [48] "  P-value...............: 0.68"
 ```
 
@@ -230,8 +232,8 @@ This file isn’t very convenient if we want to perform further manipulation. Do
 
 ```{r single-area-show-df}
 #> # A tibble: 4 × 18
-#>   survey_area nr_EAs total_children total_cases `%_cases` location_ids geo      
-#>   <chr>        <int>          <int>       <int>     <dbl> <chr>        <chr>    
+#>   survey_area nr_EAs total_children total_cases `%_cases` location_ids geo
+#>   <chr>        <int>          <int>       <int>     <dbl> <chr>        <chr>
 #> 1 Kotido          36            333          26         7 10,9         34.11390…
 #> 2 Kotido          36            333          26         7 2,3,1        33.93035…
 #> 3 Kotido          36            333          26         7 15           34.11670…
@@ -264,6 +266,8 @@ multiple_area <- ww_run_satscan(
   .by_area = TRUE,
   .scan_for = "high-low-rates",
   .gam_based = "wfhz",
+  latitude = latitude,
+  longitude = longitude,
   area = district,
   cleanup = TRUE,
   verbose = FALSE
@@ -273,11 +277,11 @@ multiple_area <- ww_run_satscan(
 This returns the following outputs:
 
 ```{r multiple-area-show-files}
-#>  [1] "Abim.cas"               "Abim.clustermap.html"   "Abim.col.prj"          
-#>  [4] "Abim.ctl"               "Abim.geo"               "Abim.gis.prj"          
-#>  [7] "Abim.gis.shp"           "Abim.gis.shx"           "Abim.prm"              
-#> [10] "Kotido.cas"             "Kotido.clustermap.html" "Kotido.col.prj"        
-#> [13] "Kotido.ctl"             "Kotido.geo"             "Kotido.gis.prj"        
+#>  [1] "Abim.cas"               "Abim.clustermap.html"   "Abim.col.prj"
+#>  [4] "Abim.ctl"               "Abim.geo"               "Abim.gis.prj"
+#>  [7] "Abim.gis.shp"           "Abim.gis.shx"           "Abim.prm"
+#> [10] "Kotido.cas"             "Kotido.clustermap.html" "Kotido.col.prj"
+#> [13] "Kotido.ctl"             "Kotido.geo"             "Kotido.gis.prj"
 #> [16] "Kotido.gis.shp"         "Kotido.gis.shx"         "Kotido.prm"
 ```
 
@@ -285,7 +289,7 @@ We can also obtain the tidy data frame:
 
 ```{r multiple-area-show-df}
 #> # A tibble: 8 × 19
-#>   survey_area nr_EAs total_children total_cases `%_cases` location_ids     geo  
+#>   survey_area nr_EAs total_children total_cases `%_cases` location_ids     geo
 #>   <chr>        <int>          <int>       <int>     <dbl> <chr>            <chr>
 #> 1 Kotido          36            333          26         7 10,9             34.1…
 #> 2 Kotido          36            333          26         7 2,3,1            33.9…

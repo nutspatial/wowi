@@ -16,6 +16,8 @@ ww_run_satscan(
   .by_area = FALSE,
   .scan_for = c("high-rates", "high-low-rates"),
   .gam_based = c("wfhz", "muac", "combined"),
+  latitude,
+  longitude,
   area = NULL,
   cleanup = TRUE,
   verbose = FALSE
@@ -56,6 +58,14 @@ To scan for both high and low rates, set \code{.scan_for = "high-low-rates"}.}
 malnutrition. This is used to identify the right vector where flagged values
 are identified, and for which should be excluded from the analysis. Default
 is \code{wfhz}.}
+
+\item{latitude}{Geographical coordinates. An unquoted string for the variable
+containing the Y-axis, also known as latitude (north-south direction). The
+variable must be named "latitude".}
+
+\item{longitude}{Geographical coordinates. An unquoted string for the variable
+containing the X-axis, also know as longitude (east-west direction). The
+variable must be named "latitude".}
 
 \item{area}{An unquoted string for the variable containing the analysis areas
 for iteration.}
@@ -125,6 +135,8 @@ if (file.exists("/Applications/SaTScan.app/Contents/app/satscan")) {
     satscan_version = "10.3.2",
     .scan_for = "high-low-rates",
     .gam_based = "wfhz",
+    latitude = latitude,
+    longitude = longitude,
     .by_area = FALSE,
     area = NULL,
     verbose = FALSE,

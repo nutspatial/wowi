@@ -46,6 +46,14 @@
 #' are identified, and for which should be excluded from the analysis. Default
 #' is `wfhz`.
 #'
+#' @param latitude Geographical coordinates. An unquoted string for the variable
+#'  containing the Y-axis, also known as latitude (north-south direction). The
+#' variable must be named "latitude".
+#'
+#' @param longitude Geographical coordinates. An unquoted string for the variable
+#' containing the X-axis, also know as longitude (east-west direction). The
+#' variable must be named "latitude".
+#'
 #' @param area An unquoted string for the variable containing the analysis areas
 #' for iteration.
 #'
@@ -106,6 +114,8 @@
 #'     satscan_version = "10.3.2",
 #'     .scan_for = "high-low-rates",
 #'     .gam_based = "wfhz",
+#'     latitude = latitude,
+#'     longitude = longitude,
 #'     .by_area = FALSE,
 #'     area = NULL,
 #'     verbose = FALSE,
@@ -126,6 +136,8 @@ ww_run_satscan <- function(
     .by_area = FALSE,
     .scan_for = c("high-rates", "high-low-rates"),
     .gam_based = c("wfhz", "muac", "combined"),
+    latitude,
+    longitude,
     area = NULL,
     cleanup = TRUE,
     verbose = FALSE) {
@@ -152,14 +164,13 @@ ww_run_satscan <- function(
       filename <- a
 
       ### Wrangle data ----
-      do.call(
-        ww_wrangle_data,
-        list(
-          .data = df,
-          filename = filename,
-          dir = dir,
-          .gam_based = .gam_based
-        )
+      ww_wrangle_data(
+        .data = df,
+        filename = filename,
+        dir = dir,
+        .gam_based = .gam_based,
+        latitude = latitude,
+        longitude = longitude
       )
 
       ### Configure SaTScan ----
@@ -200,14 +211,13 @@ ww_run_satscan <- function(
     ## ---- Single-area logic ----------------------------------------------------
 
     ### Wrangle data ----
-    do.call(
-      ww_wrangle_data,
-      list(
-        .data = .data,
-        filename = filename,
-        dir = dir,
-        .gam_based = .gam_based
-      )
+    ww_wrangle_data(
+      .data = .data,
+      filename = filename,
+      dir = dir,
+      .gam_based = .gam_based,
+      latitude = latitude,
+      longitude = longitude
     )
 
     ### Configure SaTScan ----
