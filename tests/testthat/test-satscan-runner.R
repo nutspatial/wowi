@@ -16,7 +16,7 @@ testthat::test_that(
     ### Sample data ----
     w <- anthro |>
       dplyr::filter(district == "Kotido") |>
-      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::rename(longitude = y, latitude = x) |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
         .recode_sex = FALSE,
@@ -84,7 +84,7 @@ testthat::test_that(
     ### Sample data ----
     w <- anthro |>
       dplyr::filter(district == "Abim" | district == "Kotido") |>
-      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::rename(longitude = y, latitude = x) |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
         .recode_sex = FALSE,
@@ -156,7 +156,7 @@ testthat::test_that(
     ### Sample data ----
     w <- anthro |>
       dplyr::filter(district == "Abim" | district == "Kotido") |>
-      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::rename(longitude = y, latitude = x) |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
         .recode_sex = FALSE,

@@ -60,12 +60,12 @@ are identified, and for which should be excluded from the analysis. Default
 is \code{wfhz}.}
 
 \item{latitude}{Geographical coordinates. An unquoted string for the variable
-containing the Y-axis, also known as latitude (north-south direction). The
+containing the x-axis, also known as latitude (east-west direction). The
 variable must be named "latitude".}
 
 \item{longitude}{Geographical coordinates. An unquoted string for the variable
-containing the X-axis, also know as longitude (east-west direction). The
-variable must be named "latitude".}
+containing the y-axis, also know as longitude (north-south direction). The
+variable must be named "longitude".}
 
 \item{area}{An unquoted string for the variable containing the analysis areas
 for iteration.}
@@ -98,14 +98,14 @@ allowing users to skip these two steps in the workflow and instead call
 \details{
 The geographical coordinates must be provided as latitude and longitude values.
 If the input data uses different variable names, they must be renamed accordingly;
-otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis
-(north-south direction), and longitude the to X-axis (east-west direction).
+otherwise, the analysis will be aborted. Latitude corresponds to the X-axis
+(east-west direction), and longitude the to X-axis (north-south direction).
 }
 \examples{
 
 ## Wrangle data with `{mwana}` ----
 x <- anthro |>
-  dplyr::rename(longitude = x, latitude = y) |>
+  dplyr::rename(longitude = y, latitude = x) |>
   mwana::mw_wrangle_wfhz(
     sex = sex,
     .recode_sex = TRUE,

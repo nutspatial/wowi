@@ -105,8 +105,8 @@ a <- anthro |>
     .by = "zscores"
   ) |>
   dplyr::rename(
-    longitude = x,
-    latitude = y
+    longitude = y,
+    latitude = x
   )
 ```
 
@@ -131,15 +131,15 @@ d <- subset(a, district == "Kotido")
 
 ```{r single-area-run-satscan, echo = TRUE, eval = FALSE}
 ## Load rsatscan ----
-library(rsatscan) #<1>
+library(rsatscan)                                                     #<1>
 
 ## Set up the parameters ----
 results <- ww_run_satscan(
   .data = d,
   filename = "Kotido",
-  dir = directory, #<2>
-  sslocation = "/Applications/SaTScan.app/Contents/app", #<3>
-  ssbatchfilename = "satscan", #<4>
+  dir = directory,                                                    #<2>
+  sslocation = "/Applications/SaTScan.app/Contents/app",              #<3>
+  ssbatchfilename = "satscan",                                        #<4>
   satscan_version = "10.3.2",
   .by_area = FALSE,
   .scan_for = "high-low-rates",

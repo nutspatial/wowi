@@ -41,7 +41,7 @@
 #'
 #' ## Wrangle data with `{mwana}` ----
 #' x <- anthro |>
-#'   dplyr::rename(longitude = x, latitude = y) |>
+#'   dplyr::rename(longitude = y, latitude = x) |>
 #'   mwana::mw_wrangle_wfhz(
 #'     sex = sex,
 #'     .recode_sex = TRUE,
