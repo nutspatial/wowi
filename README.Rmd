@@ -56,6 +56,18 @@ This package is particularly handy when working with datasets that span multiple
 ## # ℹ 4 more variables: `%_cases_in_area` <dbl>, log_lik_ratio <dbl>, pvalue <dbl>, ipc_amn <chr>
 ```
 
+### Shiny App  
+
+To use the included Shiny App, run the following function in R: 
+
+```r
+ww_run_app()
+```
+
+This will initiate the package's Shiny App using the installed web browser 
+in your current machine.
+
+
 ## Citation  
 
 If you use `wowi` package in your work, please cite using the suggested citation provided by a call to `citation()` function as follows: 

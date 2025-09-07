@@ -81,9 +81,19 @@ coldspot; Size of the bubble: span of the spot.</figcaption>
 ##  survey_area nr_EAs total_children total_cases `%_cases` location_ids   geo   radius span  children n_cases expected_cases observedExpected relative_risk
 ##  <chr>        <int>          <int>       <int>     <dbl> <chr>          <chr> <chr>  <chr>    <int>   <int>          <dbl>            <dbl>         <dbl>
 ## 1 District        36            532         104        19 23,24,26,25,3… 13.6… 1.43 … 1.88…      170       4           33.2             0.12         0.085
-## 2 District        36            532         104        19 16,20,14,12,1… 13.8… 26.24… 43.5…      258      84           50.4             1.67         4.46 
+## 2 District        36            532         104        19 16,20,14,12,1… 13.8… 26.24… 43.5…      258      84           50.4             1.67         4.46
 ## # ℹ 4 more variables: `%_cases_in_area` <dbl>, log_lik_ratio <dbl>, pvalue <dbl>, ipc_amn <chr>
 ```
+
+### Shiny App
+
+To use the built-in Shiny application, run the following function:
+
+``` r
+ww_run_app()
+```
+
+This will initiate the App using the installed web browser in your current machine.
 
 ## Citation
 
@@ -96,7 +106,7 @@ citation("wowi")
 #> 
 #>   Tomás Zaba (2025). _wowi: Utilities for detecting statistically
 #>   significant spatial clusters of high acute malnutrition rates using
-#>   SaTScan's Bernoulli spatial-scan model_. R package version 0.1.0,
+#>   SaTScan's Bernoulli spatial-scan model_. R package version 1.0.0,
 #>   <https://nutspatial.github.io/wowi/>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -105,7 +115,7 @@ citation("wowi")
 #>     title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model},
 #>     author = {{Tomás Zaba}},
 #>     year = {2025},
-#>     note = {R package version 0.1.0},
+#>     note = {R package version 1.0.0},
 #>     url = {https://nutspatial.github.io/wowi/},
 #>   }
 ```
