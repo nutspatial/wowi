@@ -1,6 +1,6 @@
 Package: wowi
 Title: Detect Spatial Clusters of High Acute Malnutrition Rates
-Version: 0.1.0
+Version: 1.0.0
 Authors@R: 
     person(given = "Tomás", 
             family = "Zaba",
