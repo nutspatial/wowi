@@ -18,6 +18,8 @@ get_app_dir <- function(pkg = "wowi") {
 #' 
 #' Initialise built-in Shiny application
 #' 
+#' @param pkg package name ("wowi").
+#' 
 #' @return NULL
 #' 
 #' @examples

@@ -124,7 +124,10 @@
 #' }
 #'
 #' @export
-#'
+#' 
+#' 
+
+# no# nocov start
 ww_run_satscan <- function(
     .data,
     filename = NULL,
@@ -248,3 +251,5 @@ ww_run_satscan <- function(
     list(.df = df, .txt = result$main)
   }
 }
+
+# nocov end

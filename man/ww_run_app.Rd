@@ -6,6 +6,9 @@
 \usage{
 ww_run_app(pkg = "wowi")
 }
+\arguments{
+\item{pkg}{package name ("wowi")}
+}
 \description{
 Initialise built-in Shiny application
 }
