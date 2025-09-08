@@ -7,6 +7,8 @@ analysis and save them in a user-defined working directory}
 \usage{
 ww_wrangle_data(
   .data,
+  latitude,
+  longitude,
   filename = character(),
   dir = character(),
   .gam_based = c("wfhz", "muac", "combined")
@@ -15,6 +17,14 @@ ww_wrangle_data(
 \arguments{
 \item{.data}{A data frame object that has been wrangled using
 \verb{mwana::mw_wrangle_*()} functions.}
+
+\item{latitude}{Geographical coordinates. An unquoted string for the variable
+containing the Y-axis, also known as latitude (north-south direction). The
+variable must be named "latitude".}
+
+\item{longitude}{Geographical coordinates. An unquoted string for the variable
+containing the X-axis, also know as longitude (east-west direction). The
+variable must be named "latitude".}
 
 \item{filename}{A quoted string identifying the analysis area.}
 
@@ -59,7 +69,7 @@ directory <- file.path(tmp, "input-files")
 
 ## Wrangle data with `{mwana}` ----
 x <- anthro |>
-  dplyr::rename(longitude = x, latitude = y) |>
+  dplyr::rename(longitude = y, latitude = x) |>
   mwana::mw_wrangle_wfhz(
     sex = sex,
     .recode_sex = TRUE,
@@ -77,7 +87,9 @@ ww_wrangle_data(
   .data = x,
   filename = "Locality",
   dir = directory,
-  .gam_based = "wfhz"
+  .gam_based = "wfhz",
+  latitude = latitude,
+  longitude = longitude
 )
 
 ## Show created files ----

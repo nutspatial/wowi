@@ -2,7 +2,11 @@
 #'
 #' @keywords internal
 #'
-wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
+wrangle_data <- function(
+    .data,
+    .gam_based = c("wfhz", "muac", "combined"),
+    latitude,
+    longitude) {
   ## Enforce options in `.gam_based` ----
   .gam_based <- match.arg(.gam_based)
 
@@ -18,7 +22,9 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
   ## Define a variable name for gam by wfhz, muac or combined ----
   gam_sym <- rlang::sym(if (.gam_based != "combined") "gam" else "cgam")
 
-  .data <- subset(.data, !is.na(.data$latitude))
+  ## Filter out all missing values in latitude ----
+  .data <- dplyr::filter(.data, !is.na({{ latitude }} | !is.na({{ longitude }})))
+
   ## Case file ----
   cases <- .data |>
     dplyr::filter(!!flag_expr, !!gam_sym != 0) |>
@@ -34,8 +40,8 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 
   ## Geographical coordinates file ----
   geo <- .data |>
-    dplyr::select(locationid = .data$cluster, .data$latitude, .data$longitude) |>
-    dplyr::relocate(.data$longitude, .after = .data$locationid) |>
+    dplyr::select(locationid = .data$cluster, {{ latitude }}, {{ longitude }}) |>
+    dplyr::relocate({{ longitude }}, .after = .data$locationid) |>
     dplyr::slice_head(by = .data$locationid, n = 1) |>
     dplyr::arrange(.data$locationid)
 
@@ -70,6 +76,14 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #' are identified, and for which should be excluded from the analysis. Default
 #' is `wfhz`.
 #'
+#' @param latitude Geographical coordinates. An unquoted string for the variable
+#'  containing the Y-axis, also known as latitude (north-south direction). The
+#' variable must be named "latitude".
+#'
+#' @param longitude Geographical coordinates. An unquoted string for the variable
+#' containing the X-axis, also know as longitude (east-west direction). The
+#' variable must be named "latitude".
+#'
 #' @returns
 #' Three files are created and saved in the user-defined directory as defined
 #' by `dir`: a `.cas` file for cases, a `.ctl` for controls, and
@@ -94,7 +108,7 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #'
 #' ## Wrangle data with `{mwana}` ----
 #' x <- anthro |>
-#'   dplyr::rename(longitude = x, latitude = y) |>
+#'   dplyr::rename(longitude = y, latitude = x) |>
 #'   mwana::mw_wrangle_wfhz(
 #'     sex = sex,
 #'     .recode_sex = TRUE,
@@ -112,7 +126,9 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #'   .data = x,
 #'   filename = "Locality",
 #'   dir = directory,
-#'   .gam_based = "wfhz"
+#'   .gam_based = "wfhz",
+#'   latitude = latitude,
+#'   longitude = longitude
 #' )
 #'
 #' ## Show created files ----
@@ -127,6 +143,8 @@ wrangle_data <- function(.data, .gam_based = c("wfhz", "muac", "combined")) {
 #'
 ww_wrangle_data <- function(
     .data,
+    latitude,
+    longitude,
     filename = character(), dir = character(),
     .gam_based = c("wfhz", "muac", "combined")) {
   ## Enforce options in `.gam_based` ----
@@ -146,7 +164,12 @@ ww_wrangle_data <- function(
   }
 
   ## Wrangle data into cases, controls and geographical files ----
-  input_files <- wrangle_data(.data = .data, .gam_based = .gam_based)
+  input_files <- wrangle_data(
+    .data = .data,
+    latitude = latitude,
+    longitude = longitude,
+    .gam_based = .gam_based
+  )
 
   ## Write file into `dir` in which SaTScan will access them ----
 

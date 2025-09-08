@@ -16,6 +16,8 @@ ww_run_satscan(
   .by_area = FALSE,
   .scan_for = c("high-rates", "high-low-rates"),
   .gam_based = c("wfhz", "muac", "combined"),
+  latitude,
+  longitude,
   area = NULL,
   cleanup = TRUE,
   verbose = FALSE
@@ -57,6 +59,14 @@ malnutrition. This is used to identify the right vector where flagged values
 are identified, and for which should be excluded from the analysis. Default
 is \code{wfhz}.}
 
+\item{latitude}{Geographical coordinates. An unquoted string for the variable
+containing the x-axis, also known as latitude (east-west direction). The
+variable must be named "latitude".}
+
+\item{longitude}{Geographical coordinates. An unquoted string for the variable
+containing the y-axis, also know as longitude (north-south direction). The
+variable must be named "longitude".}
+
 \item{area}{An unquoted string for the variable containing the analysis areas
 for iteration.}
 
@@ -88,14 +98,14 @@ allowing users to skip these two steps in the workflow and instead call
 \details{
 The geographical coordinates must be provided as latitude and longitude values.
 If the input data uses different variable names, they must be renamed accordingly;
-otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis
-(north-south direction), and longitude the to X-axis (east-west direction).
+otherwise, the analysis will be aborted. Latitude corresponds to the X-axis
+(east-west direction), and longitude the to X-axis (north-south direction).
 }
 \examples{
 
 ## Wrangle data with `{mwana}` ----
 x <- anthro |>
-  dplyr::rename(longitude = x, latitude = y) |>
+  dplyr::rename(longitude = y, latitude = x) |>
   mwana::mw_wrangle_wfhz(
     sex = sex,
     .recode_sex = TRUE,
@@ -125,6 +135,8 @@ if (file.exists("/Applications/SaTScan.app/Contents/app/satscan")) {
     satscan_version = "10.3.2",
     .scan_for = "high-low-rates",
     .gam_based = "wfhz",
+    latitude = latitude,
+    longitude = longitude,
     .by_area = FALSE,
     area = NULL,
     verbose = FALSE,

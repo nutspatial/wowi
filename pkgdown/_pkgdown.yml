@@ -20,9 +20,10 @@ reference:
      contents: 
      - wowi
 
-   - title: Main function
+   - title: Main functions
      contents: 
      - ww_run_satscan
+     - ww_run_app
    
    - title: Other functions
      contents: 

@@ -4,6 +4,6 @@ bibentry(
   title    = "wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model",
   author   = person("Tomás Zaba"),
   year     = 2025,
-  note     = "R package version 0.1.0",
+  note     = "R package version 1.0.0",
   url      = "https://nutspatial.github.io/wowi/"
 )
