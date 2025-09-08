@@ -4,7 +4,7 @@
 \alias{ww_run_app}
 \title{Initialise built-in Shiny application}
 \usage{
-ww_run_app()
+ww_run_app(pkg = "wowi")
 }
 \description{
 Initialise built-in Shiny application

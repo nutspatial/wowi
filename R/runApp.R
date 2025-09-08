@@ -4,8 +4,8 @@
 #' 
 #' @keywords internal
 #' 
-get_app_dir <- function() {
-  app_dir <- system.file("wowi", "app", package = "wowi")
+get_app_dir <- function(pkg = "wowi") {
+  app_dir <- system.file(pkg, "app", package = "wowi")
   if (app_dir == "") {
     stop("Could not find Shiny directory. Try re-installing `wowi`.", call. = FALSE)
   }
@@ -26,7 +26,7 @@ get_app_dir <- function() {
 #' @export
 
 # nocov start
-ww_run_app <- function() {
-  shiny::runApp(appDir = get_app_dir(), display.mode = "normal")
+ww_run_app <- function(pkg = "wowi") {
+  shiny::runApp(appDir = get_app_dir(pkg), display.mode = "normal")
 }
 # nocov end
