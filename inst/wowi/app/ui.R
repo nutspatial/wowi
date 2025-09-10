@@ -340,10 +340,10 @@ ui <- page_navbar(
       card(
         card_header("Wrangled Data"),
         withSpinner(
-        ui_element = DTOutput("wrangled_data"),
-        type = 1,
-        color = "#398DF3",
-        caption = div("Wrangling data", br(), h5("Please wait..."))
+          ui_element = DTOutput("wrangled_data"),
+          type = 1,
+          color = "#398DF3",
+          caption = div("Wrangling data", br(), h5("Please wait..."))
         )
       )
     )
@@ -394,10 +394,10 @@ ui <- page_navbar(
           card(
             card_header("Summary Results of Detected Clusters"),
             withSpinner(
-            ui_element = DTOutput("clusters"),
-            type = 3,
-            color.background = "#398DF3",
-            caption = div("Scanning through", br(), h5("Please wait..."))
+              ui_element = DTOutput("clusters"),
+              type = 3,
+              color.background = "#398DF3",
+              caption = div("Scanning through", br(), h5("Please wait..."))
             ),
             uiOutput(outputId = "download")
           )
