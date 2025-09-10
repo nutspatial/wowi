@@ -202,10 +202,15 @@ server <- function(input, output, session) {
     )
   })
 
+  values$wrangling <- reactiveVal(FALSE)
+
   observeEvent(input$apply_wrangle, {
     #### Ensure input data from Tab 1 exists before rendering ----
     req(values$data)
+    values$wrangling(FALSE)
     data <- values$data
+    values$wrangled <- NULL
+    values$wrangling(TRUE)
     valid <- TRUE
 
     #### Manage errors gracefully ----
@@ -340,10 +345,12 @@ server <- function(input, output, session) {
         showNotification(paste("Wrangling error:", e$message), type = "error")
       }
     )
+    values$wrangling(FALSE)
   })
 
   #### Display wrangled data ----
   output$wrangled_data <- renderDT({
+    req(!values$wrangling()) # Let waiting spinner run until wrangling is done
     req(values$wrangled)
     datatable(
       data = head(values$wrangled, 30),
@@ -523,12 +530,20 @@ server <- function(input, output, session) {
     )
   })
 
+  # Initialize the scanning reactive value (add this near your other reactive values)
+values$scanning <- reactiveVal(FALSE)
+  
   ### Logic for calculations ----
   observeEvent(
     eventExpr = input$run_scan,
     {
-      #### Ensure data exists before rendering ----
-      req(values$wrangled)
+
+      #### Clear previous results and start scanning ----
+    values$scan_result <- NULL
+    values$scanning(TRUE)
+      
+  #### Ensure data exists before rendering ----
+  req(values$wrangled)
 
       #### Logic for single-area spatial scan ----
       if (input$analysis_scope == "single-area") {
@@ -547,10 +562,11 @@ server <- function(input, output, session) {
         scan_for <- as.character(input$scan_for)
         gam_based <- as.character(input$wrangle)
 
+        tryCatch({
         result <- values$wrangled |>
           rename(
             longitude = !!sym(input$longitude), 
-            latitude = !!sym(input$latidude)
+            latitude = !!sym(input$latitude)
           ) |>
           ww_run_satscan(
           filename = area,
@@ -573,7 +589,13 @@ server <- function(input, output, session) {
           files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
           paste(files, collapse = "\n")
         })
-      } else {
+      }, error = function(e) {
+        showNotification(
+          paste("Error during scanning:", e$message, type = "error")
+        )
+      }
+    )
+        } else {
         #### Ensure that all parameters for single-area analysis are given ----
         req(
           input$directory, input$sslocation, input$ssbatchfilename,
@@ -589,6 +611,7 @@ server <- function(input, output, session) {
         gam_based <- as.character(input$wrangle)
 
         #### Run scan ----
+        tryCatch({
         result <- values$wrangled |> 
           rename(
             latitude = !!sym(input$latitude),
@@ -610,18 +633,51 @@ server <- function(input, output, session) {
         )
 
         values$scan_result <- result
-
+        
         output$files_created <- renderText({
           files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
           paste(files, collapse = "\n")
         })
-      }
+        
+      }, error = function(e) {
+        showNotification(paste("Error during scanning:", e$message), type = "error")
+      })
     }
-  )
+    
+    # End scanning
+    values$scanning(FALSE)
+  }
+)
 
   #### Display a summary table of detected cluster and prettified ----
   output$clusters <- renderDT({
-    # Ensure data exists before rendering ----
+
+    # Show scanning message while scanning is in progress
+
+    if (values$scanning()) {
+    # Return a placeholder table while scanning
+    datatable(
+      data = data.frame(Status = "Scanning in progress..."),
+      rownames = FALSE,
+      options = list(
+        dom = 't',
+        ordering = FALSE,
+        searching = FALSE,
+        info = FALSE,
+        paging = FALSE,
+        columnDefs = list(
+          list(className = "dt-center", targets = "_all")
+        )
+      ),
+       selection = 'none'
+    ) |> formatStyle(
+      columns = "Status", 
+      fontSize = "16px",
+      fontWeight = "bold",
+      color = "#398DF3"
+    )
+  } else {
+    # Only render when not scanning and results exist
     req(values$scan_result)
 
     ##### Display the first 8 rows only ----
@@ -644,12 +700,14 @@ server <- function(input, output, session) {
       style = "default",
       filter = "top"
     ) |> formatStyle(columns = colnames(values$scan_result$.df), fontSize = "12px")
-  })
+  }
+    })
 
   #### Download button to download table of detected clusters in .xlsx ----
   ##### Output into the UI ----
   output$download <- renderUI({
     req(values$scan_result)
+    req(!values$scanning())
     div(
       style = "margin-bottom: 15px; text-align: right;",
       downloadButton(
