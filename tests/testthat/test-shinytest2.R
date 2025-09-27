@@ -55,8 +55,9 @@ testthat::test_that("App uploads input data as expected", {
 # Wait for app to fully load
   app$wait_for_idle(timeout = 10000)
 
-  ### Navigate to Data Uploading Tab ----
-  # Click on the "Data Uploading" tab
+  ## ---- Navigate to Data Uploading Tab ---------------------------------------
+
+  ### Click on the "Data Uploading" tab ----
   app$click(selector = "a[data-value='<strong>Data Uploading</strong>']")
   app$wait_for_idle(timeout = 5000)
 
@@ -71,13 +72,13 @@ testthat::test_that("App uploads input data as expected", {
     upload = tmpfile,
     wait_ = TRUE
   )
-# Wait for the upload to be processed
+### Wait for the upload to be processed ----
   app$wait_for_idle(timeout = 15000)
 
   ### Get a screenshot of output values to be compared with ----
   app$expect_values(output = TRUE)
 
-  ### Get values 
+  ### Get values ----
   vals <- app$get_values(
     input = "upload", 
     output = c("fileUploaded", "showProgress")
@@ -89,30 +90,20 @@ testthat::test_that("App uploads input data as expected", {
   testthat::expect_equal(vals$input$upload$size, 219727)
   testthat::expect_equal(vals$input$upload$type, "text/csv")
 
-  ## ---- Data Wrangling Tab ---------------------------------------------------
-## ---- Navigate to Data Wrangling Tab -----------------------------------
+## ---- Navigate to Data Wrangling Tab -----------------------------------------
   
-  # Click on the "Data Wrangling" tab
+  ### Click on the "Data Wrangling" tab
   app$click(selector = "a[data-value='<strong>Data Wrangling</strong>']")
   app$wait_for_idle(timeout = 5000)
-
-  # Check what inputs are now available
-  current_inputs <- app$get_values(input = TRUE)
-  print("Available inputs after navigating to Data Wrangling tab:")
-  print(names(current_inputs$input))
   
-  # Set wrangle type first (this should trigger the variable selectors to appear)
+  ### Set wrangle for wfhz ----
   app$set_inputs(wrangle = "wfhz", wait_ = FALSE, timeout_ = 10000)
   app$wait_for_idle(timeout = 5000)
   
   # Wait a bit more for the variable selectors to render
   Sys.sleep(2)
   
-  # Check inputs again after setting wrangle type
-  current_inputs <- app$get_values(input = TRUE)
-  
-  # Now set the variable selectors (these are rendered by uiOutput("variableSelectors"))
-  # The exact input IDs depend on your server logic in the variableSelectors output
+  # Now set the variable selectors ----
     app$set_inputs(sex = "sex", wait_ = FALSE, timeout_ = 10000)
     app$set_inputs(weight = "weight", wait_ = FALSE, timeout_ = 10000)
     app$set_inputs(height = "height", wait_ = FALSE, timeout_ = 10000)
@@ -126,250 +117,67 @@ testthat::test_that("App uploads input data as expected", {
     app$wait_for_idle(timeout = 10000)
     
     wfhz <- app$get_values()
-    
+  
     # Add your assertions here for the wrangled data
     testthat::expect_true("wrangled_data" %in% names(wfhz$output))
+  testthat::expect_equal(wfhz$input$wrangle, expected = "wfhz")
+  testthat::expect_equal(length(wfhz$input$wrangled_data_rows_all), 30)
+  testthat::expect_equal(length(wfhz$input$wrangled_data_search_columns), 17)
 
+  ### Set wrangle for MUAC ----
+  app$set_inputs(wrangle = "muac", wait_ = FALSE, timeout_ = 10000)
+  app$wait_for_idle(timeout = 5000)
 
-  # # Test that app loads - check for wowi in the page content
-  # page_content <- app$get_html("body")
-  # expect_true(grepl("wowi", page_content, ignore.case = TRUE))
+  ### Wait a bit more for the variable selectors to render ----
+  Sys.sleep(5)
 
-  # # Test that app loads
-  # expect_true(app$get_text("title") |> grepl("wowi", x = _))
+  ### Set variable selectors ----
+  app$set_inputs(sex = "sex", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(age = "age", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(muac = "muac", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(oedema = "oedema", wait_ = FALSE, timeout_ = 10000)
 
-  # # Test navigation to different tabs
-  # app$click("nav-tab-Data Uploading")
-  # app$expect_values(output = "fileUploaded")
+  ### Wait before clicking apply ----
+  app$wait_for_idle(timeout = 5000)
 
-  # app$click("nav-tab-Data Wrangling")
-  # app$expect_values(input = "wrangle")
+  ### Click apply button ----
+  app$click("apply_wrangle", wait_ = TRUE, timeout_ = 15000)
+  app$wait_for_idle(timeout = 10000)
 
-  # app$click("nav-tab-Run Spatial Scan")
-  # app$expect_values(input = "analysis_scope")
+  ### Get values ----
+  muac <- app$get_values()
+  print(str(muac))
 
-  # Take screenshot of final state
-  # app$expect_screenshot()
+    testthat::expect_equal(muac$input$wrangle, expected = "muac")
+  testthat::expect_equal(length(muac$input$wrangled_data_rows_all), 30)
+  testthat::expect_equal(length(muac$input$wrangled_data_search_columns), 18)
+
+  ### Set wrangle for Combined ----
+  app$set_inputs(wrangle = "combined", wait_ = FALSE, timeout_ = 10000)
+  app$wait_for_idle(timeout = 5000)
+
+  ### Wait a bit more for the variable selectors to render ----
+  Sys.sleep(5)
+
+  ### Set variable selectors ----
+  app$set_inputs(sex = "sex", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(age = "age", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(muac = "muac", wait_ = FALSE, timeout_ = 10000)
+      app$set_inputs(weight = "weight", wait_ = FALSE, timeout_ = 10000)
+    app$set_inputs(height = "height", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(oedema = "oedema", wait_ = FALSE, timeout_ = 10000)
+
+  ### Wait before clicking apply ----
+  app$wait_for_idle(timeout = 5000)
+
+  ### Click apply button ----
+  app$click("apply_wrangle", wait_ = TRUE, timeout_ = 15000)
+  app$wait_for_idle(timeout = 10000)
+
+  ### Get values ----
+  combined <- app$get_values()
+
+    testthat::expect_equal(combined$input$wrangle, expected = "combined")
+  testthat::expect_equal(length(combined$input$wrangled_data_rows_all), 30)
+  testthat::expect_equal(length(combined$input$wrangled_data_search_columns), 20)
 })
-
-# # Test 2: Data Upload Functionality
-# test_that("Data upload works correctly", {
-#   app <- AppDriver$new(name = "data-upload")
-
-#   # Navigate to upload tab
-#   app$click("nav-tab-Data Uploading")
-
-#   # Create a sample CSV file for testing
-#   temp_csv <- tempfile(fileext = ".csv")
-#   sample_data <- data.frame(
-#     age = c(12, 24, 36, 48, 60),
-#     sex = c(1, 2, 1, 2, 1),
-#     weight = c(8.5, 10.2, 12.1, 14.5, 16.2),
-#     height = c(75.2, 85.1, 92.5, 98.2, 105.1),
-#     muac = c(12.5, 13.2, 14.1, 14.8, 15.2),
-#     oedema = c("n", "n", "n", "n", "n"),
-#     latitude = c(-1.2921, -1.2922, -1.2923, -1.2924, -1.2925),
-#     longitude = c(36.8219, 36.8220, 36.8221, 36.8222, 36.8223)
-#   )
-#   write.csv(sample_data, temp_csv, row.names = FALSE)
-
-#   # Upload the file
-#   app$upload_file(upload = temp_csv)
-
-#   # Wait for processing to complete
-#   app$wait_for_value(output = "fileUploaded", ignore = list(NULL, FALSE))
-
-#   # Check that file info is displayed
-#   file_info <- app$get_value(output = "fileInfo")
-#   expect_true(grepl("Rows: 5", file_info))
-#   expect_true(grepl("Columns: 8", file_info))
-
-#   # Check that data table is populated
-#   expect_true(app$get_value(output = "fileUploaded"))
-
-#   app$expect_screenshot()
-
-#   # Cleanup
-#   unlink(temp_csv)
-# })
-
-# # Test 3: Data Wrangling Functionality
-# test_that("Data wrangling works for different methods", {
-#   app <- AppDriver$new(name = "data-wrangling")
-
-#   # First upload data
-#   app$click("nav-tab-Data Uploading")
-
-#   temp_csv <- tempfile(fileext = ".csv")
-#   sample_data <- data.frame(
-#     age = c(12, 24, 36, 48, 60),
-#     sex = c(1, 2, 1, 2, 1),
-#     weight = c(8.5, 10.2, 12.1, 14.5, 16.2),
-#     height = c(75.2, 85.1, 92.5, 98.2, 105.1),
-#     muac = c(12.5, 13.2, 14.1, 14.8, 15.2),
-#     oedema = c("n", "n", "n", "n", "n"),
-#     latitude = c(-1.2921, -1.2922, -1.2923, -1.2924, -1.2925),
-#     longitude = c(36.8219, 36.8220, 36.8221, 36.8222, 36.8223)
-#   )
-#   write.csv(sample_data, temp_csv, row.names = FALSE)
-#   app$upload_file(upload = temp_csv)
-#   app$wait_for_value(output = "fileUploaded", ignore = list(NULL, FALSE))
-
-#   # Navigate to wrangling tab
-#   app$click("nav-tab-Data Wrangling")
-
-#   # Test WFHZ method
-#   app$set_inputs(wrangle = "wfhz")
-#   app$wait_for_idle()
-
-#   # Select variables for WFHZ
-#   app$set_inputs(sex = "sex")
-#   app$set_inputs(weight = "weight")
-#   app$set_inputs(height = "height")
-#   app$set_inputs(oedema = "oedema")
-
-#   # Apply wrangling
-#   app$click("apply_wrangle")
-#   app$wait_for_idle(timeout = 10000) # Wait up to 10 seconds
-
-#   # Test MUAC method
-#   app$set_inputs(wrangle = "muac")
-#   app$wait_for_idle()
-
-#   app$set_inputs(age = "age")
-#   app$set_inputs(sex = "sex")
-#   app$set_inputs(muac = "muac")
-#   app$set_inputs(oedema = "oedema")
-
-#   app$click("apply_wrangle")
-#   app$wait_for_idle(timeout = 10000)
-
-#   app$expect_screenshot()
-
-#   unlink(temp_csv)
-# })
-
-# # Test 4: Spatial Scan Configuration
-# test_that("Spatial scan configuration works", {
-#   app <- AppDriver$new(name = "spatial-scan-config")
-
-#   # Upload and wrangle data first
-#   app$click("nav-tab-Data Uploading")
-
-#   temp_csv <- tempfile(fileext = ".csv")
-#   sample_data <- data.frame(
-#     area = c("District A", "District A", "District B", "District B", "District C"),
-#     age = c(12, 24, 36, 48, 60),
-#     sex = c(1, 2, 1, 2, 1),
-#     weight = c(8.5, 10.2, 12.1, 14.5, 16.2),
-#     height = c(75.2, 85.1, 92.5, 98.2, 105.1),
-#     muac = c(12.5, 13.2, 14.1, 14.8, 15.2),
-#     oedema = c("n", "n", "n", "n", "n"),
-#     latitude = c(-1.2921, -1.2922, -1.2923, -1.2924, -1.2925),
-#     longitude = c(36.8219, 36.8220, 36.8221, 36.8222, 36.8223)
-#   )
-#   write.csv(sample_data, temp_csv, row.names = FALSE)
-#   app$upload_file(upload = temp_csv)
-#   app$wait_for_value(output = "fileUploaded", ignore = list(NULL, FALSE))
-
-#   # Quick wrangling
-#   app$click("nav-tab-Data Wrangling")
-#   app$set_inputs(wrangle = "wfhz")
-#   app$wait_for_idle()
-#   app$set_inputs(sex = "sex", weight = "weight", height = "height", oedema = "oedema")
-#   app$click("apply_wrangle")
-#   app$wait_for_idle(timeout = 10000)
-
-#   # Navigate to spatial scan tab
-#   app$click("nav-tab-Run Spatial Scan")
-
-#   # Test single-area analysis configuration
-#   app$set_inputs(analysis_scope = "single-area")
-#   app$wait_for_idle()
-
-#   # Check that single-area inputs are available
-#   expect_true("filename" %in% names(app$get_values()$input))
-
-#   # Test multiple-area analysis configuration
-#   app$set_inputs(analysis_scope = "multiple-area")
-#   app$wait_for_idle()
-
-#   # Check that multiple-area inputs are available
-#   expect_true("area" %in% names(app$get_values()$input))
-
-#   app$expect_screenshot()
-
-#   unlink(temp_csv)
-# })
-
-# # Test 5: Input Validation
-# test_that("Input validation works correctly", {
-#   app <- AppDriver$new(name = "input-validation")
-
-#   # Upload data
-#   app$click("nav-tab-Data Uploading")
-
-#   temp_csv <- tempfile(fileext = ".csv")
-#   sample_data <- data.frame(
-#     age = c(12, 24, 36),
-#     sex = c(1, 2, 1),
-#     weight = c(8.5, 10.2, 12.1),
-#     height = c(75.2, 85.1, 92.5)
-#   )
-#   write.csv(sample_data, temp_csv, row.names = FALSE)
-#   app$upload_file(upload = temp_csv)
-#   app$wait_for_value(output = "fileUploaded", ignore = list(NULL, FALSE))
-
-#   # Navigate to wrangling and try to wrangle without selecting all required variables
-#   app$click("nav-tab-Data Wrangling")
-#   app$set_inputs(wrangle = "wfhz")
-#   app$wait_for_idle()
-
-#   # Only select some variables (missing height)
-#   app$set_inputs(sex = "sex")
-#   app$set_inputs(weight = "weight")
-#   # Intentionally leave height empty
-
-#   # Try to apply wrangling - should show error
-#   app$click("apply_wrangle")
-#   app$wait_for_idle()
-
-#   # The app should show a notification error
-#   # We can't easily test notifications in shinytest2, but we can verify
-#   # that wrangling didn't complete by checking that wrangled data table is empty
-
-#   app$expect_screenshot()
-
-#   unlink(temp_csv)
-# })
-
-# # Test 6: UI Responsiveness
-# test_that("UI elements respond correctly to user actions", {
-#   app <- AppDriver$new(name = "ui-responsiveness")
-
-#   # Test that wrangling method selection updates UI
-#   app$click("nav-tab-Data Wrangling")
-
-#   # Start with WFHZ
-#   app$set_inputs(wrangle = "wfhz")
-#   app$wait_for_idle()
-
-#   # Switch to MUAC and verify UI changes
-#   app$set_inputs(wrangle = "muac")
-#   app$wait_for_idle()
-
-#   # Switch to combined
-#   app$set_inputs(wrangle = "combined")
-#   app$wait_for_idle()
-
-#   # Test spatial scan scope changes
-#   app$click("nav-tab-Run Spatial Scan")
-
-#   app$set_inputs(analysis_scope = "single-area")
-#   app$wait_for_idle()
-
-#   app$set_inputs(analysis_scope = "multiple-area")
-#   app$wait_for_idle()
-
-#   app$expect_screenshot()
-# })
