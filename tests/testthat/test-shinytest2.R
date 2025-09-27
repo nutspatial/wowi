@@ -1,50 +1,7 @@
-# test_that("{shinytest2} recording: app-data-upload", {
+# ==============================================================================
+# 📦 App
+# ==============================================================================
 
-#     ## Initialise wowi Shiny application ----
-#   wow <- ww_run_app()
-
-#     app <- AppDriver$new()
-
-#     ## Upload data into data uploading tab ----
-#     ### Read file ----
-#     data <- read.csv(file = "inst/wowi/app/tests/testthat/anthro2.csv")
-#     tmpfile <- tempfile(fileext = ".csv")
-#     write.csv(data, tmpfile, row.names = FALSE)
-
-#     ### Upload to Data Uploading Tab, InputId = "upload" ----
-#     app$upload_file(upload = tmpfile, wait_ = TRUE)
-
-#     ### Get a screenshot of the data uploading tab ----
-#     app$get_screenshot()
-
-
-
-#     ## Data wrangling tab ----
-#     ### Wrangle weight-for-height data ----
-#     app$set_inputs(wrangle = "wfhz")
-#     app$set_inputs(sex = "sex")
-#     app$set_inputs(weight = "weight")
-#     app$set_inputs(height = "height")
-#     app$set_inputs(oedema = "")
-#     app$click("apply_wrangle")
-#     app$wait_for_idle()
-
-#     ### Set parameters for run scan ----
-#     # app$set_inputs(analysis_scope = "multiple-area")
-#     # app$set_inputs(area = "district")
-#     # app$set_inputs(directory = "/Users/tomaszaba/Desktop/wowi")
-#     # app$set_inputs(latitude = "longitude")
-#     # app$set_inputs(longitude = "latitude")
-#     # app$set_inputs(sslocation = "/Applications/SaTScan.app/Contents/app")
-#     # app$set_inputs(ssbatchfilename = "satscan")
-#     # app$set_inputs(satscan_version = "10.3.2")
-#     # app$click("run_scan")
-#     # app$wait_for_idle()
-
-#     app$stop()
-# })
-
-# Test 1: Basic App Loading and Navigation
 testthat::test_that("App uploads input data as expected", {
   app <- AppDriver$new(
     app_dir = test_path("fixtures"),
@@ -63,7 +20,7 @@ testthat::test_that("App uploads input data as expected", {
 
   ### Get input data into data uploading tab ----
   #### Read file ----
-  data <- read.csv(file = here::here("inst", "app", "anthro2.csv"))
+  data <- read.csv(file = system.file("app", "anthro2.csv", package = "wowi"))
   tmpfile <- tempfile(fileext = ".csv")
   write.csv(data, tmpfile, row.names = FALSE)
 
@@ -146,7 +103,6 @@ testthat::test_that("App uploads input data as expected", {
 
   ### Get values ----
   muac <- app$get_values()
-  print(str(muac))
 
     testthat::expect_equal(muac$input$wrangle, expected = "muac")
   testthat::expect_equal(length(muac$input$wrangled_data_rows_all), 30)
@@ -180,4 +136,40 @@ testthat::test_that("App uploads input data as expected", {
     testthat::expect_equal(combined$input$wrangle, expected = "combined")
   testthat::expect_equal(length(combined$input$wrangled_data_rows_all), 30)
   testthat::expect_equal(length(combined$input$wrangled_data_search_columns), 20)
+
+  ## ---- Navigate to Run Spatial Scan tab -------------------------------------
+
+  ### Click on the "Data Wrangling" tab
+  app$click(selector = "a[data-value='<strong>Run Spatial Scan</strong>']")
+  app$wait_for_idle(timeout = 5000)
+
+  ### Set wowi hyperparamters ----
+  app$set_inputs(analysis_scope = "single-area", wait_ = FALSE, timeout_ = 10000)
+  app$wait_for_idle(timeout = 5000)
+
+    # Wait a bit more for the variable selectors to render
+  Sys.sleep(2)
+
+  ### Set parameters ----
+  app$set_inputs(filename = "Kotido", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(directory = withr::local_tempdir(), wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(latitude = "latitude", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(longitude = "longitude", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(
+    sslocation = "/Applications/SaTScan.app/Contents/app", 
+    wait_ = FALSE, 
+    timeout_ = 10000
+  )
+  app$set_inputs(ssbatchfilename = "satscan", wait_ = FALSE, timeout_ = 10000)
+  app$set_inputs(scan_for = "high-rates", wait_ = FALSE, timeout_ = 10000)
+
+    ### Wait before clicking apply ----
+  app$wait_for_idle(timeout = 5000)
+
+  ### Click apply button ----
+  app$click("run_scan", wait_ = TRUE, timeout_ = 15000)
+  app$wait_for_idle(timeout = 10000)
+
+  ### Get values ----
+  app$expect_download(output = "downloadResults")
 })
