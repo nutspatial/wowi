@@ -28,7 +28,6 @@ ui <- page_navbar(
   ),
 
   ## ---- Tab 1: wowi Home -----------------------------------------------------
-
   nav_panel(
     title = strong("Home"),
     icon = icon("house"),
