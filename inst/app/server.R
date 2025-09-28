@@ -202,10 +202,15 @@ server <- function(input, output, session) {
     )
   })
 
+  values$wrangling <- reactiveVal(FALSE)
+
   observeEvent(input$apply_wrangle, {
     #### Ensure input data from Tab 1 exists before rendering ----
     req(values$data)
+    values$wrangling(FALSE)
     data <- values$data
+    values$wrangled <- NULL
+    values$wrangling(TRUE)
     valid <- TRUE
 
     #### Manage errors gracefully ----
@@ -250,7 +255,7 @@ server <- function(input, output, session) {
                 sex = !!sym(input$sex),
                 weight = !!sym(input$weight),
                 height = !!sym(input$height)
-              ) |> 
+              ) |>
               mw_wrangle_wfhz(
                 sex = sex,
                 .recode_sex = FALSE,
@@ -275,7 +280,7 @@ server <- function(input, output, session) {
               ) |>
               mutate(
                 muac = as.numeric(muac)
-              ) |> 
+              ) |>
               mw_wrangle_age(age = age) |>
               mw_wrangle_muac(
                 sex = sex,
@@ -287,8 +292,8 @@ server <- function(input, output, session) {
               ) |>
               mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
               define_wasting(
-                muac = muac, 
-                .by = "muac", 
+                muac = muac,
+                .by = "muac",
                 edema = if (input$oedema != "") !!sym(input$oedema) else NULL
               )
           },
@@ -308,7 +313,7 @@ server <- function(input, output, session) {
               ) |>
               mutate(
                 muac = as.numeric(muac)
-              ) |> 
+              ) |>
               mw_wrangle_wfhz(
                 sex = sex,
                 .recode_sex = FALSE,
@@ -340,10 +345,12 @@ server <- function(input, output, session) {
         showNotification(paste("Wrangling error:", e$message), type = "error")
       }
     )
+    values$wrangling(FALSE)
   })
 
   #### Display wrangled data ----
   output$wrangled_data <- renderDT({
+    req(!values$wrangling()) # Let waiting spinner run until wrangling is done
     req(values$wrangled)
     datatable(
       data = head(values$wrangled, 30),
@@ -523,10 +530,17 @@ server <- function(input, output, session) {
     )
   })
 
+  # Initialize the scanning reactive value (add this near your other reactive values)
+  values$scanning <- reactiveVal(FALSE)
+
   ### Logic for calculations ----
   observeEvent(
     eventExpr = input$run_scan,
     {
+      #### Clear previous results and start scanning ----
+      values$scan_result <- NULL
+      values$scanning(TRUE)
+
       #### Ensure data exists before rendering ----
       req(values$wrangled)
 
@@ -547,32 +561,41 @@ server <- function(input, output, session) {
         scan_for <- as.character(input$scan_for)
         gam_based <- as.character(input$wrangle)
 
-        result <- values$wrangled |>
-          rename(
-            longitude = !!sym(input$longitude), 
-            latitude = !!sym(input$latidude)
-          ) |>
-          ww_run_satscan(
-          filename = area,
-          dir = dir,
-          sslocation = satscan_location,
-          ssbatchfilename = batchfilename,
-          satscan_version = version,
-          .by_area = FALSE,
-          .scan_for = scan_for,
-          .gam_based = gam_based,
-          latitude = latitude,
-          longitude = longitude,
-          area = NULL
+        tryCatch(
+          {
+            result <- values$wrangled |>
+              rename(
+                longitude = !!sym(input$longitude),
+                latitude = !!sym(input$latitude)
+              ) |>
+              ww_run_satscan(
+                filename = area,
+                dir = dir,
+                sslocation = satscan_location,
+                ssbatchfilename = batchfilename,
+                satscan_version = version,
+                .by_area = FALSE,
+                .scan_for = scan_for,
+                .gam_based = gam_based,
+                latitude = latitude,
+                longitude = longitude,
+                area = NULL
+              )
+
+            values$scan_result <- result
+
+            #### Display the list of files in the given directory ----
+            output$files_created <- renderText({
+              files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
+              paste(files, collapse = "\n")
+            })
+          },
+          error = function(e) {
+            showNotification(
+              paste("Error during scanning:", e$message, type = "error")
+            )
+          }
         )
-
-        values$scan_result <- result
-
-        #### Display the list of files in the given directory ----
-        output$files_created <- renderText({
-          files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
-          paste(files, collapse = "\n")
-        })
       } else {
         #### Ensure that all parameters for single-area analysis are given ----
         req(
@@ -589,67 +612,104 @@ server <- function(input, output, session) {
         gam_based <- as.character(input$wrangle)
 
         #### Run scan ----
-        result <- values$wrangled |> 
-          rename(
-            latitude = !!sym(input$latitude),
-            longitude = !!sym(input$longitude),
-            area = !!sym(input$area)
-          ) |> 
-        ww_run_satscan(
-          filename = NULL,
-          dir = dir,
-          sslocation = satscan_location,
-          ssbatchfilename = batchfilename,
-          satscan_version = version,
-          .by_area = TRUE,
-          latitude = latitude,
-          longitude = longitude,
-          .scan_for = scan_for,
-          .gam_based = gam_based,
-          area = area
+        tryCatch(
+          {
+            result <- values$wrangled |>
+              rename(
+                latitude = !!sym(input$latitude),
+                longitude = !!sym(input$longitude),
+                area = !!sym(input$area)
+              ) |>
+              ww_run_satscan(
+                filename = NULL,
+                dir = dir,
+                sslocation = satscan_location,
+                ssbatchfilename = batchfilename,
+                satscan_version = version,
+                .by_area = TRUE,
+                latitude = latitude,
+                longitude = longitude,
+                .scan_for = scan_for,
+                .gam_based = gam_based,
+                area = area
+              )
+
+            values$scan_result <- result
+
+            output$files_created <- renderText({
+              files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
+              paste(files, collapse = "\n")
+            })
+          },
+          error = function(e) {
+            showNotification(paste("Error during scanning:", e$message), type = "error")
+          }
         )
-
-        values$scan_result <- result
-
-        output$files_created <- renderText({
-          files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
-          paste(files, collapse = "\n")
-        })
       }
+
+      # End scanning
+      values$scanning(FALSE)
     }
   )
 
   #### Display a summary table of detected cluster and prettified ----
   output$clusters <- renderDT({
-    # Ensure data exists before rendering ----
-    req(values$scan_result)
+    # Show scanning message while scanning is in progress
 
-    ##### Display the first 8 rows only ----
-    datatable(
-      data = head(values$scan_result$.df, 5),
-      rownames = FALSE,
-      options = list(
-        scrollX = FALSE,
-        scrolly = "800px",
-        columnDefs = list(list(className = "dt-center", targets = "_all"))
-      ),
-      caption = if (nrow(values$scan_result$.df) > 5) {
-        paste(
-          "Showing first 5 rows of", format(nrow(values$scan_result$.df), big.mark = ","),
-          "total rows"
-        )
-      } else {
-        paste("showing all", nrow(values$scan_result$.df), "rows")
-      },
-      style = "default",
-      filter = "top"
-    ) |> formatStyle(columns = colnames(values$scan_result$.df), fontSize = "12px")
+    if (values$scanning()) {
+      # Return a placeholder table while scanning
+      datatable(
+        data = data.frame(Status = "Scanning in progress..."),
+        rownames = FALSE,
+        options = list(
+          dom = "t",
+          ordering = FALSE,
+          searching = FALSE,
+          info = FALSE,
+          paging = FALSE,
+          columnDefs = list(
+            list(className = "dt-center", targets = "_all")
+          )
+        ),
+        selection = "none"
+      ) |> formatStyle(
+        columns = "Status",
+        fontSize = "16px",
+        fontWeight = "bold",
+        color = "#398DF3"
+      )
+    } else {
+      # Only render when not scanning and results exist
+      req(values$scan_result)
+
+      ##### Display the first 8 rows only ----
+      datatable(
+        data = head(values$scan_result$.df, 5),
+        rownames = FALSE,
+        options = list(
+          scrollX = FALSE,
+          scrolly = "800px",
+          columnDefs = list(list(className = "dt-center", targets = "_all"))
+        ),
+        caption = if (nrow(values$scan_result$.df) > 5) {
+          paste(
+            "Showing first 5 rows of", format(nrow(values$scan_result$.df), big.mark = ","),
+            "total rows"
+          )
+        } else {
+          paste("showing all", nrow(values$scan_result$.df), "rows")
+        },
+        style = "default",
+        filter = "top"
+      ) |> formatStyle(columns = colnames(values$scan_result$.df), fontSize = "12px")
+    }
   })
 
   #### Download button to download table of detected clusters in .xlsx ----
   ##### Output into the UI ----
   output$download <- renderUI({
     req(values$scan_result)
+    req(!values$scanning())
     div(
       style = "margin-bottom: 15px; text-align: right;",
       downloadButton(

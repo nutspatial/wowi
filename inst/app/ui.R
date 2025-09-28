@@ -13,6 +13,7 @@ library(dplyr)
 library(DT)
 library(openxlsx)
 library(rlang)
+library(shinycssloaders)
 
 ## ---- User's navigation bars -------------------------------------------------
 
@@ -27,7 +28,6 @@ ui <- page_navbar(
   ),
 
   ## ---- Tab 1: wowi Home -----------------------------------------------------
-
   nav_panel(
     title = strong("Home"),
     icon = icon("house"),
@@ -115,8 +115,8 @@ ui <- page_navbar(
             #### Data uploading ----
             tags$p(tags$strong("1. Data Uploading")),
             tags$p(
-              "In this tab, you are expected to upload the input dataset in comma-se
-          parated format (CSV). Only this format is accepted."
+              "In this tab, you are expected to upload the input dataset in 
+              comma-separated format (CSV). Only this format is accepted."
             ),
             tags$p(
               tags$b(
@@ -216,7 +216,7 @@ ui <- page_navbar(
               Otherwise, for multiple-area analysis, specify the variable in your
                dataset that contains the area names. Once complete, fill in the
                remaining fields as appropriate, then click Run Scan to initiate
-               the process"
+               the process."
             ),
             tags$p(
               "Once the scan is complete, several files will be saved in the
@@ -224,7 +224,7 @@ ui <- page_navbar(
             under the 'Created Files' section. Additionally, the 'Summary Results
             of Detected Clusters' section will display a table showing the
             clusters identified in each analysis area. You can download the
-            output table by clicking the Download button, which becomes available
+            output table by clicking the download button, which becomes available
             once the scan has finished."
             )
           ),
@@ -338,7 +338,12 @@ ui <- page_navbar(
       ),
       card(
         card_header("Wrangled Data"),
-        DTOutput("wrangled_data")
+        withSpinner(
+          ui_element = DTOutput("wrangled_data"),
+          type = 1,
+          color = "#398DF3",
+          caption = div("Wrangling data", br(), h5("Please wait..."))
+        )
       )
     )
   ),
@@ -387,7 +392,12 @@ ui <- page_navbar(
           ### Second column: table card ----
           card(
             card_header("Summary Results of Detected Clusters"),
-            DTOutput("clusters"),
+            withSpinner(
+              ui_element = DTOutput("clusters"),
+              type = 3,
+              color.background = "#398DF3",
+              caption = div("Scanning through", br(), h5("Please wait..."))
+            ),
             uiOutput(outputId = "download")
           )
         )

@@ -4,7 +4,7 @@
 \alias{get_app_dir}
 \title{Helper function to locate app directory}
 \usage{
-get_app_dir(pkg = "wowi")
+get_app_dir(package = "wowi")
 }
 \description{
 Helper function to locate app directory
