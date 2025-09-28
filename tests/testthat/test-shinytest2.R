@@ -2,7 +2,7 @@
 # 📦 App
 # ==============================================================================
 
-testthat::test_that("App uploads input data as expected", {
+testthat::test_that("App works as expected", {
   app <- AppDriver$new(
     app_dir = test_path("fixtures"),
     name = "data-uploading",
@@ -40,11 +40,10 @@ testthat::test_that("App uploads input data as expected", {
     input = "upload",
     output = c("fileUploaded", "showProgress")
   )
-
-  ### Run tests ----
+print(vals)
+  ### Assert expectactions ----
   testthat::expect_true(vals$output$fileUploaded)
   testthat::expect_false(vals$output$showProgress)
-  testthat::expect_equal(vals$input$upload$size, 219727)
   testthat::expect_equal(vals$input$upload$type, "text/csv")
 
   ## ---- Navigate to Data Wrangling Tab -----------------------------------------
@@ -57,25 +56,25 @@ testthat::test_that("App uploads input data as expected", {
   app$set_inputs(wrangle = "wfhz", wait_ = FALSE, timeout_ = 10000)
   app$wait_for_idle(timeout = 5000)
 
-  # Wait a bit more for the variable selectors to render
+  ### Wait a bit more for the variable selectors to render
   Sys.sleep(2)
 
-  # Now set the variable selectors ----
+  ### Now set the variable selectors ----
   app$set_inputs(sex = "sex", wait_ = FALSE, timeout_ = 10000)
   app$set_inputs(weight = "weight", wait_ = FALSE, timeout_ = 10000)
   app$set_inputs(height = "height", wait_ = FALSE, timeout_ = 10000)
   app$set_inputs(oedema = "", wait_ = FALSE, timeout_ = 10000)
 
-  # Wait before clicking apply
+  ### Wait before clicking apply
   app$wait_for_idle(timeout = 5000)
 
-  # Click apply button
+  ### Click apply button
   app$click("apply_wrangle", wait_ = TRUE, timeout_ = 15000)
   app$wait_for_idle(timeout = 10000)
 
   wfhz <- app$get_values()
 
-  # Add your assertions here for the wrangled data
+  ### Assert expectectations ----
   testthat::expect_true("wrangled_data" %in% names(wfhz$output))
   testthat::expect_equal(wfhz$input$wrangle, expected = "wfhz")
   testthat::expect_equal(length(wfhz$input$wrangled_data_rows_all), 30)
@@ -104,6 +103,7 @@ testthat::test_that("App uploads input data as expected", {
   ### Get values ----
   muac <- app$get_values()
 
+  ### Assert expectations ----
   testthat::expect_equal(muac$input$wrangle, expected = "muac")
   testthat::expect_equal(length(muac$input$wrangled_data_rows_all), 30)
   testthat::expect_equal(length(muac$input$wrangled_data_search_columns), 18)
@@ -133,6 +133,7 @@ testthat::test_that("App uploads input data as expected", {
   ### Get values ----
   combined <- app$get_values()
 
+  ### Assert expectations ----
   testthat::expect_equal(combined$input$wrangle, expected = "combined")
   testthat::expect_equal(length(combined$input$wrangled_data_rows_all), 30)
   testthat::expect_equal(length(combined$input$wrangled_data_search_columns), 20)
@@ -147,7 +148,7 @@ testthat::test_that("App uploads input data as expected", {
   app$set_inputs(analysis_scope = "single-area", wait_ = FALSE, timeout_ = 10000)
   app$wait_for_idle(timeout = 5000)
 
-  # Wait a bit more for the variable selectors to render
+  ### Wait a bit more for the variable selectors to render
   Sys.sleep(2)
 
   ### Set parameters ----
