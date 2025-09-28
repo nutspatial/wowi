@@ -44,6 +44,7 @@ print(vals)
   ### Assert expectactions ----
   testthat::expect_true(vals$output$fileUploaded)
   testthat::expect_false(vals$output$showProgress)
+  testthat::expect_gt(vals$input$upload$size, 219000)
   testthat::expect_equal(vals$input$upload$type, "text/csv")
 
   ## ---- Navigate to Data Wrangling Tab -----------------------------------------
