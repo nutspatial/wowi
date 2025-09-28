@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">wowi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,7 @@
                         <h4 data-toc-skip class="author">Tomás Zaba</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/nutspatial/wowi/blob/v0.1.0-alpha/vignettes/introduction-to-wowi.Rmd" class="external-link"><code>vignettes/introduction-to-wowi.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nutspatial/wowi/blob/main/vignettes/introduction-to-wowi.Rmd" class="external-link"><code>vignettes/introduction-to-wowi.Rmd</code></a></small>
       <div class="d-none name"><code>introduction-to-wowi.Rmd</code></div>
     </div>
 
@@ -218,8 +218,8 @@ article, we will demonstrate using the former.</p>
 <span>    .by <span class="op">=</span> <span class="st">"zscores"</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
-<span>    longitude <span class="op">=</span> <span class="va">x</span>,</span>
-<span>    latitude <span class="op">=</span> <span class="va">y</span></span>
+<span>    longitude <span class="op">=</span> <span class="va">y</span>,</span>
+<span>    latitude <span class="op">=</span> <span class="va">x</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="co">#&gt; ================================================================================</span></span></code></pre></div>
 <p>Hereafter, you can check the quality of the data. Learn how to do so
@@ -242,20 +242,22 @@ latter</p>
 <span><span class="va">d</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">a</span>, <span class="va">district</span> <span class="op">==</span> <span class="st">"Kotido"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Load rsatscan ----</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.satscan.org" class="external-link">rsatscan</a></span><span class="op">)</span> <span class="co">#&lt;1&gt;</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://www.satscan.org" class="external-link">rsatscan</a></span><span class="op">)</span>                                                     <span class="co">#&lt;1&gt;</span></span>
 <span></span>
 <span><span class="co">## Set up the parameters ----</span></span>
 <span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ww_run_satscan.html">ww_run_satscan</a></span><span class="op">(</span></span>
 <span>  .data <span class="op">=</span> <span class="va">d</span>,</span>
 <span>  filename <span class="op">=</span> <span class="st">"Kotido"</span>,</span>
-<span>  dir <span class="op">=</span> <span class="va">directory</span>, <span class="co">#&lt;2&gt;</span></span>
-<span>  sslocation <span class="op">=</span> <span class="st">"/Applications/SaTScan.app/Contents/app"</span>, <span class="co">#&lt;3&gt;</span></span>
-<span>  ssbatchfilename <span class="op">=</span> <span class="st">"satscan"</span>, <span class="co">#&lt;4&gt;</span></span>
+<span>  dir <span class="op">=</span> <span class="va">directory</span>,                                                    <span class="co">#&lt;2&gt;</span></span>
+<span>  sslocation <span class="op">=</span> <span class="st">"/Applications/SaTScan.app/Contents/app"</span>,              <span class="co">#&lt;3&gt;</span></span>
+<span>  ssbatchfilename <span class="op">=</span> <span class="st">"satscan"</span>,                                        <span class="co">#&lt;4&gt;</span></span>
 <span>  satscan_version <span class="op">=</span> <span class="st">"10.3.2"</span>,</span>
 <span>  .by_area <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  .scan_for <span class="op">=</span> <span class="st">"high-low-rates"</span>,</span>
 <span>  .gam_based <span class="op">=</span> <span class="st">"wfhz"</span>,</span>
 <span>  area <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  latitude <span class="op">=</span> <span class="va">latitude</span>,</span>
+<span>  longitude <span class="op">=</span> <span class="va">longitude</span>,</span>
 <span>  cleanup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -282,8 +284,8 @@ using the <code>dir</code> argument. These files will share a common
 base name, as defined by the string provided in the
 <code>filename</code> argument.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#&gt; [1] "Kotido.cas"             "Kotido.clustermap.html" "Kotido.col.prj"        </span></span>
-<span><span class="co">#&gt; [4] "Kotido.ctl"             "Kotido.geo"             "Kotido.gis.prj"        </span></span>
+<code class="sourceCode R"><span><span class="co">#&gt; [1] "Kotido.cas"             "Kotido.clustermap.html" "Kotido.col.prj"</span></span>
+<span><span class="co">#&gt; [4] "Kotido.ctl"             "Kotido.geo"             "Kotido.gis.prj"</span></span>
 <span><span class="co">#&gt; [7] "Kotido.gis.shp"         "Kotido.gis.shx"         "Kotido.prm"</span></span></code></pre></div>
 <ul>
 <li>The <code>.cas</code>, <code>.ctl</code> and <code>.geo</code> files
@@ -303,53 +305,53 @@ results.</p>
 this file is quite long, for the purposes of this demo we will only
 display the first 48 rows.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#&gt;  [1] "                                 _____________________________"                                 </span></span>
-<span><span class="co">#&gt;  [2] ""                                                                                               </span></span>
-<span><span class="co">#&gt;  [3] "                                        SaTScan v10.3.2"                                        </span></span>
-<span><span class="co">#&gt;  [4] "                                 _____________________________"                                 </span></span>
-<span><span class="co">#&gt;  [5] ""                                                                                               </span></span>
-<span><span class="co">#&gt;  [6] "results"                                                                                        </span></span>
-<span><span class="co">#&gt;  [7] ""                                                                                               </span></span>
-<span><span class="co">#&gt;  [8] "Program run on: Sat Aug  2 16:20:17 2025"                                                       </span></span>
-<span><span class="co">#&gt;  [9] ""                                                                                               </span></span>
-<span><span class="co">#&gt; [10] "Purely Spatial analysis"                                                                        </span></span>
-<span><span class="co">#&gt; [11] "scanning for clusters with high or low rates"                                                   </span></span>
-<span><span class="co">#&gt; [12] "using the Bernoulli model."                                                                     </span></span>
+<code class="sourceCode R"><span><span class="co">#&gt;  [1] "                                 _____________________________"</span></span>
+<span><span class="co">#&gt;  [2] ""</span></span>
+<span><span class="co">#&gt;  [3] "                                        SaTScan v10.3.2"</span></span>
+<span><span class="co">#&gt;  [4] "                                 _____________________________"</span></span>
+<span><span class="co">#&gt;  [5] ""</span></span>
+<span><span class="co">#&gt;  [6] "results"</span></span>
+<span><span class="co">#&gt;  [7] ""</span></span>
+<span><span class="co">#&gt;  [8] "Program run on: Sat Aug  2 16:20:17 2025"</span></span>
+<span><span class="co">#&gt;  [9] ""</span></span>
+<span><span class="co">#&gt; [10] "Purely Spatial analysis"</span></span>
+<span><span class="co">#&gt; [11] "scanning for clusters with high or low rates"</span></span>
+<span><span class="co">#&gt; [12] "using the Bernoulli model."</span></span>
 <span><span class="co">#&gt; [13] "_______________________________________________________________________________________________"</span></span>
-<span><span class="co">#&gt; [14] ""                                                                                               </span></span>
-<span><span class="co">#&gt; [15] "SUMMARY OF DATA"                                                                                </span></span>
-<span><span class="co">#&gt; [16] ""                                                                                               </span></span>
-<span><span class="co">#&gt; [17] "Study period.......................: 2025/08/02 to 2025/08/02"                                  </span></span>
-<span><span class="co">#&gt; [18] "Number of locations................: 36"                                                        </span></span>
-<span><span class="co">#&gt; [19] "Total population...................: 333"                                                       </span></span>
-<span><span class="co">#&gt; [20] "Total number of cases..............: 26"                                                        </span></span>
-<span><span class="co">#&gt; [21] "Percent cases......................: 7.8"                                                       </span></span>
+<span><span class="co">#&gt; [14] ""</span></span>
+<span><span class="co">#&gt; [15] "SUMMARY OF DATA"</span></span>
+<span><span class="co">#&gt; [16] ""</span></span>
+<span><span class="co">#&gt; [17] "Study period.......................: 2025/08/02 to 2025/08/02"</span></span>
+<span><span class="co">#&gt; [18] "Number of locations................: 36"</span></span>
+<span><span class="co">#&gt; [19] "Total population...................: 333"</span></span>
+<span><span class="co">#&gt; [20] "Total number of cases..............: 26"</span></span>
+<span><span class="co">#&gt; [21] "Percent cases......................: 7.8"</span></span>
 <span><span class="co">#&gt; [22] "_______________________________________________________________________________________________"</span></span>
-<span><span class="co">#&gt; [23] ""                                                                                               </span></span>
-<span><span class="co">#&gt; [24] "CLUSTERS DETECTED"                                                                              </span></span>
-<span><span class="co">#&gt; [25] ""                                                                                               </span></span>
-<span><span class="co">#&gt; [26] "1.Location IDs included.: 10, 9"                                                                </span></span>
-<span><span class="co">#&gt; [27] "  Coordinates / radius..: (34.113909 N, 3.087933 E) / 1.20 km"                                  </span></span>
-<span><span class="co">#&gt; [28] "  Span..................: 1.20 km"                                                              </span></span>
-<span><span class="co">#&gt; [29] "  Population............: 25"                                                                   </span></span>
-<span><span class="co">#&gt; [30] "  Number of cases.......: 6"                                                                    </span></span>
-<span><span class="co">#&gt; [31] "  Expected cases........: 1.95"                                                                 </span></span>
-<span><span class="co">#&gt; [32] "  Observed / expected...: 3.07"                                                                 </span></span>
-<span><span class="co">#&gt; [33] "  Relative risk.........: 3.70"                                                                 </span></span>
-<span><span class="co">#&gt; [34] "  Percent cases in area.: 24.0"                                                                 </span></span>
-<span><span class="co">#&gt; [35] "  Log likelihood ratio..: 3.458213"                                                             </span></span>
-<span><span class="co">#&gt; [36] "  P-value...............: 0.55"                                                                 </span></span>
-<span><span class="co">#&gt; [37] ""                                                                                               </span></span>
-<span><span class="co">#&gt; [38] "2.Location IDs included.: 2, 3, 1"                                                              </span></span>
-<span><span class="co">#&gt; [39] "  Coordinates / radius..: (33.930353 N, 3.172303 E) / 4.00 km"                                  </span></span>
-<span><span class="co">#&gt; [40] "  Span..................: 5.88 km"                                                              </span></span>
-<span><span class="co">#&gt; [41] "  Population............: 35"                                                                   </span></span>
-<span><span class="co">#&gt; [42] "  Number of cases.......: 0"                                                                    </span></span>
-<span><span class="co">#&gt; [43] "  Expected cases........: 2.73"                                                                 </span></span>
-<span><span class="co">#&gt; [44] "  Observed / expected...: 0"                                                                    </span></span>
-<span><span class="co">#&gt; [45] "  Relative risk.........: 0"                                                                    </span></span>
-<span><span class="co">#&gt; [46] "  Percent cases in area.: 0"                                                                    </span></span>
-<span><span class="co">#&gt; [47] "  Log likelihood ratio..: 3.013494"                                                             </span></span>
+<span><span class="co">#&gt; [23] ""</span></span>
+<span><span class="co">#&gt; [24] "CLUSTERS DETECTED"</span></span>
+<span><span class="co">#&gt; [25] ""</span></span>
+<span><span class="co">#&gt; [26] "1.Location IDs included.: 10, 9"</span></span>
+<span><span class="co">#&gt; [27] "  Coordinates / radius..: (34.113909 N, 3.087933 E) / 1.20 km"</span></span>
+<span><span class="co">#&gt; [28] "  Span..................: 1.20 km"</span></span>
+<span><span class="co">#&gt; [29] "  Population............: 25"</span></span>
+<span><span class="co">#&gt; [30] "  Number of cases.......: 6"</span></span>
+<span><span class="co">#&gt; [31] "  Expected cases........: 1.95"</span></span>
+<span><span class="co">#&gt; [32] "  Observed / expected...: 3.07"</span></span>
+<span><span class="co">#&gt; [33] "  Relative risk.........: 3.70"</span></span>
+<span><span class="co">#&gt; [34] "  Percent cases in area.: 24.0"</span></span>
+<span><span class="co">#&gt; [35] "  Log likelihood ratio..: 3.458213"</span></span>
+<span><span class="co">#&gt; [36] "  P-value...............: 0.55"</span></span>
+<span><span class="co">#&gt; [37] ""</span></span>
+<span><span class="co">#&gt; [38] "2.Location IDs included.: 2, 3, 1"</span></span>
+<span><span class="co">#&gt; [39] "  Coordinates / radius..: (33.930353 N, 3.172303 E) / 4.00 km"</span></span>
+<span><span class="co">#&gt; [40] "  Span..................: 5.88 km"</span></span>
+<span><span class="co">#&gt; [41] "  Population............: 35"</span></span>
+<span><span class="co">#&gt; [42] "  Number of cases.......: 0"</span></span>
+<span><span class="co">#&gt; [43] "  Expected cases........: 2.73"</span></span>
+<span><span class="co">#&gt; [44] "  Observed / expected...: 0"</span></span>
+<span><span class="co">#&gt; [45] "  Relative risk.........: 0"</span></span>
+<span><span class="co">#&gt; [46] "  Percent cases in area.: 0"</span></span>
+<span><span class="co">#&gt; [47] "  Log likelihood ratio..: 3.013494"</span></span>
 <span><span class="co">#&gt; [48] "  P-value...............: 0.68"</span></span></code></pre></div>
 <p>This file isn’t very convenient if we want to perform further
 manipulation. Don’t worry — <code><a href="../reference/ww_run_satscan.html">ww_run_satscan()</a></code> has got you
@@ -358,8 +360,8 @@ you can easily work with 😎. To access it, simply subset the results
 object like this: <code>results$.df</code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#&gt; # A tibble: 4 × 18</span></span>
-<span><span class="co">#&gt;   survey_area nr_EAs total_children total_cases `%_cases` location_ids geo      </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;        &lt;int&gt;          &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;    </span></span>
+<span><span class="co">#&gt;   survey_area nr_EAs total_children total_cases `%_cases` location_ids geo</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;        &lt;int&gt;          &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;</span></span>
 <span><span class="co">#&gt; 1 Kotido          36            333          26         7 10,9         34.11390…</span></span>
 <span><span class="co">#&gt; 2 Kotido          36            333          26         7 2,3,1        33.93035…</span></span>
 <span><span class="co">#&gt; 3 Kotido          36            333          26         7 15           34.11670…</span></span>
@@ -393,22 +395,24 @@ our dataset that stores the areas—in this case, district.</p>
 <span>  .by_area <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  .scan_for <span class="op">=</span> <span class="st">"high-low-rates"</span>,</span>
 <span>  .gam_based <span class="op">=</span> <span class="st">"wfhz"</span>,</span>
+<span>  latitude <span class="op">=</span> <span class="va">latitude</span>,</span>
+<span>  longitude <span class="op">=</span> <span class="va">longitude</span>,</span>
 <span>  area <span class="op">=</span> <span class="va">district</span>,</span>
 <span>  cleanup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>This returns the following outputs:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#&gt;  [1] "Abim.cas"               "Abim.clustermap.html"   "Abim.col.prj"          </span></span>
-<span><span class="co">#&gt;  [4] "Abim.ctl"               "Abim.geo"               "Abim.gis.prj"          </span></span>
-<span><span class="co">#&gt;  [7] "Abim.gis.shp"           "Abim.gis.shx"           "Abim.prm"              </span></span>
-<span><span class="co">#&gt; [10] "Kotido.cas"             "Kotido.clustermap.html" "Kotido.col.prj"        </span></span>
-<span><span class="co">#&gt; [13] "Kotido.ctl"             "Kotido.geo"             "Kotido.gis.prj"        </span></span>
+<code class="sourceCode R"><span><span class="co">#&gt;  [1] "Abim.cas"               "Abim.clustermap.html"   "Abim.col.prj"</span></span>
+<span><span class="co">#&gt;  [4] "Abim.ctl"               "Abim.geo"               "Abim.gis.prj"</span></span>
+<span><span class="co">#&gt;  [7] "Abim.gis.shp"           "Abim.gis.shx"           "Abim.prm"</span></span>
+<span><span class="co">#&gt; [10] "Kotido.cas"             "Kotido.clustermap.html" "Kotido.col.prj"</span></span>
+<span><span class="co">#&gt; [13] "Kotido.ctl"             "Kotido.geo"             "Kotido.gis.prj"</span></span>
 <span><span class="co">#&gt; [16] "Kotido.gis.shp"         "Kotido.gis.shx"         "Kotido.prm"</span></span></code></pre></div>
 <p>We can also obtain the tidy data frame:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#&gt; # A tibble: 8 × 19</span></span>
-<span><span class="co">#&gt;   survey_area nr_EAs total_children total_cases `%_cases` location_ids     geo  </span></span>
+<span><span class="co">#&gt;   survey_area nr_EAs total_children total_cases `%_cases` location_ids     geo</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;        &lt;int&gt;          &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;</span></span>
 <span><span class="co">#&gt; 1 Kotido          36            333          26         7 10,9             34.1…</span></span>
 <span><span class="co">#&gt; 2 Kotido          36            333          26         7 2,3,1            33.9…</span></span>

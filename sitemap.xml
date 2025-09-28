@@ -8,9 +8,11 @@
 <url><loc>https://nutspatial.github.io/wowi/index.html</loc></url>
 <url><loc>https://nutspatial.github.io/wowi/news/index.html</loc></url>
 <url><loc>https://nutspatial.github.io/wowi/reference/anthro.html</loc></url>
+<url><loc>https://nutspatial.github.io/wowi/reference/get_app_dir.html</loc></url>
 <url><loc>https://nutspatial.github.io/wowi/reference/index.html</loc></url>
 <url><loc>https://nutspatial.github.io/wowi/reference/wowi-package.html</loc></url>
 <url><loc>https://nutspatial.github.io/wowi/reference/ww_configure_satscan.html</loc></url>
+<url><loc>https://nutspatial.github.io/wowi/reference/ww_run_app.html</loc></url>
 <url><loc>https://nutspatial.github.io/wowi/reference/ww_run_satscan.html</loc></url>
 <url><loc>https://nutspatial.github.io/wowi/reference/ww_wrangle_data.html</loc></url>
 </urlset>

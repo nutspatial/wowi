@@ -17,7 +17,7 @@ ww_run_satscan() directly."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">wowi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@ ww_run_satscan() directly."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Run SaTScan for Bernoulli purely spatial scan to detect statistically significant clusters of acute malnutrition</h1>
-      <small class="dont-index">Source: <a href="https://github.com/nutspatial/wowi/blob/v0.1.0-alpha/R/satscan-runner.R" class="external-link"><code>R/satscan-runner.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/nutspatial/wowi/blob/main/R/satscan-runner.R" class="external-link"><code>R/satscan-runner.R</code></a></small>
       <div class="d-none name"><code>ww_run_satscan.Rd</code></div>
     </div>
 
@@ -69,6 +69,8 @@ allowing users to skip these two steps in the workflow and instead call
 <span>  .by_area <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  .scan_for <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"high-rates"</span>, <span class="st">"high-low-rates"</span><span class="op">)</span>,</span>
 <span>  .gam_based <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wfhz"</span>, <span class="st">"muac"</span>, <span class="st">"combined"</span><span class="op">)</span>,</span>
+<span>  <span class="va">latitude</span>,</span>
+<span>  <span class="va">longitude</span>,</span>
 <span>  area <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cleanup <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
@@ -134,6 +136,18 @@ are identified, and for which should be excluded from the analysis. Default
 is <code>wfhz</code>.</p></dd>
 
 
+<dt id="arg-latitude">latitude<a class="anchor" aria-label="anchor" href="#arg-latitude"></a></dt>
+<dd><p>Geographical coordinates. An unquoted string for the variable
+containing the x-axis, also known as latitude (east-west direction). The
+variable must be named "latitude".</p></dd>
+
+
+<dt id="arg-longitude">longitude<a class="anchor" aria-label="anchor" href="#arg-longitude"></a></dt>
+<dd><p>Geographical coordinates. An unquoted string for the variable
+containing the y-axis, also know as longitude (north-south direction). The
+variable must be named "longitude".</p></dd>
+
+
 <dt id="arg-area">area<a class="anchor" aria-label="anchor" href="#arg-area"></a></dt>
 <dd><p>An unquoted string for the variable containing the analysis areas
 for iteration.</p></dd>
@@ -162,8 +176,8 @@ clusters, with red bubbles for high-rate clusters and blue for low-rate clusters
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The geographical coordinates must be provided as latitude and longitude values.
 If the input data uses different variable names, they must be renamed accordingly;
-otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis
-(north-south direction), and longitude the to X-axis (east-west direction).</p>
+otherwise, the analysis will be aborted. Latitude corresponds to the X-axis
+(east-west direction), and longitude the to X-axis (north-south direction).</p>
     </div>
 
     <div class="section level2">
@@ -171,7 +185,7 @@ otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Wrangle data with `{mwana}` ----</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">anthro</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>longitude <span class="op">=</span> <span class="va">x</span>, latitude <span class="op">=</span> <span class="va">y</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span>longitude <span class="op">=</span> <span class="va">y</span>, latitude <span class="op">=</span> <span class="va">x</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">mwana</span><span class="fu">::</span><span class="fu"><a href="https://nutriverse.io/mwana/reference/mw_wrangle_wfhz.html" class="external-link">mw_wrangle_wfhz</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    sex <span class="op">=</span> <span class="va">sex</span>,</span></span>
 <span class="r-in"><span>    .recode_sex <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
@@ -202,6 +216,8 @@ otherwise, the analysis will be aborted. Latitude corresponds to the Y-axis
 <span class="r-in"><span>    satscan_version <span class="op">=</span> <span class="st">"10.3.2"</span>,</span></span>
 <span class="r-in"><span>    .scan_for <span class="op">=</span> <span class="st">"high-low-rates"</span>,</span></span>
 <span class="r-in"><span>    .gam_based <span class="op">=</span> <span class="st">"wfhz"</span>,</span></span>
+<span class="r-in"><span>    latitude <span class="op">=</span> <span class="va">latitude</span>,</span></span>
+<span class="r-in"><span>    longitude <span class="op">=</span> <span class="va">longitude</span>,</span></span>
 <span class="r-in"><span>    .by_area <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>    area <span class="op">=</span> <span class="cn">NULL</span>,</span></span>
 <span class="r-in"><span>    verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>

@@ -27,7 +27,7 @@
 
     <a class="navbar-brand me-2" href="index.html">wowi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,21 +94,29 @@ Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot
 <span><span class="co">##  survey_area nr_EAs total_children total_cases `%_cases` location_ids   geo   radius span  children n_cases expected_cases observedExpected relative_risk</span></span>
 <span><span class="co">##  &lt;chr&gt;        &lt;int&gt;          &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;int&gt;   &lt;int&gt;          &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 District        36            532         104        19 23,24,26,25,3… 13.6… 1.43 … 1.88…      170       4           33.2             0.12         0.085</span></span>
-<span><span class="co">## 2 District        36            532         104        19 16,20,14,12,1… 13.8… 26.24… 43.5…      258      84           50.4             1.67         4.46 </span></span>
+<span><span class="co">## 2 District        36            532         104        19 16,20,14,12,1… 13.8… 26.24… 43.5…      258      84           50.4             1.67         4.46</span></span>
 <span><span class="co">## # ℹ 4 more variables: `%_cases_in_area` &lt;dbl&gt;, log_lik_ratio &lt;dbl&gt;, pvalue &lt;dbl&gt;, ipc_amn &lt;chr&gt;</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="shiny-app">Shiny App<a class="anchor" aria-label="anchor" href="#shiny-app"></a>
+</h3>
+<p>To use the built-in Shiny application, run the following function:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/ww_run_app.html">ww_run_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>This will initiate the App using the installed web browser in your current machine.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>If you use <code>wowi</code> package in your work, please cite using the suggested citation provided by a call to <code><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation()</a></code> function as follows:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"wowi"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; To cite wowi in publications use:</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;   Tomás Zaba (2025). _wowi: Utilities for detecting statistically</span></span>
 <span><span class="co">#&gt;   significant spatial clusters of high acute malnutrition rates using</span></span>
-<span><span class="co">#&gt;   SaTScan's Bernoulli spatial-scan model_. R package version 0.1.0,</span></span>
+<span><span class="co">#&gt;   SaTScan's Bernoulli spatial-scan model_. R package version 1.0.0,</span></span>
 <span><span class="co">#&gt;   &lt;https://nutspatial.github.io/wowi/&gt;.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
@@ -117,7 +125,7 @@ Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot
 <span><span class="co">#&gt;     title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model},</span></span>
 <span><span class="co">#&gt;     author = {{Tomás Zaba}},</span></span>
 <span><span class="co">#&gt;     year = {2025},</span></span>
-<span><span class="co">#&gt;     note = {R package version 0.1.0},</span></span>
+<span><span class="co">#&gt;     note = {R package version 1.0.0},</span></span>
 <span><span class="co">#&gt;     url = {https://nutspatial.github.io/wowi/},</span></span>
 <span><span class="co">#&gt;   }</span></span></code></pre></div>
 </div>
