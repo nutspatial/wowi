@@ -14,7 +14,7 @@ testthat::test_that(
     ### Sample data ----
     x <- anthro |>
       dplyr::filter(district == "Kotido") |>
-      dplyr::rename(longitude = x, latitude = y) |>
+      dplyr::rename(longitude = y, latitude = x) |>
       mwana::mw_wrangle_wfhz(
         sex = sex,
         .recode_sex = TRUE,
