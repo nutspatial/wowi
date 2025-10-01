@@ -65,7 +65,7 @@ ww_run_app()
 ```
 
 This will initiate the package's Shiny App using the installed web browser 
-in your current machine.
+on machine.
 
 
 ## Citation  
