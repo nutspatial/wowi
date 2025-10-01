@@ -20,7 +20,10 @@ testthat::test_that("App works as expected", {
 
   ### Get input data into data uploading tab ----
   #### Read file ----
-  data <- read.csv(file = system.file("app", "anthro2.csv", package = "wowi"))
+  data <- read.csv(
+    file = system.file("app", "anthro_.csv", package = "wowi"),
+    sep = ";"
+  )
   tmpfile <- tempfile(fileext = ".csv")
   write.csv(data, tmpfile, row.names = FALSE)
 
