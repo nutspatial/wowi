@@ -87,13 +87,14 @@ coldspot; Size of the bubble: span of the spot.</figcaption>
 
 ### Shiny App
 
-To use the built-in Shiny application, run the following function:
+To use the included Shiny App, run the following function in R:
 
 ``` r
 ww_run_app()
 ```
 
-This will initiate the App using the installed web browser in your current machine.
+This will initiate the package’s Shiny App using the installed web
+browser on machine.
 
 ## Citation
 
