@@ -26,15 +26,15 @@ Imports:
     withr,
     stringr (>= 1.5.1),
     tibble,
-    shiny
-Suggests: 
-    bslib,
-    covr (>= 3.6.4),
-    DT,
-    knitr,
-    openxlsx,
-    rmarkdown,
+    shiny,
     shinycssloaders,
+    bslib,
+    openxlsx,
+    DT
+Suggests: 
+    covr (>= 3.6.4),
+    knitr,
+    rmarkdown,
     shinytest2,
     spelling,
     testthat (>= 3.0.0)
