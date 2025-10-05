@@ -41,7 +41,6 @@ wrangle_data <- function(
   ## Geographical coordinates file ----
   geo <- .data |>
     dplyr::select(locationid = .data$cluster, {{ latitude }}, {{ longitude }}) |>
-    dplyr::relocate({{ longitude }}, .after = .data$locationid) |>
     dplyr::slice_head(by = .data$locationid, n = 1) |>
     dplyr::arrange(.data$locationid)
 
