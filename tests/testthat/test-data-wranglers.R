@@ -44,7 +44,7 @@ testthat::test_that(
     testthat::expect_true(length(r[3]) == length(unique(r[3])))
     testthat::expect_true(all(c("locationid", "cases") %in% names(r[[1]])))
     testthat::expect_true(all(c("locationid", "ctrls") %in% names(r[[2]])))
-    testthat::expect_true(all(c("locationid", "longitude", "latitude") %in% names(r[[3]])))
+    testthat::expect_true(all(c("locationid", "latitude", "longitude") %in% names(r[[3]])))
     testthat::expect_true(sum(r[[1]][2]) == 26)
     testthat::expect_true(sum(r[[2]][2]) == 307)
   }
@@ -89,7 +89,7 @@ testthat::test_that(
     testthat::expect_true(length(r[3]) == length(unique(r[3])))
     testthat::expect_true(all(c("locationid", "cases") %in% names(r[[1]])))
     testthat::expect_true(all(c("locationid", "ctrls") %in% names(r[[2]])))
-    testthat::expect_true(all(c("locationid", "longitude", "latitude") %in% names(r[[3]])))
+    testthat::expect_true(all(c("locationid", "latitude", "longitude") %in% names(r[[3]])))
     testthat::expect_true(sum(r[[1]][2]) == 70)
     testthat::expect_true(sum(r[[2]][2]) == 261)
   }
@@ -144,7 +144,7 @@ testthat::test_that(
     testthat::expect_true(length(r[3]) == length(unique(r[3])))
     testthat::expect_true(all(c("locationid", "cases") %in% names(r[[1]])))
     testthat::expect_true(all(c("locationid", "ctrls") %in% names(r[[2]])))
-    testthat::expect_true(all(c("locationid", "longitude", "latitude") %in% names(r[[3]])))
+    testthat::expect_true(all(c("locationid", "latitude", "longitude") %in% names(r[[3]])))
     testthat::expect_true(sum(r[[1]][2]) == 87)
     testthat::expect_true(sum(r[[2]][2]) == 259)
   }
