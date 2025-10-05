@@ -22,7 +22,7 @@ testthat::test_that("App works as expected", {
   #### Read file ----
   data <- read.csv(
     file = system.file("app", "anthro_.csv", package = "wowi"),
-    sep = ";"
+    sep = ","
   )
   tmpfile <- tempfile(fileext = ".csv")
   write.csv(data, tmpfile, row.names = FALSE)

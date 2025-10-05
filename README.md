@@ -53,11 +53,12 @@ pak::pak(pkg = "nutspatial/wowi")
 ## What does `wowi` do?
 
 It takes a dataset with GPS coordinates (latitude and longitude), scans
-for clusters of acute malnutrition—either high or low, depending on the
-user’s specification—across the survey area, and returns three main
-outputs: (1) an interactive HTML map displaying the detected clusters
-(previewed below); (2) a .txt file containing the results; and (3) a
-table with summary statistics and metadata parsed from the .txt file.
+for clusters of acute malnutrition — either high or low, depending on
+the user’s specification — across the survey area, and returns three
+main outputs: (1) an interactive HTML map displaying the detected
+clusters (previewed below); (2) a .txt file containing the results; and
+(3) a table with summary statistics and metadata parsed from the .txt
+file.
 
 This package is particularly handy when working with datasets that span
 multiple areas or administrative units, enabling consistent, area-wise
@@ -93,8 +94,8 @@ To use the included Shiny App, run the following function in R:
 ww_run_app()
 ```
 
-This will initiate the package’s Shiny App using the installed web
-browser on machine.
+This will initiate the app through the web browser installed on your
+machine.
 
 ## Citation
 
