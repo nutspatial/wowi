@@ -50,7 +50,8 @@ ui <- tagList(
       )
     ),
 
-    ## ---- Tab 1: wowi Home -----------------------------------------------------
+    ## ---- Tab 1: wowi Home ---------------------------------------------------
+
     nav_panel(
       title = strong("Home"),
       icon = icon("house"),
@@ -60,9 +61,13 @@ ui <- tagList(
         sidebar = div(
           style = "padding: 1rem;",
           tags$h4("Contents"),
-          tags$h6(tags$a(href = "#sec1", "Introduction")),
-          tags$h6(tags$a(href = "#sec2", "Usage")),
-          tags$h6(tags$a(href = "#sec3", "Useful Resources"))
+          tags$h6(tags$a(href = "#sec1", "Welcome")),
+          tags$h6(tags$a(href = "#sec2", "Data Upload")),
+          tags$h6(tags$a(href = "#sec3", "Data Wrangling")),
+          tags$h6(tags$a(href = "#sec4", "Spatial Scan")),
+          tags$h6(tags$a(href = "#sec5", "Authorship")),
+          tags$h6(tags$a(href = "#sec6", "License")),
+          tags$h6(tags$a(href = "#sec7", "Useful Resources"))
         ),
         card(
           style = "padding: 1rem;",
@@ -103,43 +108,49 @@ ui <- tagList(
                 )
               )
             ),
+            tags$hr(),
             tags$div(
               id = "sec1",
               style = "font-family:",
               tags$p(
-                "This app is part of the", tags$code("wowi"), "package, designed for
-          non-R users.", "The", tags$code("wowi"), "package is a set of utility
-          functions for detecting spatial clusters - whether high-only or high
-          and low rates - of acute malnutrition that are unlikely to be ocurring by
-          chance. These clusters are identified using SaTScan's Bernoulli
-          spatial-scan model."
+                "
+                This app is part of the", tags$code("wowi"), "package, designed for
+                non-R users.", "The", tags$code("wowi"), "package is a set of utility
+                functions for detecting spatial clusters - whether high-only or high
+                and low rates - of acute malnutrition that are unlikely to be ocurring by
+                chance. These clusters are identified using SaTScan's Bernoulli
+                spatial-scan model.
+                "
               ),
               tags$p(
-                "The app only does anything useful if you have SaTScan installed on
-          your computer, and if the", tags$code("wowi"), "package is installed
-          in R."
-              ),
+                "
+                The app only does anything useful if you have SaTScan installed on
+                your computer, and if the", tags$code("wowi"), "package is installed in R.
 
-              ### How to use the app ----
-              tags$div(
-                id = "sec2",
-                hr(),
-                tags$h5(tags$strong("Usage")),
-                tags$p(
-                  "The app is divided into three easy-to-manage tabs, as described below:"
-                ),
-                tags$ol(
-                  tags$li("Data Uploading"),
-                  tags$li("Data Wrangling"),
-                  tags$li("Run Spatial Scan")
-                )
+                "
               ),
-
-              #### Data uploading ----
-              tags$p(tags$strong("1. Data Uploading")),
               tags$p(
-                "In this tab, you are expected to upload the input dataset in
-              comma-separated format (CSV). Only this format is accepted."
+                "
+                  The app is divided into three easy-to-manage tabs, as described below:
+                  "
+              ),
+              tags$ol(
+                tags$li("Data Upload"),
+                tags$li("Data Wrangling"),
+                tags$li("Spatial Scan")
+              )
+            ),
+            tags$hr(),
+
+            #### Data uploading ----
+            tags$div(
+              id = "sec2",
+              tags$p(tags$b("Data Upload")),
+              tags$p(
+                "
+                In this tab, you are expected to upload the input dataset in
+                comma-separated format (CSV). Only this format is accepted.
+                "
               ),
               tags$p(
                 tags$b(
@@ -150,26 +161,35 @@ ui <- tagList(
                       tags$li("Aspatial Variables"),
                       tags$span(
                         style = "font-weight: normal; space-between;",
-                        "Acute malnutrition can be defined based on weight-for-heigth
-                    z-scores (WFHZ), based on Mid-Upper Arm Circumference (MUAC)
-                     or based on the combination of the former two, including or
-                      not bilateral oedema. The required variables to be uploaded
-                       will depend on the method to be considered first and
-                       foremost. Nonetheless, all in all:"
+                        "
+                        Acute malnutrition can be defined based on weight-for-heigth
+                        z-scores (WFHZ), based on Mid-Upper Arm Circumference (MUAC)
+                        or based on the combination of the former two, including or
+                        not bilateral oedema. The required variables to be uploaded
+                        will depend on the method to be considered first and
+                        foremost. Nonetheless, all in all:
+                        "
                       ),
                       tags$ul(
                         tags$div(
                           style = "font-weight: normal;",
                           tags$br(),
                           tags$li(
-                            tags$b("Age:"), "must be in months. Any values outside the
-                       range of 6 to 59 months old will be set as 'not applicable'.
-                       The variable name must be written in lowercase (age)."
+                            tags$b("Age:"),
+                            "
+                            must be in months. Any values outside the
+                            range of 6 to 59 months old will be set as 'not
+                            applicable'. The variable name must be written in
+                            lowercase (age).
+                            "
                           ),
                           tags$li(
-                            tags$b("Sex:"), "must be code as 1 for boys/male and 2 for
-                       girls/female. The variable name must be written in lowercase
-                       (sex)."
+                            tags$b("Sex:"),
+                            "
+                            must be code as 1 for boys/male and 2 for
+                            girls/female. The variable name must be written in lowercase
+                            (sex).
+                            "
                           ),
                           tags$li(
                             tags$b("MUAC:"), "must be in centimetres."
@@ -204,89 +224,120 @@ ui <- tagList(
                       br(),
                       tags$p(
                         style = "font-weight: normal",
-                        "Once uploaded, the file becomes available for use in the
-                       following tab."
-                      ),
+                        "
+                        Once uploaded, the file becomes available for use in the
+                        following tab.
+                        "
+                      )
                     )
                   )
-                ),
+                )
+              ),
+              tags$hr(),
 
-                #### Data wrangling ----
-                tags$p(tags$strong("2. Data Wrangling")),
+              #### Data wrangling ----
+              tags$div(
+                id = "sec3",
+                tags$p(tags$b("Data Wrangling")),
                 tags$p(
-                  "The wrangling workflow consists in calculating z-scores,
-              identifying outliers, flagging them, and defining acute malnutrition.
-              You must select the method on which the wrangling should be based.
-              This step of the analysis uses data wranglers from the",
-                  tags$code("mwana"), "package under the hood. Read more about them
-              in the resources provided below."
+                  "
+                  The wrangling workflow consists in calculating z-scores,
+                  identifying outliers, flagging them, and defining acute malnutrition.
+                  You must select the method on which the wrangling should be based.
+                  This step of the analysis uses data wranglers from the
+                  ",
+                  tags$code("mwana"),
+                  "
+                  package under the hood. Read more about them in the resources
+                  provided below.
+                  "
                 ),
                 tags$p("In this process, the variable oedema is optional."),
-                tags$p("Once wrangled, the data becomes available for use in the
-            following tab.")
-              ),
-
-              #### Run Spatial Scan ----
-              tags$p(tags$strong("3. Run Spatial Scan")),
-              tags$p(
-                "In this tab, begin by specifying the scope of your analysis: either
-            single-area or multiple-area. Single-area analysis applies when your
-             dataset contains only one area (e.g., district, county), and the
-             scan should be run within that area. Multiple-area analysis applies
-              when your dataset includes several areas, and the scan should be
-              run across them. If conducting a single-area analysis, enter the
-              name of the area under review in the corresponding input field.
-              Otherwise, for multiple-area analysis, specify the variable in your
-               dataset that contains the area names. Once complete, fill in the
-               remaining fields as appropriate, then click Run Scan to initiate
-               the process."
-              ),
-              tags$p(
-                "Once the scan is complete, several files will be saved in the
-            directory you specified earlier. A list of these files will appear
-            under the 'Created Files' section. Additionally, the 'Summary Results
-            of Detected Clusters' section will display a table showing the
-            clusters identified in each analysis area. You can download the
-            output table by clicking the download button, which becomes available
-            once the scan has finished."
+                tags$p(
+                  "
+                  Once wrangled, the data becomes available for use in the following
+                  tab.
+                  "
+                )
               )
             ),
+            tags$hr(),
 
-            #### Useful Resources ----
+            #### Run Spatial Scan ----
             tags$div(
-              id = "sec3",
-              hr(),
-              tags$h5(tags$strong("Useful Resources")),
-              tags$p("Read more about:"),
-              tags$ul(
-                tags$li(
-                  tags$code("mwana"),
-                  tags$a(href = "https://nutriverse.io/mwana/dev/", "here")
-                ),
-                tags$li(
-                  tags$code("wowi"),
-                  tags$a(href = "https://nutspatial.github.io/wowi/", "here")
-                ),
-                tags$li(
-                  tags$code("SaTScan"),
-                  tags$a(href = "https://www.satscan.org", "here")
-                )
+              id = "sec4",
+              tags$p(tags$b("Spatial Scan")),
+              tags$p(
+                "
+                In this tab, begin by specifying the scope of your analysis: either
+                single-area or multiple-area. Single-area analysis applies when your
+                dataset contains only one area (e.g., district, county), and the
+                scan should be run within that area. Multiple-area analysis applies
+                when your dataset includes several areas, and the scan should be
+                run across them. If conducting a single-area analysis, enter the
+                name of the area under review in the corresponding input field.
+                Otherwise, for multiple-area analysis, specify the variable in your
+                dataset that contains the area names. Once complete, fill in the
+                remaining fields as appropriate, then click Run Scan to initiate
+                the process.
+               "
+              ),
+              tags$p(
+                "
+                Once the scan is complete, several files will be saved in the
+                directory you specified earlier. A list of these files will appear
+                under the 'Created Files' section. Additionally, the 'Summary Results
+                of Detected Clusters' section will display a table showing the
+                clusters identified in each analysis area. You can download the
+                output table by clicking the download button, which becomes available
+                once the scan has finished.
+                "
+              )
+            )
+          ),
+          tags$hr(),
+
+          #### Authorship ----
+          tags$div(
+            id = "sec5",
+            tags$b("Authorship"),
+            tags$p("This app was developed and is maintained by Tomás Zaba.")
+          ),
+          tags$hr(),
+          tags$div(
+            id = "sec6",
+            tags$b("License"),
+            tags$p("This app is licensed under the GPL (>=3) license")
+          ),
+          tags$hr(),
+
+          #### Useful Resources ----
+          tags$div(
+            id = "sec6",
+            tags$b("Useful Resources"),
+            tags$p("Read more about:"),
+            tags$ul(
+              tags$li(
+                tags$code("mwana"),
+                tags$a(href = "https://nutriverse.io/mwana/dev/", "click here")
+              ),
+              tags$li(
+                tags$code("wowi"),
+                tags$a(href = "https://nutspatial.github.io/wowi/", "click here")
+              ),
+              tags$li(
+                tags$code("SaTScan"),
+                tags$a(href = "https://www.satscan.org", "click here")
               )
             )
           )
-        ),
-
-        ### Footnote ----
-        tags$footer(
-          "Made with ❤️ by Tomás Zaba",
-          style = "color: grey; font-size: 12px; text-align: right;"
         )
       )
     ),
 
     ## ---- Tab 2: Data Uploading ------------------------------------------------
     nav_panel(
-      title = strong("Data Uploading"),
+      title = strong("Data Upload"),
       layout_sidebar(
         sidebar = sidebar(
           width = 400,
@@ -373,7 +424,7 @@ ui <- tagList(
 
     ## ---- Tab 4: Run Spatial Scan ----------------------------------------------
     nav_panel(
-      title = strong("Run Spatial Scan"),
+      title = strong("Spatial Scan"),
       layout_sidebar(
         sidebar = sidebar(
           width = 400,
