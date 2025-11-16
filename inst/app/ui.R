@@ -45,7 +45,7 @@ ui <- tagList(
       ### Right side of the page navigation bar ----
       tags$span("v.1.0.0",
         id = "app-version",
-        style = "font-size: 12.5px; color:  rgba(255, 255, 255, 0.4);
+        style = "font-size: 12.5px; color:  rgba(31, 42, 68, 0.58);
         position: fixed; top: 40px; right: 20px;"
       )
     ),
@@ -56,9 +56,8 @@ ui <- tagList(
       title = strong("Home"),
       icon = icon("house"),
       # Bootstrap 5 icon name
-
       layout_sidebar(
-        sidebar = div(
+        sidebar = tags$div(
           style = "padding: 1rem;",
           tags$h4("Contents"),
           tags$h6(tags$a(href = "#sec1", "Welcome")),
@@ -82,10 +81,10 @@ ui <- tagList(
                 #### Title ----
                 tags$h3(
                   style = "margin: 0; font-weight: bold;",
-                  list(
-                    tags$code("wowi"),
-                    " App: Detecting Statistically Significant Spatial Clusters of Acute Malnutrition"
-                  )
+                    "
+                    Detecting Statistically Significant Spatial Clusters of 
+                    Acute Malnutrition
+                    "
                 ),
 
                 #### Logo ----
@@ -111,7 +110,7 @@ ui <- tagList(
             tags$hr(),
             tags$div(
               id = "sec1",
-              style = "font-family:",
+              style = "text-align: justify;",
               tags$p(
                 "
                 This app is part of the", tags$code("wowi"), "package, designed for
@@ -145,6 +144,7 @@ ui <- tagList(
             #### Data uploading ----
             tags$div(
               id = "sec2",
+              style = "text-align: justify;",
               tags$p(tags$b("Data Upload")),
               tags$p(
                 "
@@ -238,6 +238,7 @@ ui <- tagList(
               #### Data wrangling ----
               tags$div(
                 id = "sec3",
+                style = "text-align: justify;",
                 tags$p(tags$b("Data Wrangling")),
                 tags$p(
                   "
@@ -266,6 +267,7 @@ ui <- tagList(
             #### Run Spatial Scan ----
             tags$div(
               id = "sec4",
+              style = "text-align: justify;",
               tags$p(tags$b("Spatial Scan")),
               tags$p(
                 "
@@ -300,13 +302,15 @@ ui <- tagList(
           #### Authorship ----
           tags$div(
             id = "sec5",
-            tags$b("Authorship"),
+            style = "text-align: justify;",
+            tags$p(tags$b("Authorship")),
             tags$p("This app was developed and is maintained by Tomás Zaba.")
           ),
           tags$hr(),
           tags$div(
             id = "sec6",
-            tags$b("License"),
+            style = "text-align: justify;",
+            tags$p(tags$b("License")),
             tags$p("This app is licensed under the GPL (>=3) license")
           ),
           tags$hr(),
@@ -314,7 +318,8 @@ ui <- tagList(
           #### Useful Resources ----
           tags$div(
             id = "sec6",
-            tags$b("Useful Resources"),
+            style = "text-align: justify;",
+            tags$p(tags$b("Useful Resources")),
             tags$p("Read more about:"),
             tags$ul(
               tags$li(
@@ -405,7 +410,7 @@ ui <- tagList(
             br(),
             actionButton(
               inputId = "apply_wrangle",
-              label = "Apply Data Wrangling",
+              label = "Wrangle",
               class = "btn-primary"
             )
           )
@@ -422,7 +427,7 @@ ui <- tagList(
       )
     ),
 
-    ## ---- Tab 4: Run Spatial Scan ----------------------------------------------
+    ## ---- Tab 4: Spatial Scan ----------------------------------------------
     nav_panel(
       title = strong("Spatial Scan"),
       layout_sidebar(
