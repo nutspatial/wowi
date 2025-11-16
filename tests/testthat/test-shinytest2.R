@@ -15,7 +15,7 @@ testthat::test_that("App works as expected", {
   ## ---- Navigate to Data Uploading Tab ---------------------------------------
 
   ### Click on the "Data Uploading" tab ----
-  app$click(selector = "a[data-value='<strong>Data Uploading</strong>']")
+  app$click(selector = "a[data-value='<strong>Data Upload</strong>']")
   app$wait_for_idle(timeout = 5000)
 
   ### Get input data into data uploading tab ----
@@ -145,7 +145,7 @@ print(vals)
   ## ---- Navigate to Run Spatial Scan tab -------------------------------------
 
   ### Click on the "Data Wrangling" tab
-  app$click(selector = "a[data-value='<strong>Run Spatial Scan</strong>']")
+  app$click(selector = "a[data-value='<strong>Spatial Scan</strong>']")
   app$wait_for_idle(timeout = 5000)
 
   ### Set wowi hyperparamters ----
