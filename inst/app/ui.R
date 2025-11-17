@@ -125,7 +125,6 @@ ui <- tagList(
                 "
                 The app only does anything useful if you have SaTScan installed on
                 your computer, and if the", tags$code("wowi"), "package is installed in R.
-
                 "
               ),
               tags$p(
