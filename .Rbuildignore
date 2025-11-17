@@ -2,7 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^\.github$
-^README\.Rmd$
 ^data-raw$
 ^_pkgdown\.yml$
 ^docs$
@@ -13,3 +12,4 @@
 ^vignettes/\.quarto$
 ^vignettes/*_files$
 _\.new\.png$
+^README\.qmd$
