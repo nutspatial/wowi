@@ -53,7 +53,7 @@ ui <- tagList(
     ## ---- Tab 1: wowi Home ---------------------------------------------------
 
     nav_panel(
-      title = strong("Home"),
+      title = "Home",
       icon = icon("house"),
       # Bootstrap 5 icon name
       layout_sidebar(
@@ -342,16 +342,16 @@ ui <- tagList(
 
     ## ---- Tab 2: Data Uploading ------------------------------------------------
     nav_panel(
-      title = strong("Data Upload"),
+      title = "Data Upload",
       layout_sidebar(
         sidebar = sidebar(
           width = 400,
           card(
-            card_header("Upload Data Here"),
+            card_header("Upload Data"),
             style = "width: 350px;",
             fileInput(
               inputId = "upload",
-              label = "Upload a CSV file",
+              label = "Upload a .csv file",
               buttonLabel = "Browse...",
               accept = ".csv"
             ),
@@ -370,18 +370,18 @@ ui <- tagList(
           )
         ),
         card(
-          card_header("Uploaded Data Preview"),
+          card_header("Data Preview"),
           conditionalPanel("output.fileUploaded", DTOutput("uploadedDataTable")),
-          conditionalPanel("output.showProgress", div(
+          conditionalPanel("output.showProgress", tags$div(
             style = "text-align: center; padding: 50px;",
             div(class = "spinner-border text-primary", role = "status"),
-            h4("Loading data...", style = "color: #007bff; margin-top: 20px;"),
+            h4("Loading data...", style = "margin-top: 20px;"),
             p("Please wait while we process your file.")
           )),
           conditionalPanel("!output.fileUploaded", div(
             style = "text-align: center; padding: 50px;",
             h4("No file uploaded yet", style = "color: #6c757d;"),
-            p("Please upload a CSV file to see the data preview.")
+            p("Please upload a .csv file to see the data preview.")
           ))
         )
       )
@@ -390,7 +390,7 @@ ui <- tagList(
     ## ---- Tab 3: Data Wrangling ------------------------------------------------
 
     nav_panel(
-      title = strong("Data Wrangling"),
+      title = "Data Wrangling",
       layout_sidebar(
         sidebar = sidebar(
           width = 500,
@@ -416,7 +416,7 @@ ui <- tagList(
           )
         ),
         card(
-          card_header("Wrangled Data"),
+          card_header("Data Preview"),
           withSpinner(
             ui_element = DTOutput("wrangled_data"),
             type = 1,
@@ -429,7 +429,7 @@ ui <- tagList(
 
     ## ---- Tab 4: Spatial Scan ----------------------------------------------
     nav_panel(
-      title = strong("Spatial Scan"),
+      title = "Spatial Scan",
       layout_sidebar(
         sidebar = sidebar(
           width = 400,
@@ -470,7 +470,7 @@ ui <- tagList(
 
             ### Second column: table card ----
             card(
-              card_header("Summary Results of Detected Clusters"),
+              card_header("Results of Detected Clusters"),
               withSpinner(
                 ui_element = DTOutput("clusters"),
                 type = 3,
