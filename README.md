@@ -2,7 +2,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="man/figures/logo.png" align="right" width="200px" alt="wowi website" /></a>
+# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="man/figures/logo.png" align="right" width="100%" alt="wowi website" /></a>
 
 <!-- badges: start -->  
 [![Project Status: WIP – Initial development is in progress, but there
@@ -101,23 +101,24 @@ citation provided by a call to `citation()` function as follows:
 
 ``` r
 citation("wowi")
-#> To cite wowi in publications use:
-#> 
-#>   Tomás Zaba (2025). _wowi: Utilities for detecting statistically
-#>   significant spatial clusters of high acute malnutrition rates using
-#>   SaTScan's Bernoulli spatial-scan model_. R package version 1.0.0,
-#>   <https://nutspatial.github.io/wowi/>.
-#> 
-#> A BibTeX entry for LaTeX users is
-#> 
-#>   @Manual{,
-#>     title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model},
-#>     author = {{Tomás Zaba}},
-#>     year = {2025},
-#>     note = {R package version 1.0.0},
-#>     url = {https://nutspatial.github.io/wowi/},
-#>   }
 ```
+
+    To cite wowi in publications use:
+
+      Tomás Zaba (2025). _wowi: Utilities for detecting statistically
+      significant spatial clusters of high acute malnutrition rates using
+      SaTScan's Bernoulli spatial-scan model_. R package version 1.0.0,
+      <https://nutspatial.github.io/wowi/>.
+
+    A BibTeX entry for LaTeX users is
+
+      @Manual{,
+        title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model},
+        author = {{Tomás Zaba}},
+        year = {2025},
+        note = {R package version 1.0.0},
+        url = {https://nutspatial.github.io/wowi/},
+      }
 
 ## Community guidelines
 
