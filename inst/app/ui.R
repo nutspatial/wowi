@@ -421,9 +421,12 @@ ui <- tagList(
           card_header("Data Preview"),
           withSpinner(
             ui_element = DTOutput("wrangled_data"),
-            type = 1,
-            color = "#398DF3",
-            caption = div("Wrangling data", br(), h5("Please wait..."))
+            type = 8,
+            color.background = "#9dac7c",
+            image = "logo.png",
+            image.height = "50px",
+            color = "#9dac7c",
+            caption = div(h6("Wrangling"), h6("Please wait..."))
           )
         )
       )
@@ -478,9 +481,12 @@ ui <- tagList(
               card_header("Results of Detected Clusters"),
               withSpinner(
                 ui_element = DTOutput("clusters"),
-                type = 3,
-                color.background = "#398DF3",
-                caption = div("Scanning through", br(), h5("Please wait..."))
+                type = 8,
+                color.background = "#9dac7c",
+                image = "logo.png",
+                image.height = "50px",
+                color = "#9dac7c",
+                caption = div(h6("Scanning"), h6("Please wait..."))
               ),
               uiOutput(outputId = "download")
             )

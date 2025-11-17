@@ -1,7 +1,8 @@
 
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="man/figures/logo.jpg" align="right" height="200px" alt="wowi website" /></a>
+# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="man/figures/logo.png" align="right" width="300px" height="200px" alt="wowi website" /></a>
 
 <!-- badges: start -->  
 [![Project Status: WIP – Initial development is in progress, but there
@@ -68,12 +69,8 @@ geospatial manipulation or integration into other mapping workflows.
 
 ### A glimpse of detected hotspots and coldspots
 
-<figure>
-<img src="man/figures/detected-clusters.png"
-alt="Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot." />
-<figcaption aria-hidden="true">Red bubble: hotspot; blue bubble:
-coldspot; Size of the bubble: span of the spot.</figcaption>
-</figure>
+![Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span
+of the spot.](man/figures/detected-clusters.png)
 
 ### A glimpse of the summary table
 

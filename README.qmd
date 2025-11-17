@@ -1,19 +1,15 @@
 ---
-output: github_document
+format: gfm
+knitr:
+  opts_chunk: 
+    collapse: true
+    comment: "#>"
+    fig.path: "man/figures/README-"
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
-
-# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="man/figures/logo.jpg" align="right" height="200px" alt="wowi website" /></a>
+# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="man/figures/logo.png" align="right" width="200px" alt="wowi website" /></a>
 
  <!-- badges: start -->  
 [![Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
@@ -33,7 +29,10 @@ To use `wowi`, you must have SaTScan installed on your machine, along with the [
 ## Installation  
 
 `wowi` is not yet on CRAN but can be installed through:
-```{r installation, echo = TRUE, eval = FALSE}
+```{r}
+#| label: installation
+#| echo: true
+#| eval: false
 pak::pak(pkg = "nutspatial/wowi")
 ```
 
@@ -71,7 +70,8 @@ This will initiate the app through the web browser installed on your machine.
 
 If you use `wowi` package in your work, please cite using the suggested citation provided by a call to `citation()` function as follows: 
 
-```{r citation}
+```{r}
+#| label: citation
 citation("wowi")
 ```
 
