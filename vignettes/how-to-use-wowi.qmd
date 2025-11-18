@@ -19,9 +19,8 @@ vignette: >
 #| label: setup
 #| echo: false
 #| eval: true
-if (requireNamespace("wowi", quietly = TRUE)) {
-  library(wowi)
-}
+
+library(wowi)
 library(mwana)
 ```
 
@@ -83,7 +82,7 @@ We will now begin the demonstration using the package’s built-in dataset, `ant
 #| label: sample-data
 #| echo: true
 
-head(wowi::anthro)
+head(anthro)
 ```
 
 This is a SMART survey dataset, which includes geographical coordinates: the `x` and `y` columns, along with the corresponding precision recorded in the `precision` column. 
@@ -102,7 +101,7 @@ You can scan for spatial clusters using acute malnutrition case definitions base
 #| label: wrangle-data-with-mwana
 #| echo: true
 
-a <- wowi::anthro |>
+a <- anthro |>
   mw_wrangle_wfhz(
     sex = sex,
     weight = weight,
@@ -154,7 +153,7 @@ d <- subset(a, district == "Kotido")
 library(rsatscan)                                                     #<1>
 
 ## Set up the parameters ----
-results <- wowi::ww_run_satscan(
+results <- ww_run_satscan(
   .data = d,
   filename = "Kotido",
   dir = directory,                                                    #<2>
@@ -285,7 +284,7 @@ ds <- subset(a, district == "Kotido" | district == "Abim")
 #| eval: false
 
 ## Set up the parameters ----
-multiple_area <- wowi::ww_run_satscan(
+multiple_area <- ww_run_satscan(
   .data = ds,
   filename = NULL,
   dir = directory,
