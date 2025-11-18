@@ -1,6 +1,7 @@
 ---
-title: "Scanning for clusters with wowi"
+title: "Using wowi"
 author: Tomás Zaba
+format: html
 toc-depth: 4
 bibliography: references.bib
 cls: harvard-cite-them-right-11th-edition.csl
@@ -9,7 +10,7 @@ knitr:
     collapse: true
     comment: "#>"
 vignette: >
-  %\VignetteIndexEntry{Scanning for clusters with wowi}
+  %\VignetteIndexEntry{Using wowi}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,6 +19,9 @@ vignette: >
 #| label: setup
 #| echo: false
 #| eval: true
+if (requireNamespace("wowi", quietly = TRUE)) {
+  library(wowi)
+}
 library(mwana)
 ```
 
