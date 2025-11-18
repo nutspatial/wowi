@@ -2,6 +2,8 @@
 title: "Introduction to wowi"
 author: "Tomás Zaba"
 toc-depth: 4
+bibliography: references.bib
+cls: harvard-cite-them-right-11th-edition.csl
 knitr:
   opts_chunk: 
     collapse: true
@@ -10,13 +12,12 @@ vignette: >
   %\VignetteIndexEntry{Introduction to wowi}
   %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-bibliography: references.bib
-cls: harvard-cite-them-right-11th-edition.csl
 ---
 
 ```{r}
 #| label: setup
 #| echo: false
+#| eval: true
 library(wowi)
 library(mwana)
 ```
