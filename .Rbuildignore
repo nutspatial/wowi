@@ -11,5 +11,6 @@
 ^Meta$
 ^vignettes/\.quarto$
 ^vignettes/*_files$
+ˆvignettes/using-wowi.html$
 _\.new\.png$
 ^README\.qmd$
