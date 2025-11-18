@@ -35,6 +35,7 @@ Suggests:
     covr (>= 3.6.4),
     knitr,
     rmarkdown,
+    quarto,
     shinytest2,
     spelling,
     testthat (>= 3.0.0)
@@ -42,5 +43,6 @@ Remotes:
     nutriverse/mwana
 Config/testthat/edition: 3
 Depends: 
-    R (>= 3.5)
-VignetteBuilder: knitr
+    R (>= 4.1.0)
+VignetteBuilder: quarto
+BuildVignettes: true

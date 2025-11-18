@@ -6,6 +6,8 @@
 \alias{wowi-package}
 \title{wowi: Detect Spatial Clusters of High Acute Malnutrition Rates}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model.
 }
 \seealso{

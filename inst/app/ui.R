@@ -36,7 +36,7 @@ ui <- tagList(
         tags$a(
           href = "https://nutspatial.github.io/wowi/",
           tags$span(
-            tags$img(src = "logo.jpg", height = "40px"),
+            tags$img(src = "logo.png", height = "40px"),
             style = "margin-right: 20px;"
           )
         )
@@ -69,7 +69,7 @@ ui <- tagList(
           tags$h6(tags$a(href = "#sec7", "Useful Resources"))
         ),
         card(
-          style = "padding: 1rem;",
+          style = "padding: 1rem; background-color: #fbfdfd;",
           tags$html(
             tags$div(
               style = "padding: 0.5rem 1rem;",
@@ -91,7 +91,7 @@ ui <- tagList(
                 tags$a(
                   href = "https://nutspatial.github.io/wowi/",
                   tags$img(
-                    src = "logo.jpg",
+                    src = "logo.png",
                     height = "80px",
                     alt = "wowi website",
                     style = "margin-left: 1rem;"
@@ -346,8 +346,8 @@ ui <- tagList(
         sidebar = sidebar(
           width = 400,
           card(
+            style = "width: 350px; background-color: #fbfdfd;",
             card_header("Upload Data"),
-            style = "width: 350px;",
             fileInput(
               inputId = "upload",
               label = "Upload a .csv file",
@@ -369,6 +369,7 @@ ui <- tagList(
           )
         ),
         card(
+          style = "background-color: #fbfdfd;",
           card_header("Data Preview"),
           conditionalPanel("output.fileUploaded", DTOutput("uploadedDataTable")),
           conditionalPanel("output.showProgress", tags$div(
@@ -394,6 +395,7 @@ ui <- tagList(
         sidebar = sidebar(
           width = 500,
           card(
+            style = "background-color: #fbfdfd;",
             card_header("Data Wrangling"),
             radioButtons(
               inputId = "wrangle",
@@ -415,12 +417,16 @@ ui <- tagList(
           )
         ),
         card(
+          style = "background-color: #fbfdfd;",
           card_header("Data Preview"),
           withSpinner(
             ui_element = DTOutput("wrangled_data"),
-            type = 1,
-            color = "#398DF3",
-            caption = div("Wrangling data", br(), h5("Please wait..."))
+            type = 8,
+            color.background = "#9dac7c",
+            image = "logo.png",
+            image.height = "50px",
+            color = "#9dac7c",
+            caption = div(h6("Wrangling"), h6("Please wait..."))
           )
         )
       )
@@ -433,6 +439,7 @@ ui <- tagList(
         sidebar = sidebar(
           width = 400,
           card(
+            style = "background-color: #fbfdfd;",
             card_header("Set wowi Hyperparameters for Analysis"),
             radioButtons(
               inputId = "analysis_scope",
@@ -462,6 +469,7 @@ ui <- tagList(
             div(
               style = "height: 100vh;", # Full viewport height
               card(
+                style = "background-color: #fbfdfd;",
                 card_header("Created Files"),
                 verbatimTextOutput("files_created")
               )
@@ -469,12 +477,16 @@ ui <- tagList(
 
             ### Second column: table card ----
             card(
+              style = "background-color: #fbfdfd;",
               card_header("Results of Detected Clusters"),
               withSpinner(
                 ui_element = DTOutput("clusters"),
-                type = 3,
-                color.background = "#398DF3",
-                caption = div("Scanning through", br(), h5("Please wait..."))
+                type = 8,
+                color.background = "#9dac7c",
+                image = "logo.png",
+                image.height = "50px",
+                color = "#9dac7c",
+                caption = div(h6("Scanning"), h6("Please wait..."))
               ),
               uiOutput(outputId = "download")
             )

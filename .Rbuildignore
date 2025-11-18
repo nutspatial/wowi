@@ -2,7 +2,6 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^\.github$
-^README\.Rmd$
 ^data-raw$
 ^_pkgdown\.yml$
 ^docs$
@@ -12,4 +11,6 @@
 ^Meta$
 ^vignettes/\.quarto$
 ^vignettes/*_files$
+ˆvignettes/using-wowi.html$
 _\.new\.png$
+^README\.qmd$
