@@ -183,7 +183,7 @@ module_server_upload <- function(id) {
         DT::datatable(df_preview,
           rownames = FALSE,
           options = base::list(
-            pageLength = 30,
+            pageLength = 20,
             scrollX = FALSE,
             scrollY = "800px",
             columnDefs = base::list(base::list(className = "dt-center", targets = "_all"))
