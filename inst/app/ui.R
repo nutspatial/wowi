@@ -343,94 +343,13 @@ ui <- tagList(
     nav_panel(
       title = "Data Upload",
       wowi:::module_ui_upload(id = "upload_data")
-    #   layout_sidebar(
-    #     sidebar = sidebar(
-    #       width = 400,
-    #       card(
-    #         style = "width: 350px; background-color: #fbfdfd;",
-    #         card_header("Upload Data"),
-    #         fileInput(
-    #           inputId = "upload",
-    #           label = "Upload a .csv file",
-    #           buttonLabel = "Browse...",
-    #           accept = ".csv"
-    #         ),
-    #         conditionalPanel(
-    #           condition = "output.showProgress",
-    #           hr(),
-    #           h4("Processing File..."),
-    #           uiOutput("uploadProgress")
-    #         ),
-    #         conditionalPanel(
-    #           condition = "output.fileUploaded",
-    #           hr(),
-    #           h5("File Information"),
-    #           verbatimTextOutput("fileInfo")
-    #         )
-    #       )
-    #     ),
-    #     card(
-    #       style = "background-color: #fbfdfd;",
-    #       card_header("Data Preview"),
-    #       conditionalPanel("output.fileUploaded", DTOutput("uploadedDataTable")),
-    #       conditionalPanel("output.showProgress", tags$div(
-    #         style = "text-align: center; padding: 50px;",
-    #         div(class = "spinner-border text-primary", role = "status"),
-    #         h4("Loading data...", style = "margin-top: 20px;"),
-    #         p("Please wait while we process your file.")
-    #       )),
-    #       conditionalPanel("!output.fileUploaded", div(
-    #         style = "text-align: center; padding: 50px;",
-    #         h4("No file uploaded yet", style = "color: #6c757d;"),
-    #         p("Please upload a .csv file to see the data preview.")
-    #       ))
-    #     )
-    #   )
     ),
 
     ## ---- Tab 3: Data Wrangling ------------------------------------------------
 
     nav_panel(
       title = "Data Wrangling",
-      layout_sidebar(
-        sidebar = sidebar(
-          width = 500,
-          card(
-            style = "background-color: #fbfdfd;",
-            card_header("Data Wrangling"),
-            radioButtons(
-              inputId = "wrangle",
-              label = strong("How should acute malnutrition be defined?"),
-              choices = list(
-                "Weight-for-Height z-score" = "wfhz",
-                "Mid-Upper Arm Circumference" = "muac",
-                "Combined Case Definition" = "combined"
-              ), selected = "wfhz"
-            ),
-            helpText(strong("Select the variables")),
-            uiOutput("variableSelectors"),
-            br(),
-            actionButton(
-              inputId = "apply_wrangle",
-              label = "Wrangle",
-              class = "btn-primary"
-            )
-          )
-        ),
-        card(
-          style = "background-color: #fbfdfd;",
-          card_header("Data Preview"),
-          withSpinner(
-            ui_element = DTOutput("wrangled_data"),
-            type = 8,
-            color.background = "#9dac7c",
-            image = "logo.png",
-            image.height = "50px",
-            color = "#9dac7c",
-            caption = div(h6("Wrangling"), h6("Please wait..."))
-          )
-        )
-      )
+      wowi:::module_ui_wrangle_data(id = "wrangle")
     ),
 
     ## ---- Tab 4: Spatial Scan ----------------------------------------------
@@ -485,7 +404,7 @@ ui <- tagList(
                 type = 8,
                 color.background = "#9dac7c",
                 image = "logo.png",
-                image.height = "50px",
+                image.height = "70px",
                 color = "#9dac7c",
                 caption = div(h6("Scanning"), h6("Please wait..."))
               ),
