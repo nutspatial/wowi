@@ -43,6 +43,10 @@ jobs:
             nutriverse/mwana
             any::rcmdcheck
           needs: check
+      
+      - name: Load package and run flow
+        run: |
+          library(wowi)
 
       - uses: r-lib/actions/check-r-package@v2
         with:
