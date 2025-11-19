@@ -142,7 +142,7 @@ module_server_upload <- function(id) {
 
         tryCatch(
           {
-            df <- read.csv(input$upload$datapath, stringsAsFactors = FALSE)
+            df <- utils::read.csv(input$upload$datapath, stringsAsFactors = FALSE)
             progress$set(message = "Finalizing...", value = 80)
             Sys.sleep(0.3)
 
@@ -157,7 +157,7 @@ module_server_upload <- function(id) {
             values$processing <- FALSE
             values$file_uploaded <- FALSE
             shiny::showNotification(
-              paste("Error reading file:", e$message),
+              base::paste("Error reading file:", e$message),
               type = "error",
               duration = 5
             )
@@ -168,35 +168,35 @@ module_server_upload <- function(id) {
       ### Display details about input data ----
       output$fileInfo <- shiny::renderText({
         shiny::req(input$upload, values$data)
-        paste0(
+        base::paste0(
           "Filename: ", input$upload$name, "\n",
-          "Size: ", round(input$upload$size / 1024, 2), " KB\n",
-          "Rows: ", format(nrow(values$data), big.mark = ","), "\n",
-          "Columns: ", ncol(values$data)
+          "Size: ", base::round(input$upload$size / 1024, 2), " KB\n",
+          "Rows: ", base::format(base::nrow(values$data), big.mark = ","), "\n",
+          "Columns: ", base::ncol(values$data)
         )
       })
 
       ### Display and prettify input data ----
       output$uploadedDataTable <- DT::renderDT({
         shiny::req(values$data)
-        df_preview <- head(values$data, 20)
+        df_preview <- utils::head(values$data, 20)
         DT::datatable(df_preview,
           rownames = FALSE,
-          options = list(
+          options = base::list(
             pageLength = 30,
             scrollX = FALSE,
             scrollY = "800px",
-            columnDefs = list(list(className = "dt-center", targets = "_all"))
+            columnDefs = base::list(base::list(className = "dt-center", targets = "_all"))
           ),
-          caption = if (nrow(values$data) > 20) {
-            paste(
-              "Showing first 20 rows of", format(nrow(values$data), big.mark = ","),
+          caption = if (base::nrow(values$data) > 20) {
+            base::paste(
+              "Showing first 20 rows of",  base::format(base::nrow(values$data), big.mark = ","),
               "total rows"
             )
           } else {
-            paste("Showing all", nrow(values$data), "rows")
+            base::paste("Showing all", base::nrow(values$data), "rows")
           }
-        ) |> DT::formatStyle(columns = colnames(df_preview), fontSize = "13px")
+        ) |> DT::formatStyle(columns = base::colnames(df_preview), fontSize = "13px")
       })
 
       ## Make the uploaded data be reactive for downtream modules ----
