@@ -4,6 +4,13 @@ url: https://nutspatial.github.io/wowi/
 
 template:
   bootstrap: 5
+  theme: github-light
+  ganalytics: "G-94YZ36XGLH"
+  light-switch: true
+  bslib:
+    navbar-bg: "#9dac7c"
+    bootswatch: pulse
+    pkdown-nav-height: "100px"
 destination: docs
 
 home:
