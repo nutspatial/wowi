@@ -2,7 +2,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="man/figures/logo.png" align="right" width="200px" height="139" alt="wowi website" /></a>
+# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="man/figures/logo.png" align="right" width="200px" alt="wowi website" /></a>
 
 <!-- badges: start -->  
 [![Project Status: WIP – Initial development is in progress, but there
