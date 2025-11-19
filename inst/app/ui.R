@@ -339,52 +339,53 @@ ui <- tagList(
       )
     ),
 
-    ## ---- Tab 2: Data Uploading ------------------------------------------------
+    ## ---- Tab 2: Data Uploading ----------------------------------------------
     nav_panel(
       title = "Data Upload",
-      layout_sidebar(
-        sidebar = sidebar(
-          width = 400,
-          card(
-            style = "width: 350px; background-color: #fbfdfd;",
-            card_header("Upload Data"),
-            fileInput(
-              inputId = "upload",
-              label = "Upload a .csv file",
-              buttonLabel = "Browse...",
-              accept = ".csv"
-            ),
-            conditionalPanel(
-              condition = "output.showProgress",
-              hr(),
-              h4("Processing File..."),
-              uiOutput("uploadProgress")
-            ),
-            conditionalPanel(
-              condition = "output.fileUploaded",
-              hr(),
-              h5("File Information"),
-              verbatimTextOutput("fileInfo")
-            )
-          )
-        ),
-        card(
-          style = "background-color: #fbfdfd;",
-          card_header("Data Preview"),
-          conditionalPanel("output.fileUploaded", DTOutput("uploadedDataTable")),
-          conditionalPanel("output.showProgress", tags$div(
-            style = "text-align: center; padding: 50px;",
-            div(class = "spinner-border text-primary", role = "status"),
-            h4("Loading data...", style = "margin-top: 20px;"),
-            p("Please wait while we process your file.")
-          )),
-          conditionalPanel("!output.fileUploaded", div(
-            style = "text-align: center; padding: 50px;",
-            h4("No file uploaded yet", style = "color: #6c757d;"),
-            p("Please upload a .csv file to see the data preview.")
-          ))
-        )
-      )
+      wowi:::module_ui_upload(id = "upload_data")
+    #   layout_sidebar(
+    #     sidebar = sidebar(
+    #       width = 400,
+    #       card(
+    #         style = "width: 350px; background-color: #fbfdfd;",
+    #         card_header("Upload Data"),
+    #         fileInput(
+    #           inputId = "upload",
+    #           label = "Upload a .csv file",
+    #           buttonLabel = "Browse...",
+    #           accept = ".csv"
+    #         ),
+    #         conditionalPanel(
+    #           condition = "output.showProgress",
+    #           hr(),
+    #           h4("Processing File..."),
+    #           uiOutput("uploadProgress")
+    #         ),
+    #         conditionalPanel(
+    #           condition = "output.fileUploaded",
+    #           hr(),
+    #           h5("File Information"),
+    #           verbatimTextOutput("fileInfo")
+    #         )
+    #       )
+    #     ),
+    #     card(
+    #       style = "background-color: #fbfdfd;",
+    #       card_header("Data Preview"),
+    #       conditionalPanel("output.fileUploaded", DTOutput("uploadedDataTable")),
+    #       conditionalPanel("output.showProgress", tags$div(
+    #         style = "text-align: center; padding: 50px;",
+    #         div(class = "spinner-border text-primary", role = "status"),
+    #         h4("Loading data...", style = "margin-top: 20px;"),
+    #         p("Please wait while we process your file.")
+    #       )),
+    #       conditionalPanel("!output.fileUploaded", div(
+    #         style = "text-align: center; padding: 50px;",
+    #         h4("No file uploaded yet", style = "color: #6c757d;"),
+    #         p("Please upload a .csv file to see the data preview.")
+    #       ))
+    #     )
+    #   )
     ),
 
     ## ---- Tab 3: Data Wrangling ------------------------------------------------
