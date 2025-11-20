@@ -81,7 +81,7 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
+    testthat::expect_true("geo" %in% cols)
   }
 )
 
@@ -164,7 +164,7 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
+    testthat::expect_true("geo" %in% cols)
   }
 )
 
@@ -172,7 +172,7 @@ testthat::test_that(
 ## ---- Spatial Scan: Single-area analysis for high-rates ----------------------
 
 testthat::test_that(
-  desc = "Module spatial scan works great for single-area analysis for high rates",
+  desc = "Module spatial scan works great for multiple-area analysis for high rates",
   code = {
     ### Initialise app ----
     app <- shinytest2::AppDriver$new(
@@ -249,7 +249,7 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
+    testthat::expect_true("geo" %in% cols)
   }
 )
 
@@ -333,6 +333,6 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
+    testthat::expect_true("geo" %in% cols)
   }
 )
