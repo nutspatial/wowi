@@ -25,11 +25,11 @@ module_ui_wrangle_data <- function(id) {
           bslib::card(
             style = "background-color: #fbfdfd;",
             bslib::card_header(htmltools::tags$span("Define Parameters for Data Wrangling",
-            style = "font-weight: 600px;")),
+            style = "font-size: 15px; font-weight: bold;")),
             shiny::radioButtons(
               inputId = ns("wrangle"),
-              label = htmltools::tags$span("How should acute malnutrition be defined?",
-            style = "font-size: 14px; font-weight: 500px;"
+              label = htmltools::tags$span("Case Definition based on",
+            style = "font-size: 14px; font-weight: bold;"
             ),
               choices = list(
                 "Weight-for-Height z-score" = "wfhz",
@@ -51,7 +51,7 @@ module_ui_wrangle_data <- function(id) {
         bslib::card(
           style = "background-color: #fbfdfd;",
           bslib::card_header(htmltools::tags$span("Data Preview",
-        style = "font-weight: 600px;")
+        style = "font-size: 15px; font-weight: bold;")
       ),
           shinycssloaders::withSpinner(
             ui_element = DT::DTOutput(outputId = ns("wrangled_data")),
@@ -61,7 +61,8 @@ module_ui_wrangle_data <- function(id) {
             image.height = "70px",
             color = "#9dac7c",
             caption = htmltools::tags$div(
-              htmltools::tags$h6("Wrangling"), htmltools::tags$h6("Please wait...")
+              htmltools::tags$h6(htmltools::tags$span("Wrangling", style = "font-size: 12px;")), 
+              htmltools::tags$h6(htmltools::tags$span("Please wait...", style = "font-size: 12px;"))
             )
           )
         )
@@ -104,22 +105,33 @@ module_server_wrangle_data <- function(id, data) {
       "wfhz" = shiny::tagList(
         shiny::selectInput(
           inputId = ns("sex"),
-          label = "Sex",
+          label = shiny::tagList(htmltools::tags$span("Sex", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;")
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("weight"),
-          label = "Weight (kg)",
+          label = shiny::tagList(
+            htmltools::tags$span("Weight (kg)", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;"),
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("height"),
-          label = "Height (cm)",
+          label = shiny::tagList(htmltools::tags$span("Height (cm)", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;")
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("oedema"),
-          label = "Oedema",
+          label = htmltools::tags$span("Oedema", 
+          style = "font-size: 14px; font-weight: bold;"),
           choices = c("", cols)
         )
       ),
@@ -128,22 +140,33 @@ module_server_wrangle_data <- function(id, data) {
       "muac" = shiny::tagList(
         shiny::selectInput(
           inputId = ns("age"),
-          label = "Age (months)",
+         label = shiny::tagList(
+            htmltools::tags$span("Age (months)", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;"),
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("sex"),
-          label = "Sex",
+          label = shiny::tagList(htmltools::tags$span("Sex", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;")
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("muac"),
-          label = "MUAC (cm)",
+          label = shiny::tagList(htmltools::tags$span("MUAC (mm)", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;")
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("oedema"),
-          label = "Oedema",
+          label = htmltools::tags$span("Oedema", 
+          style = "font-size: 14px; font-weight: bold;"),
           choices = c("", cols)
         )
       ),
@@ -152,32 +175,50 @@ module_server_wrangle_data <- function(id, data) {
       "combined" = shiny::tagList(
         shiny::selectInput(
           inputId = ns("sex"),
-          label = "Sex",
+          label = shiny::tagList(htmltools::tags$span("Sex", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;")
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("age"),
-          label = "Age (months)",
+         label = shiny::tagList(
+            htmltools::tags$span("Age (months)", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;"),
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("weight"),
-          label = "Weight (kg)",
+          label = shiny::tagList(
+            htmltools::tags$span("Weight (kg)", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;"),
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("height"),
-          label = "Height (cm)",
+          label = shiny::tagList(htmltools::tags$span("Height (cm)", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;")
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("muac"),
-          label = "MUAC (cm)",
+          label = shiny::tagList(htmltools::tags$span("MUAC (mm)", 
+          style = "font-size: 14px; font-weight: bold;"), htmltools::tags$span("*",
+        style = "color: red;")
+          ),
           choices = c("", cols)
         ),
         shiny::selectInput(
           inputId = ns("oedema"),
-          label = "Oedema",
+          label = htmltools::tags$span("Oedema", 
+          style = "font-size: 14px; font-weight: bold;"),
           choices = c("", cols)
         )
       )
