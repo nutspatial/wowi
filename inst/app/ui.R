@@ -92,7 +92,7 @@ ui <- tagList(
                   href = "https://nutspatial.github.io/wowi/",
                   tags$img(
                     src = "logo.png",
-                    height = "80px",
+                    height = "160px",
                     alt = "wowi website",
                     style = "margin-left: 1rem;"
                   )

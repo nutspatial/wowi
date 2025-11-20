@@ -25,11 +25,11 @@ module_ui_wrangle_data <- function(id) {
           bslib::card(
             style = "background-color: #fbfdfd;",
             bslib::card_header(htmltools::tags$span("Define Parameters for Data Wrangling",
-            style = "font-weight: 600;")),
+            style = "font-weight: 600px;")),
             shiny::radioButtons(
               inputId = ns("wrangle"),
               label = htmltools::tags$span("How should acute malnutrition be defined?",
-            style = "font-size: 14px; font-weight: 500;"
+            style = "font-size: 14px; font-weight: 500px;"
             ),
               choices = list(
                 "Weight-for-Height z-score" = "wfhz",
@@ -50,7 +50,9 @@ module_ui_wrangle_data <- function(id) {
         ### Right side of the nav bar ----
         bslib::card(
           style = "background-color: #fbfdfd;",
-          bslib::card_header("Data Preview"),
+          bslib::card_header(htmltools::tags$span("Data Preview",
+        style = "font-weight: 600px;")
+      ),
           shinycssloaders::withSpinner(
             ui_element = DT::DTOutput(outputId = ns("wrangled_data")),
             type = 8,
@@ -196,12 +198,12 @@ module_server_wrangle_data <- function(id, data) {
     if (input$wrangle == "wfhz") {
       if (input$sex == "" || input$weight == "" || input$height == "") {
         valid <- FALSE
-        msg <- "😬 Please select all required variables (Sex, Weight, Height) and try again."
+        msg <- "Please select all required variables (Sex, Weight, Height) and try again."
       }
     } else if (input$wrangle == "muac") {
       if (input$sex == "" || input$muac == "" || input$age == "") {
         valid <- FALSE
-        msg <- "😬 Please select all required variables (Sex, MUAC, Age) and try again."
+        msg <- "Please select all required variables (Sex, MUAC, Age) and try again."
       }
     } else if (input$wrangle == "combined") {
       if (
@@ -211,7 +213,7 @@ module_server_wrangle_data <- function(id, data) {
         ) == "")) {
         valid <- FALSE
         msg <-
-          "😬 Please select all required variables (Age, Sex, Weight, Height, MUAC)."
+          "Please select all required variables (Age, Sex, Weight, Height, MUAC)."
       }
     }
 
@@ -234,13 +236,13 @@ module_server_wrangle_data <- function(id, data) {
                 height = !!rlang::sym(input$height)
               ) |>
               mwana::mw_wrangle_wfhz(
-                sex = sex,
+                sex = .data$sex,
                 .recode_sex = FALSE,
-                weight = weight,
-                height = height
+                weight = .data$weight,
+                height = .data$height
               ) |>
               mwana::define_wasting(
-                zscores = wfhz,
+                zscores = .data$wfhz,
                 .by = "zscores",
                 edema = if (input$oedema != "") !!rlang::sym(input$oedema) else NULL
               )
@@ -251,14 +253,12 @@ module_server_wrangle_data <- function(id, data) {
             # Create a working dataset with standardized column names
             data() |>
                   dplyr::mutate(
-                    muac = recode_muac(x = !!rlang::sym(input$muac), .to = "cm")
+                muac = as.numeric(.data$muac),
+                    muac = mwana::recode_muac(x = !!rlang::sym(input$muac), .to = "cm")
                   ) |> 
               dplyr::rename(
                 age = !!rlang::sym(input$age),
                 sex = !!rlang::sym(input$sex)
-              ) |>
-              dplyr::mutate(
-                muac = base::as.numeric(.data$muac)
               ) |>
               mwana::mw_wrangle_age(age = .data$age) |>
               mwana::mw_wrangle_muac(
@@ -271,20 +271,21 @@ module_server_wrangle_data <- function(id, data) {
               ) |>
               dplyr::mutate(muac = mwana::recode_muac(.data$muac, .to = "mm")) |>
               mwana::define_wasting(
-                muac = muac,
+                muac = .data$muac,
                 .by = "muac",
                 edema = if (input$oedema != "") !!rlang::sym(input$oedema) else NULL
               )
           },
           "combined" = {
-            req(
+            shiny::req(
               input$sex, input$weight, input$height,
               input$age, input$muac
             )
 
             data() |>
                   dplyr::mutate(
-                    muac = recode_muac(x = !!rlang::sym(input$muac), .to = "cm")
+                muac = base::as.numeric(.data$muac),
+                    muac = recode_muac(!!rlang::sym(input$muac), "cm")
                   ) |> 
               dplyr::rename(
                 sex = !!rlang::sym(input$sex),
@@ -292,28 +293,25 @@ module_server_wrangle_data <- function(id, data) {
                 height = !!rlang::sym(input$height),
                 age = !!rlang::sym(input$age)
               ) |>
-              dplyr::mutate(
-                muac = as.numeric(muac)
-              ) |>
               mwana::mw_wrangle_wfhz(
-                sex = sex,
+                sex = .data$sex,
                 .recode_sex = FALSE,
-                weight = weight,
-                height = height
+                weight = .data$weight,
+                height = .data$height
               ) |>
-              mwana::mw_wrangle_age(age = age) |>
+              mwana::mw_wrangle_age(age = .data$age) |>
               mwana::mw_wrangle_muac(
-                sex = sex,
+                sex = .data$sex,
                 .recode_sex = FALSE,
-                muac = muac,
+                muac = .data$muac,
                 .recode_muac = FALSE,
                 .to = "none",
-                age = age
+                age = .data$age
               ) |>
-              dplyr::mutate(muac = mwana::recode_muac(muac, .to = "mm")) |>
+              dplyr::mutate(muac = mwana::recode_muac(.data$muac, .to = "mm")) |>
               mwana::define_wasting(
-                zscores = wfhz,
-                muac = muac,
+                zscores = .data$wfhz,
+                muac = .data$muac,
                 .by = "combined",
                 edema = if (input$oedema != "") !!rlang::sym(input$oedema) else NULL
               )
