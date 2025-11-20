@@ -82,7 +82,8 @@ module_ui_run_spatial_scan <- function(id) {
             image.height = "70px",
             color = "#9dac7c",
             caption = htmltools::tags$div(
-              htmltools::tags$h6("Scanning"), htmltools::tags$h6("Please wait...")
+              htmltools::tags$h6(htmltools::tags$span("Scanning", style = "font-size: 12px;")), 
+              htmltools::tags$h6(htmltools::tags$span("Please wait...", style = "font-size: 12px;"))
             )
           ),
           shiny::uiOutput(outputId = ns("download"))
@@ -115,7 +116,7 @@ module_server_run_spatial_scan <- function(id, .data) {
       ns <- session$ns
 
       ## Container for reactive vals of scan results ----
-      file <- shiny::reactiveValues(scanned = NULL)
+      vals <- shiny::reactiveValues(scanned = NULL, gam_based = NULL)
 
     output$hyperparameters <- shiny::renderUI({
     ### Ensure data exists before rendering ----
@@ -300,7 +301,7 @@ module_server_run_spatial_scan <- function(id, .data) {
 
             ## Catch wrangling method used to inform method of GAM definition ----
         x <- .data()
-        gam_based <- if ("flag_mfaz" %in% names(x) && !"flag_wfhz" %in% names(x)) {
+        vals$gam_based <- if ("flag_mfaz" %in% names(x) && !"flag_wfhz" %in% names(x)) {
           gam_based <- "muac"
         } else if ("flag_wfhz" %in% names(x) && !"flag_mfaz" %in% names(x)) {
           gam_based <- "wfhz"
@@ -309,7 +310,7 @@ module_server_run_spatial_scan <- function(id, .data) {
         }
       
       #### Clear previous results and start scanning ----
-      file$scanned <- NULL
+      vals$scanned <- NULL
       scanning(TRUE)
 
       #### Ensure data exists before rendering ----
@@ -346,13 +347,13 @@ module_server_run_spatial_scan <- function(id, .data) {
                 satscan_version = version,
                 .by_area = FALSE,
                 .scan_for = scan_for,
-                .gam_based = gam_based,
+                .gam_based = vals$gam_based,
                 latitude = .data$latitude,
                 longitude = .data$longitude,
                 area = NULL
               )
 
-            file$scanned <- result
+            vals$scanned <- result
 
             #### Display the list of files in the given directory ----
             output$files_created <- shiny::renderText({
@@ -399,11 +400,11 @@ module_server_run_spatial_scan <- function(id, .data) {
                 latitude = .data$latitude,
                 longitude = .data$longitude,
                 .scan_for = scan_for,
-                .gam_based = gam_based,
+                .gam_based = vals$gam_based,
                 area = area
               )
 
-            file$scanned <- result
+            vals$scanned <- result
 
             output$files_created <- shiny::renderText({
               files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
@@ -449,35 +450,33 @@ module_server_run_spatial_scan <- function(id, .data) {
       )
     } else {
       # Only render when not scanning and results exist
-      shiny::req(file$scanned)
+      shiny::req(vals$scanned)
 
       ##### Display the first 8 rows only ----
       DT::datatable(
-        data = utils::head(file$scanned$.df, 5),
+        data = utils::head(vals$scanned$.df, 5),
         rownames = FALSE,
         options = list(
           scrollX = FALSE,
           scrolly = "800px",
           columnDefs = list(list(className = "dt-center", targets = "_all"))
         ),
-        caption = if (base::nrow(file$scanned$.df) > 5) {
+        caption = if (base::nrow(vals$scanned$.df) > 5) {
           base::paste(
-            "Showing first 5 rows of", base::format(base::nrow(file$scanned$.df), big.mark = ","),
+            "Showing first 5 rows of", base::format(base::nrow(vals$scanned$.df), big.mark = ","),
             "total rows"
           )
         } else {
-          base::paste("showing all", base::nrow(file$scanned$.df), "rows")
-        },
-        style = "default",
-        filter = "top"
-      ) |> DT::formatStyle(columns = base::colnames(file$scanned$.df), fontSize = "13px")
+          base::paste("showing all", base::nrow(vals$scanned$.df), "rows")
+        }
+      ) |> DT::formatStyle(columns = base::colnames(vals$scanned$.df), fontSize = "13px")
     }
   })
 
   #### Download button to download table of detected clusters in .xlsx ----
   ##### Output into the UI ----
   output$download <- shiny::renderUI({
-    shiny::req(file$scanned)
+    shiny::req(vals$scanned)
     shiny::req(!scanning())
     htmltools::tags$div(
       style = "margin-bottom: 15px; text-align: right;",
@@ -493,21 +492,22 @@ module_server_run_spatial_scan <- function(id, .data) {
   ##### Downloadable results by clicking on the download button ----
   output$downloadResults <- shiny::downloadHandler(
     filename = function() {
-
+      shiny::req(vals$gam_based)
+      w <- vals$gam_based
       ### Filename according to wrangling method and analysis scope ----
-      if (gam_based == "wfhz") {
+      if (w == "wfhz") {
         base::paste0("wowi-detected-clusters-gambywfhz_", Sys.Date(), ".xlsx", sep = "")
-      } else if (gam_based == "muac") {
+      } else if (w == "muac") {
         base::paste0("wowi-detected-clusters-gambymuac_", Sys.Date(), ".xlsx", sep = "")
       } else {
         base::paste0("wowi-detected-clusters-cgam_", Sys.Date(), ".xlsx", sep = "")
       }
     },
     content = function(file) {
-      shiny::req(file$scanned) # Ensure results exist
+      shiny::req(vals$scanned) # Ensure results exist
       tryCatch(
         {
-          openxlsx::write.xlsx(file$scanned$.df, file)
+          openxlsx::write.xlsx(vals$scanned$.df, file)
           shiny::showNotification("File downloaded successfully!", type = "message")
         },
         error = function(e) {
