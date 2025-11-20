@@ -80,7 +80,8 @@ testthat::test_that(
       return $(this).text();
     }).get();
   ") |> as.character()
-
+    Sys.sleep(5)
+    
     testthat::expect_gt(length(cols), 0)
     testthat::expect_true(any(cols == "geo"))
   }
@@ -164,6 +165,7 @@ testthat::test_that(
       return $(this).text();
     }).get();
   ") |> as.character()
+    Sys.sleep(5)
 
     testthat::expect_gt(length(cols), 0)
     testthat::expect_true(any(cols == "geo"))
@@ -250,6 +252,7 @@ testthat::test_that(
       return $(this).text();
     }).get();
   ") |> as.character()
+    Sys.sleep(5)
 
     testthat::expect_gt(length(cols), 0)
     testthat::expect_true(any(cols == "geo"))
@@ -335,6 +338,7 @@ testthat::test_that(
       return $(this).text();
     }).get();
   ") |> as.character()
+    Sys.sleep(5)
 
     testthat::expect_gt(length(cols), 0)
     testthat::expect_true(any(cols == "geo"))
