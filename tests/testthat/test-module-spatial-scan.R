@@ -81,7 +81,7 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true(all(c("geo", "radius", "relative_risk") %in% cols))
+    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
   }
 )
 
@@ -164,7 +164,7 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true(all(c("geo", "radius", "relative_risk") %in% cols))
+    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
   }
 )
 
@@ -249,7 +249,7 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true(all(c("geo", "radius", "relative_risk") %in% cols))
+    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
   }
 )
 
@@ -333,6 +333,6 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true(all(c("geo", "radius", "relative_risk") %in% cols))
+    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
   }
 )
