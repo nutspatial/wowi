@@ -35,16 +35,16 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Now set the variable selectors ----
-    app$set_inputs("wrangle-sex" = "sex", wait_ = FALSE, timeout_ = 10000)
-    app$set_inputs("wrangle-weight" = "weight", wait_ = FALSE, timeout_ = 10000)
-    app$set_inputs("wrangle-height" = "height", wait_ = FALSE, timeout_ = 10000)
-    app$set_inputs("wrangle-oedema" = "", wait_ = FALSE, timeout_ = 10000)
+    app$set_inputs("wrangle-sex" = "sex", wait_ = FALSE)
+    app$set_inputs("wrangle-weight" = "weight", wait_ = FALSE)
+    app$set_inputs("wrangle-height" = "height", wait_ = FALSE)
+    app$set_inputs("wrangle-oedema" = "", wait_ = FALSE)
 
     ### Wait before clicking apply
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button
-    app$click("wrangle-apply_wrangle", wait_ = TRUE, timeout_ = 15000)
+    app$click("wrangle-apply_wrangle", wait_ = FALSE)
     Sys.sleep(5)
 
     ### Click on the "Data Wrangling" tab
@@ -81,7 +81,8 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true("geo" %in% cols)
+    testthat::expect_gt(length(cols), 0)
+    testthat::expect_true(any(cols == "geo"))
   }
 )
 
@@ -164,7 +165,8 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true("geo" %in% cols)
+    testthat::expect_gt(length(cols), 0)
+    testthat::expect_true(any(cols == "geo"))
   }
 )
 
@@ -249,7 +251,8 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true("geo" %in% cols)
+    testthat::expect_gt(length(cols), 0)
+    testthat::expect_true(any(cols == "geo"))
   }
 )
 
@@ -333,6 +336,7 @@ testthat::test_that(
     }).get();
   ") |> as.character()
 
-    testthat::expect_true("geo" %in% cols)
+    testthat::expect_gt(length(cols), 0)
+    testthat::expect_true(any(cols == "geo"))
   }
 )
