@@ -26,9 +26,9 @@ module_ui_run_spatial_scan <- function(id) {
         )),
         shiny::radioButtons(
           inputId = ns("analysis_scope"),
-          label = htmltools::tags$span(
-            "Analysis Scope",
-            style = "font-size: 14px; font-weight: bold;"
+          label = shiny::tagList(htmltools::tags$span("Analysis Scope",
+            style = "font-size: 14px; font-weight: bold;"),
+            htmltools::tags$span("*", style = "color: red;")
           ),
           choices = c(
             "Single-area analysis" = "single-area",
@@ -129,6 +129,7 @@ module_server_run_spatial_scan <- function(id, .data) {
           label = shiny::tagList(
             htmltools::tags$span("Area of Analysis", 
             style = "font-size: 14px; font-weight: bold"),
+            htmltools::tags$span("*", style = "color: red;"),
             htmltools::tags$div(
               style = "font-size: 10px; color: #6c757d;",
               "Name of a district, county, etc, as in your dataset"
@@ -137,22 +138,27 @@ module_server_run_spatial_scan <- function(id, .data) {
         ),
         shiny::textInput(
           inputId = ns("directory"),
-          label = htmltools::tags$span(
+          label = shiny::tagList(htmltools::tags$span(
             "Directory wherein files should be saved", 
-            style = "font-size: 14px; font-weight: bold;"
-          ),
+            style = "font-size: 14px; font-weight: bold;"),
+            htmltools::tags$span("*", style = "color: red;")
+        ),
           value = ""
         ),
         shiny::selectInput(
           inputId = ns("latitude"),
-          label = htmltools::tags$span("Latitude",
+          label = shiny::tagList(htmltools::tags$span("Latitude",
         style = "font-size: 14px; font-weight: bold;"),
+        htmltools::tags$span("*", style = "color: red;"),
+          ),
           choices = c("", names(.data()))
         ),
         shiny::selectInput(
           inputId = ns("longitude"),
-          label = htmltools::tags$span("Longitude", 
+          label = shiny::tagList(htmltools::tags$span("Longitude", 
           style = "font-size: 14px; font-weight: bold;"),
+          htmltools::tags$span("*", style = "color: red;")
+        ),
           choices = c("", names(.data()))
         ),
         shiny::textInput(
@@ -160,6 +166,7 @@ module_server_run_spatial_scan <- function(id, .data) {
           label = shiny::tagList(
             htmltools::tags$span("Path to where SaTScan GUI is installed on your computer",
           style = "font-size: 14px; font-weight: bold;"),
+          htmltools::tags$span("*", style = "color: red;"),
             htmltools::tags$div(
               style = "font-size: 10px; color: #6c757d;",
               'e.g., macOS: "/Applications/SaTScan.app/Contents/app";
@@ -174,6 +181,7 @@ module_server_run_spatial_scan <- function(id, .data) {
           label = shiny::tagList(
             htmltools::tags$span("SaTScan batch file name",
             style = "font-size: 14px; font-weight: bold"),
+            htmltools::tags$span("*", style = "color: red;"),
             htmltools::tags$div(
               style = "font-size: 10px; color: #6c757d;",
               'e.g., macOS: "satscan"; Windows: "SaTScanBatch64"'
@@ -184,7 +192,8 @@ module_server_run_spatial_scan <- function(id, .data) {
           inputId = ns("satscan_version"),
           label = shiny::tagList(
             htmltools::tags$span("Version of SaTScan", 
-            style = "font-size: 14px; font-weight: bold;", ),
+            style = "font-size: 14px; font-weight: bold;"),
+            htmltools::tags$span("*", style = "color: red;"),
             htmltools::tags$div(
               style = "font-size: 10px; color: #6c757d;",
               'e.g., "10.3.2"'
@@ -195,7 +204,8 @@ module_server_run_spatial_scan <- function(id, .data) {
           inputId = ns("scan_for"),
           label = htmltools::tags$span(
             "Type of clusters to be scanned for", 
-            style = "font-size: 14px; font-weight: bold;"),
+            style = "font-size: 14px; font-weight: bold;"
+          ),
           choices = list(
             "Clusters of High Rates" = "high-rates",
             "Cluster of High and Low Rates" = "high-low-rates"
