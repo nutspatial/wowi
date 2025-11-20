@@ -5,8 +5,9 @@
 ## ---- Module: Data Upload ----------------------------------------------------
 
 testthat::test_that(
-  desc = "Module data upload works as expected",
+  desc = "Data upload server works as expected",
   code = {
+
     ### Initialise app ----
     app <- shinytest2::AppDriver$new(
       app_dir = testthat::test_path("fixtures"),
@@ -46,7 +47,7 @@ testthat::test_that(
     $('#upload_data-uploadedDataTable thead th').map(function() {
       return $(this).text();
     }).get();
-  ")[-1][1:11] |> as.character(),
+  ")[-1][-1][1:11] |> as.character(),
     expected = c(
       "district", "cluster", "sex", "age","weight", "height", "oedema", "muac",
       "latitude", "longitude", "precision"

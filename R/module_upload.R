@@ -24,10 +24,13 @@ module_ui_upload <- function(id) {
         ### Left side of the nav panel ----
         bslib::card(
           style = "width: 350px; background-color: #fbfdfd;",
-          bslib::card_header("Upload Data"),
+          bslib::card_header(htmltools::tags$span("Upload Data",
+        style = "font-weight: 600px;")
+          ),
           shiny::fileInput(
             inputId = ns("upload"),
-            label = "Upload a .csv file",
+            label = htmltools::tags$span("Upload a .csv file",
+            style = "font-size: 14px; font-weight: 500px;"),
             buttonLabel = htmltools::tags$span("Browse...", style = "color: white;"),
             accept = ".csv"
           ),
@@ -51,7 +54,8 @@ module_ui_upload <- function(id) {
       ### Right side of the nav bar ----
       bslib::card(
         style = "background-color: #fbfdfd;",
-        bslib::card_header("Data Preview"),
+        bslib::card_header(htmltools::tags$span("Data Preview", 
+      style = "font-weight: 600px")),
         shiny::conditionalPanel("output.fileUploaded == true",
           ns = ns,
           DT::DTOutput(outputId = ns("uploadedDataTable"))
