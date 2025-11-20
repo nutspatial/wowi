@@ -27,7 +27,7 @@ module_ui_run_spatial_scan <- function(id) {
         shiny::radioButtons(
           inputId = ns("analysis_scope"),
           label = htmltools::tags$span(
-            "What is the analysis scope that wowi should consider?",
+            "Analysis Scope",
             style = "font-size: 14px; font-weight: bold;"
           ),
           choices = c(
@@ -89,5 +89,407 @@ module_ui_run_spatial_scan <- function(id) {
         )
       )
     )
+  )
+}
+
+
+## ---- Module: Server ---------------------------------------------------------
+
+#'
+#'
+#'
+#' Module server for data upload
+#'
+#'
+#' @param id Module ID
+#'
+#' @keywords internal
+#'
+#'
+module_server_run_spatial_scan <- function(id, .data) {
+
+  ### Shiny module server ----
+  shiny::moduleServer(
+    id = id, 
+    module = function(input, output, session) {
+      ns <- session$ns
+
+      ## Container for reactive vals of scan results ----
+      values <- shiny::reactiveValues(scan_result = NULL)
+
+    output$hyperparameters <- shiny::renderUI({
+    ### Ensure data exists before rendering ----
+    shiny::req(.data())
+
+    ### Collect user-defined parameters based on scope of analysis ----
+    switch(input$analysis_scope,
+      "single-area" = shiny::tagList(
+        shiny::textInput(
+          inputId = ns("filename"),
+          label = shiny::tagList(
+            htmltools::tags$span("Area of Analysis", 
+            style = "font-size: 14px; font-weight: bold"),
+            htmltools::tags$div(
+              style = "font-size: 10px; color: #6c757d;",
+              "Name of a district, county, etc, as in your dataset"
+            )
+          )
+        ),
+        shiny::textInput(
+          inputId = ns("directory"),
+          label = htmltools::tags$span(
+            "Directory wherein files should be saved", 
+            style = "font-size: 14px; font-weight: bold;"
+          ),
+          value = ""
+        ),
+        shiny::selectInput(
+          inputId = ns("latitude"),
+          label = htmltools::tags$span("Latitude",
+        style = "font-size: 14px; font-weight: bold;"),
+          choices = c("", names(.data()))
+        ),
+        shiny::selectInput(
+          inputId = ns("longitude"),
+          label = htmltools::tags$span("Longitude", 
+          style = "font-size: 14px; font-weight: bold;"),
+          choices = c("", names(.data()))
+        ),
+        shiny::textInput(
+          inputId = ns("sslocation"),
+          label = shiny::tagList(
+            htmltools::tags$span("Path to where SaTScan GUI is installed on your computer",
+          style = "font-size: 14px; font-weight: bold;"),
+            htmltools::tags$div(
+              style = "font-size: 10px; color: #6c757d;",
+              'e.g., macOS: "/Applications/SaTScan.app/Contents/app";
+            Windows: "C:/Program Files/SaTScan"'
+            )
+          ),
+          value = "",
+          width = NULL
+        ),
+        shiny::textInput(
+          inputId = ns("ssbatchfilename"),
+          label = shiny::tagList(
+            htmltools::tags$span("SaTScan batch file name",
+            style = "font-size: 14px; font-weight: bold"),
+            htmltools::tags$div(
+              style = "font-size: 10px; color: #6c757d;",
+              'e.g., macOS: "satscan"; Windows: "SaTScanBatch64"'
+            )
+          )
+        ),
+        shiny::textInput(
+          inputId = ns("satscan_version"),
+          label = shiny::tagList(
+            htmltools::tags$span("Version of SaTScan", 
+            style = "font-size: 14px; font-weight: bold;", ),
+            htmltools::tags$div(
+              style = "font-size: 10px; color: #6c757d;",
+              'e.g., "10.3.2"'
+            )
+          )
+        ),
+        shiny::radioButtons(
+          inputId = ns("scan_for"),
+          label = htmltools::tags$span(
+            "Type of clusters to be scanned for", 
+            style = "font-size: 14px; font-weight: bold;"),
+          choices = list(
+            "Clusters of High Rates" = "high-rates",
+            "Cluster of High and Low Rates" = "high-low-rates"
+          ),
+          selected = "high-low-rates"
+        )
+      ),
+
+      ### Multiple-area analysis ----
+      "multiple-area" = shiny::tagList(
+        shiny::selectInput(
+          inputId = ns("area"),
+          label = shiny::tagList(
+            htmltools::tags$strong("Area of Analysis"),
+            htmltools::tags$div(
+              style = "font-size: 0.85em; color: #6c757d;",
+              "Name of a district, county, etc, as in your dataset"
+            )
+          ),
+          choices = c("", names(.data()))
+        ),
+        shiny::textInput(
+          inputId = ns("directory"),
+          label = htmltools::tags$strong(
+            "Directory where the parameters files should be saved in"
+          ),
+          value = ""
+        ),
+        shiny::selectInput(
+          inputId = ns("latitude"),
+          label = htmltools::tags$strong("Latitude"),
+          choices = c("", names(.data()))
+        ),
+        shiny::selectInput(
+          inputId = ns("longitude"),
+          label = htmltools::tags$strong("Longitude"),
+          choices = c("", names(.data()))
+        ),
+        shiny::textInput(
+          inputId = ns("sslocation"),
+          label = shiny::tagList(
+            htmltools::tags$strong("Path to where SaTScan GUI is installed on your computer"),
+            htmltools::tags$div(
+              style = "font-size: 0.85em; color: #6c757d;",
+              'e.g., macOS: "/Applications/SaTScan.app/Contents/app";
+            Windows: "C:/Program Files/SaTScan"'
+            )
+          ),
+          value = "",
+          width = NULL
+        ),
+        shiny::textInput(
+          inputId = ns("ssbatchfilename"),
+          label = shiny::tagList(
+            htmltools::tags$strong("SaTScan batch file name"),
+            htmltools::tags$div(
+              style = "font-size: 0.85em; color: #6c757d;",
+              'e.g., macOS: "satscan"; Windows: "SaTScanBatch64"'
+            )
+          )
+        ),
+        shiny::textInput(
+          inputId = ns("satscan_version"),
+          label = shiny::tagList(
+            htmltools::tags$strong("Version of SaTScan"),
+            htmltools::tags$div(
+              style = "font-size: 0.85em; color: #6c757d;",
+              'e.g., "10.3.2"'
+            )
+          )
+        ),
+        shiny::radioButtons(
+          inputId = ns("scan_for"),
+          label = htmltools::tags$strong("Which type of cluster should be scanned for?"),
+          choices = list(
+            "Clusters of High Rates" = "high-rates",
+            "Cluster of High and Low Rates" = "high-low-rates"
+          ),
+          selected = "high-low-rates"
+        )
+      )
+    )
+  })
+
+  # Initialize the scanning reactive value (add this near your other reactive values)
+  values$scanning <- shiny::reactiveVal(FALSE)
+
+  ### Logic for calculations ----
+  shiny::observeEvent(
+    eventExpr = input$run_scan,
+    {
+      #### Clear previous results and start scanning ----
+      values$scan_result <- NULL
+      values$scanning(TRUE)
+
+      #### Ensure data exists before rendering ----
+      shiny::req(.data())
+
+      #### Logic for single-area spatial scan ----
+      if (input$analysis_scope == "single-area") {
+        #### Ensure that all parameters for single-area analysis are given ----
+        shiny::req(
+          input$filename, input$directory, input$sslocation,
+          input$ssbatchfilename, input$satscan_version, input$scan_for
+        )
+
+        #### Make user-defined parameters wowi-usable inputs ----
+        area <- as.character(input$filename)
+        dir <- as.character(input$directory)
+        satscan_location <- as.character(input$sslocation)
+        batchfilename <- as.character(input$ssbatchfilename)
+        version <- as.character(input$satscan_version)
+        scan_for <- as.character(input$scan_for)
+        gam_based <- as.character(input$wrangle)
+
+        tryCatch(
+          {
+            result <- .data() |>
+              dplyr::rename(
+                longitude = !!rlang::sym(input$longitude),
+                latitude = !!rlang::sym(input$latitude)
+              ) |>
+              ww_run_satscan(
+                filename = area,
+                dir = dir,
+                sslocation = satscan_location,
+                ssbatchfilename = batchfilename,
+                satscan_version = version,
+                .by_area = FALSE,
+                .scan_for = scan_for,
+                .gam_based = gam_based,
+                latitude = latitude,
+                longitude = longitude,
+                area = NULL
+              )
+
+            values$scan_result <- result
+
+            #### Display the list of files in the given directory ----
+            output$files_created <- shiny::renderText({
+              files <- base::list.files(path = dir, all.files = TRUE, full.names = FALSE)
+              base::paste(files, collapse = "\n")
+            })
+          },
+          error = function(e) {
+            shiny::showNotification(
+              base::paste("Error during scanning:", e$message, type = "error")
+            )
+          }
+        )
+      } else {
+        #### Ensure that all parameters for single-area analysis are given ----
+        shiny::req(
+          input$directory, input$sslocation, input$ssbatchfilename,
+          input$satscan_version, input$scan_for
+        )
+
+        #### Make user-defined parameters wowi-usable inputs ----
+        dir <- as.character(input$directory)
+        satscan_location <- as.character(input$sslocation)
+        batchfilename <- as.character(input$ssbatchfilename)
+        version <- as.character(input$satscan_version)
+        scan_for <- as.character(input$scan_for)
+        gam_based <- as.character(input$wrangle)
+
+        #### Run scan ----
+        tryCatch(
+          {
+            result <- .data() |>
+              dplyr::rename(
+                latitude = !!rlang::sym(input$latitude),
+                longitude = !!rlang::sym(input$longitude),
+                area = !!rlang::sym(input$area)
+              ) |>
+              ww_run_satscan(
+                filename = NULL,
+                dir = dir,
+                sslocation = satscan_location,
+                ssbatchfilename = batchfilename,
+                satscan_version = version,
+                .by_area = TRUE,
+                latitude = latitude,
+                longitude = longitude,
+                .scan_for = scan_for,
+                .gam_based = gam_based,
+                area = area
+              )
+
+            values$scan_result <- result
+
+            output$files_created <- shiny::renderText({
+              files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
+              base::paste(files, collapse = "\n")
+            })
+          },
+          error = function(e) {
+            shiny::showNotification(base::paste("Error during scanning:", e$message), type = "error")
+          }
+        )
+      }
+
+      # End scanning
+      values$scanning(FALSE)
+    }
+  )
+
+  #### Display a summary table of detected cluster and prettified ----
+  output$clusters <- DT::renderDT({
+    # Show scanning message while scanning is in progress
+
+    if (values$scanning()) {
+      # Return a placeholder table while scanning
+      DT::datatable(
+        data = data.frame(Status = "Scanning in progress..."),
+        rownames = FALSE,
+        options = list(
+          dom = "t",
+          ordering = FALSE,
+          searching = FALSE,
+          info = FALSE,
+          paging = FALSE,
+          columnDefs = list(
+            list(className = "dt-center", targets = "_all")
+          )
+        ),
+        selection = "none"
+      ) |> formatStyle(
+        columns = "Status",
+        fontSize = "16px",
+        fontWeight = "bold",
+        color = "#398DF3"
+      )
+    } else {
+      # Only render when not scanning and results exist
+      shiny::req(values$scan_result)
+
+      ##### Display the first 8 rows only ----
+      DT::datatable(
+        data = utils::head(values$scan_result$.df, 5),
+        rownames = FALSE,
+        options = list(
+          scrollX = FALSE,
+          scrolly = "800px",
+          columnDefs = list(list(className = "dt-center", targets = "_all"))
+        ),
+        caption = if (base::nrow(values$scan_result$.df) > 5) {
+          base::paste(
+            "Showing first 5 rows of", base::format(base::nrow(values$scan_result$.df), big.mark = ","),
+            "total rows"
+          )
+        } else {
+          base::paste("showing all", base::nrow(values$scan_result$.df), "rows")
+        },
+        style = "default",
+        filter = "top"
+      ) |> DT::formatStyle(columns = base::colnames(values$scan_result$.df), fontSize = "12px")
+    }
+  })
+
+  #### Download button to download table of detected clusters in .xlsx ----
+  ##### Output into the UI ----
+  output$download <- renderUI({
+    shiny::req(values$scan_result)
+    shiny::req(!values$scanning())
+    div(
+      style = "margin-bottom: 15px; text-align: right;",
+      shiny::downloadButton(
+        outputId = ns("downloadResults"),
+        label = "Download Clusters",
+        class = "btn-primary",
+        icon = shiny::icon(name = "download", class = "fa-lg")
+      )
+    )
+  })
+
+  ##### Downloadable results by clicking on the download button ----
+  output$downloadResults <- shiny::downloadHandler(
+    filename = function() {
+      base::paste0("detected-clusters_", Sys.Date(), ".xlsx", sep = "")
+    },
+    content = function(file) {
+      shiny::req(values$scan_result) # Ensure results exist
+      tryCatch(
+        {
+          openxlsx::write.xlsx(values$scan_result$.df, file)
+          shiny::showNotification("File downloaded successfully! 🎉 ", type = "message")
+        },
+        error = function(e) {
+          shiny::showNotification(base::paste("Error creating file:", e$message), type = "error")
+        }
+      )
+    }
+  )
+
+    }
   )
 }
