@@ -287,6 +287,17 @@ module_server_run_spatial_scan <- function(id, .data) {
   shiny::observeEvent(
     eventExpr = input$run_scan,
     {
+
+            ## Catch wrangling method used to inform method of GAM definition ----
+        x <- .data()
+        gam_based <- if ("flag_mfaz" %in% names(x) && !"flag_wfhz" %in% names(x)) {
+          gam_based <- "muac"
+        } else if ("flag_wfhz" %in% names(x) && !"flag_mfaz" %in% names(x)) {
+          gam_based <- "wfhz"
+        } else {
+          gam_based <- "combined"
+        }
+      
       #### Clear previous results and start scanning ----
       file$scanned <- NULL
       scanning(TRUE)
@@ -309,16 +320,6 @@ module_server_run_spatial_scan <- function(id, .data) {
         batchfilename <- as.character(input$ssbatchfilename)
         version <- as.character(input$satscan_version)
         scan_for <- as.character(input$scan_for)
-        
-        ## Determine the method in which acute malnutrition was defined ----
-        x <- .data()
-        gam_based <- if ("flag_mfaz" %in% x && !"flag_wfhz" %in% x) {
-          gam_based <- "muac"
-        } else if ("flag_wfhz" %in% x && !"flag_mfaz" %in% x) {
-          gam_based <- "wfhz"
-        } else {
-          gam_based <- "combined"
-        }
 
         tryCatch(
           {
@@ -336,8 +337,8 @@ module_server_run_spatial_scan <- function(id, .data) {
                 .by_area = FALSE,
                 .scan_for = scan_for,
                 .gam_based = gam_based,
-                latitude = latitude,
-                longitude = longitude,
+                latitude = .data$latitude,
+                longitude = .data$longitude,
                 area = NULL
               )
 
@@ -369,16 +370,6 @@ module_server_run_spatial_scan <- function(id, .data) {
         version <- as.character(input$satscan_version)
         scan_for <- as.character(input$scan_for)
 
-                ## Determine the method in which acute malnutrition was defined ----
-        x <- .data()
-        gam_based <- if ("flag_mfaz" %in% names(x) && !"flag_wfhz" %in% names(x)) {
-          gam_based <- "muac"
-        } else if ("flag_wfhz" %in% names(x) && !"flag_mfaz" %in% names(x)) {
-          gam_based <- "wfhz"
-        } else {
-          gam_based <- "combined"
-        }
-
         #### Run scan ----
         tryCatch(
           {
@@ -395,8 +386,8 @@ module_server_run_spatial_scan <- function(id, .data) {
                 ssbatchfilename = batchfilename,
                 satscan_version = version,
                 .by_area = TRUE,
-                latitude = latitude,
-                longitude = longitude,
+                latitude = .data$latitude,
+                longitude = .data$longitude,
                 .scan_for = scan_for,
                 .gam_based = gam_based,
                 area = area
@@ -440,7 +431,7 @@ module_server_run_spatial_scan <- function(id, .data) {
           )
         ),
         selection = "none"
-      ) |> formatStyle(
+      ) |> DT::formatStyle(
         columns = "Status",
         fontSize = "16px",
         fontWeight = "bold",
@@ -469,16 +460,16 @@ module_server_run_spatial_scan <- function(id, .data) {
         },
         style = "default",
         filter = "top"
-      ) |> DT::formatStyle(columns = base::colnames(file$scanned$.df), fontSize = "12px")
+      ) |> DT::formatStyle(columns = base::colnames(file$scanned$.df), fontSize = "13px")
     }
   })
 
   #### Download button to download table of detected clusters in .xlsx ----
   ##### Output into the UI ----
-  output$download <- renderUI({
+  output$download <- shiny::renderUI({
     shiny::req(file$scanned)
     shiny::req(!scanning())
-    div(
+    htmltools::tags$div(
       style = "margin-bottom: 15px; text-align: right;",
       shiny::downloadButton(
         outputId = ns("downloadResults"),
@@ -492,14 +483,22 @@ module_server_run_spatial_scan <- function(id, .data) {
   ##### Downloadable results by clicking on the download button ----
   output$downloadResults <- shiny::downloadHandler(
     filename = function() {
-      base::paste0("detected-clusters_", Sys.Date(), ".xlsx", sep = "")
+
+      ### Filename according to wrangling method and analysis scope ----
+      if (gam_based == "wfhz") {
+        base::paste0("wowi-detected-clusters-gambywfhz_", Sys.Date(), ".xlsx", sep = "")
+      } else if (gam_based == "muac") {
+        base::paste0("wowi-detected-clusters-gambymuac_", Sys.Date(), ".xlsx", sep = "")
+      } else {
+        base::paste0("wowi-detected-clusters-cgam_", Sys.Date(), ".xlsx", sep = "")
+      }
     },
     content = function(file) {
       shiny::req(file$scanned) # Ensure results exist
       tryCatch(
         {
           openxlsx::write.xlsx(file$scanned$.df, file)
-          shiny::showNotification("File downloaded successfully! 🎉 ", type = "message")
+          shiny::showNotification("File downloaded successfully!", type = "message")
         },
         error = function(e) {
           shiny::showNotification(base::paste("Error creating file:", e$message), type = "error")
