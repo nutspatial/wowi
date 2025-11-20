@@ -81,9 +81,12 @@ testthat::test_that(
     }).get();
   ") |> as.character()
     Sys.sleep(5)
-    
+
     testthat::expect_gt(length(cols), 0)
     testthat::expect_true(any(cols == "geo"))
+
+    #### Stop the app ----
+    app$stop()
   }
 )
 
@@ -169,6 +172,9 @@ testthat::test_that(
 
     testthat::expect_gt(length(cols), 0)
     testthat::expect_true(any(cols == "geo"))
+
+    #### Stop the app ----
+    app$stop()
   }
 )
 
@@ -256,6 +262,9 @@ testthat::test_that(
 
     testthat::expect_gt(length(cols), 0)
     testthat::expect_true(any(cols == "geo"))
+
+    #### Stop the app ----
+    app$stop()
   }
 )
 
@@ -342,5 +351,8 @@ testthat::test_that(
 
     testthat::expect_gt(length(cols), 0)
     testthat::expect_true(any(cols == "geo"))
+
+    #### Stop the app ----
+    app$stop()
   }
 )
