@@ -355,64 +355,7 @@ ui <- tagList(
     ## ---- Tab 4: Spatial Scan ----------------------------------------------
     nav_panel(
       title = "Spatial Scan",
-      layout_sidebar(
-        sidebar = sidebar(
-          width = 400,
-          card(
-            style = "background-color: #fbfdfd;",
-            card_header("Set wowi Hyperparameters for Analysis"),
-            radioButtons(
-              inputId = "analysis_scope",
-              label = strong("What is the analysis scope that wowi should consider?"),
-              choices = c(
-                "Single-area analysis" = "single-area",
-                "Multiple-area analysis" = "multiple-area"
-              ),
-              selected = "single-area"
-            ),
-            #### Container in UI to store outputs derived from the server ----
-            uiOutput("hyperparameters"),
-            actionButton(
-              inputId = "run_scan",
-              label = "Run Scan",
-              class = "btn-primary"
-            )
-          )
-        ),
-        layout_column_wrap(
-          width = "100%",
-          layout_columns(
-            col_widths = c(3, 9), # First column narrower
-            row_heights = NULL, # Let height flow naturally
-
-            ### First column: full-height card
-            div(
-              style = "height: 100vh;", # Full viewport height
-              card(
-                style = "background-color: #fbfdfd;",
-                card_header("Created Files"),
-                verbatimTextOutput("files_created")
-              )
-            ),
-
-            ### Second column: table card ----
-            card(
-              style = "background-color: #fbfdfd;",
-              card_header("Results of Detected Clusters"),
-              withSpinner(
-                ui_element = DTOutput("clusters"),
-                type = 8,
-                color.background = "#9dac7c",
-                image = "logo.png",
-                image.height = "70px",
-                color = "#9dac7c",
-                caption = div(h6("Scanning"), h6("Please wait..."))
-              ),
-              uiOutput(outputId = "download")
-            )
-          )
-        )
-      )
+      wowi:::module_ui_run_spatial_scan(id = "scan")
     )
   )
 )
