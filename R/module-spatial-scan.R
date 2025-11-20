@@ -115,7 +115,7 @@ module_server_run_spatial_scan <- function(id, .data) {
       ns <- session$ns
 
       ## Container for reactive vals of scan results ----
-      values <- shiny::reactiveValues(scan_result = NULL)
+      file <- shiny::reactiveValues(scanned = NULL)
 
     output$hyperparameters <- shiny::renderUI({
     ### Ensure data exists before rendering ----
@@ -281,15 +281,15 @@ module_server_run_spatial_scan <- function(id, .data) {
   })
 
   # Initialize the scanning reactive value (add this near your other reactive values)
-  values$scanning <- shiny::reactiveVal(FALSE)
+  scanning <- shiny::reactiveVal(FALSE)
 
   ### Logic for calculations ----
   shiny::observeEvent(
     eventExpr = input$run_scan,
     {
       #### Clear previous results and start scanning ----
-      values$scan_result <- NULL
-      values$scanning(TRUE)
+      file$scanned <- NULL
+      scanning(TRUE)
 
       #### Ensure data exists before rendering ----
       shiny::req(.data())
@@ -309,7 +309,16 @@ module_server_run_spatial_scan <- function(id, .data) {
         batchfilename <- as.character(input$ssbatchfilename)
         version <- as.character(input$satscan_version)
         scan_for <- as.character(input$scan_for)
-        gam_based <- as.character(input$wrangle)
+        
+        ## Determine the method in which acute malnutrition was defined ----
+        x <- .data()
+        gam_based <- if ("flag_mfaz" %in% x && !"flag_wfhz" %in% x) {
+          gam_based <- "muac"
+        } else if ("flag_wfhz" %in% x && !"flag_mfaz" %in% x) {
+          gam_based <- "wfhz"
+        } else {
+          gam_based <- "combined"
+        }
 
         tryCatch(
           {
@@ -332,7 +341,7 @@ module_server_run_spatial_scan <- function(id, .data) {
                 area = NULL
               )
 
-            values$scan_result <- result
+            file$scanned <- result
 
             #### Display the list of files in the given directory ----
             output$files_created <- shiny::renderText({
@@ -359,7 +368,16 @@ module_server_run_spatial_scan <- function(id, .data) {
         batchfilename <- as.character(input$ssbatchfilename)
         version <- as.character(input$satscan_version)
         scan_for <- as.character(input$scan_for)
-        gam_based <- as.character(input$wrangle)
+
+                ## Determine the method in which acute malnutrition was defined ----
+        x <- .data()
+        gam_based <- if ("flag_mfaz" %in% names(x) && !"flag_wfhz" %in% names(x)) {
+          gam_based <- "muac"
+        } else if ("flag_wfhz" %in% names(x) && !"flag_mfaz" %in% names(x)) {
+          gam_based <- "wfhz"
+        } else {
+          gam_based <- "combined"
+        }
 
         #### Run scan ----
         tryCatch(
@@ -384,7 +402,7 @@ module_server_run_spatial_scan <- function(id, .data) {
                 area = area
               )
 
-            values$scan_result <- result
+            file$scanned <- result
 
             output$files_created <- shiny::renderText({
               files <- list.files(path = dir, all.files = TRUE, full.names = FALSE)
@@ -398,7 +416,7 @@ module_server_run_spatial_scan <- function(id, .data) {
       }
 
       # End scanning
-      values$scanning(FALSE)
+      scanning(FALSE)
     }
   )
 
@@ -406,7 +424,7 @@ module_server_run_spatial_scan <- function(id, .data) {
   output$clusters <- DT::renderDT({
     # Show scanning message while scanning is in progress
 
-    if (values$scanning()) {
+    if (scanning()) {
       # Return a placeholder table while scanning
       DT::datatable(
         data = data.frame(Status = "Scanning in progress..."),
@@ -430,36 +448,36 @@ module_server_run_spatial_scan <- function(id, .data) {
       )
     } else {
       # Only render when not scanning and results exist
-      shiny::req(values$scan_result)
+      shiny::req(file$scanned)
 
       ##### Display the first 8 rows only ----
       DT::datatable(
-        data = utils::head(values$scan_result$.df, 5),
+        data = utils::head(file$scanned$.df, 5),
         rownames = FALSE,
         options = list(
           scrollX = FALSE,
           scrolly = "800px",
           columnDefs = list(list(className = "dt-center", targets = "_all"))
         ),
-        caption = if (base::nrow(values$scan_result$.df) > 5) {
+        caption = if (base::nrow(file$scanned$.df) > 5) {
           base::paste(
-            "Showing first 5 rows of", base::format(base::nrow(values$scan_result$.df), big.mark = ","),
+            "Showing first 5 rows of", base::format(base::nrow(file$scanned$.df), big.mark = ","),
             "total rows"
           )
         } else {
-          base::paste("showing all", base::nrow(values$scan_result$.df), "rows")
+          base::paste("showing all", base::nrow(file$scanned$.df), "rows")
         },
         style = "default",
         filter = "top"
-      ) |> DT::formatStyle(columns = base::colnames(values$scan_result$.df), fontSize = "12px")
+      ) |> DT::formatStyle(columns = base::colnames(file$scanned$.df), fontSize = "12px")
     }
   })
 
   #### Download button to download table of detected clusters in .xlsx ----
   ##### Output into the UI ----
   output$download <- renderUI({
-    shiny::req(values$scan_result)
-    shiny::req(!values$scanning())
+    shiny::req(file$scanned)
+    shiny::req(!scanning())
     div(
       style = "margin-bottom: 15px; text-align: right;",
       shiny::downloadButton(
@@ -477,10 +495,10 @@ module_server_run_spatial_scan <- function(id, .data) {
       base::paste0("detected-clusters_", Sys.Date(), ".xlsx", sep = "")
     },
     content = function(file) {
-      shiny::req(values$scan_result) # Ensure results exist
+      shiny::req(file$scanned) # Ensure results exist
       tryCatch(
         {
-          openxlsx::write.xlsx(values$scan_result$.df, file)
+          openxlsx::write.xlsx(file$scanned$.df, file)
           shiny::showNotification("File downloaded successfully! 🎉 ", type = "message")
         },
         error = function(e) {
