@@ -80,10 +80,16 @@ testthat::test_that(
       return $(this).text();
     }).get();
   ") |> as.character()
-    Sys.sleep(5)
 
-    testthat::expect_gt(length(cols), 0)
-    testthat::expect_true(any(cols == "geo"))
+    testthat::expect_equal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn"
+      )
+    )
 
     #### Stop the app ----
     app$stop()
@@ -170,8 +176,15 @@ testthat::test_that(
   ") |> as.character()
     Sys.sleep(5)
 
-    testthat::expect_gt(length(cols), 0)
-    testthat::expect_true(any(cols == "geo"))
+    testthat::expect_equal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn"
+      )
+    )
 
     #### Stop the app ----
     app$stop()
@@ -260,8 +273,15 @@ testthat::test_that(
   ") |> as.character()
     Sys.sleep(5)
 
-    testthat::expect_gt(length(cols), 0)
-    testthat::expect_true(any(cols == "geo"))
+    testthat::expect_equal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn", "area"
+      )
+    )
 
     #### Stop the app ----
     app$stop()
@@ -349,8 +369,15 @@ testthat::test_that(
   ") |> as.character()
     Sys.sleep(5)
 
-    testthat::expect_gt(length(cols), 0)
-    testthat::expect_true(any(cols == "geo"))
+    testthat::expect_equal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn", "area"
+      )
+    )
 
     #### Stop the app ----
     app$stop()
