@@ -11,6 +11,3 @@ library(wowi)
 library(shinytest2)
 
 test_check("wowi")
-
-# Test Shiny app ----
-#shinytest2::test_app()

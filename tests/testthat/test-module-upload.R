@@ -1,13 +1,16 @@
 # ==============================================================================
-#  Test Suite: Module Data Upload
+# 📦 Shiny Module: Data Upload
 # ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 🔒 Internal:
+# ------------------------------------------------------------------------------
 
 ## ---- Module: Data Upload ----------------------------------------------------
 
 testthat::test_that(
   desc = "Data upload server works as expected",
   code = {
-
     ### Initialise app ----
     app <- shinytest2::AppDriver$new(
       app_dir = testthat::test_path("fixtures"),
@@ -42,16 +45,19 @@ testthat::test_that(
     testthat::expect_false(vals$output$"upload_data-showProgress")
     testthat::expect_gt(vals$input$upload$size, 219000)
     testthat::expect_equal(vals$input$upload$type, "text/csv")
-    expect_equal(
-    object = app$get_js("
+    testthat::expect_equal(
+      object = app$get_js("
     $('#upload_data-uploadedDataTable thead th').map(function() {
       return $(this).text();
     }).get();
   ")[-1][-1][1:11] |> as.character(),
-    expected = c(
-      "district", "cluster", "sex", "age","weight", "height", "oedema", "muac",
-      "latitude", "longitude", "precision"
+      expected = c(
+        "district", "cluster", "sex", "age", "weight", "height", "oedema", "muac",
+        "latitude", "longitude", "precision"
+      )
     )
-  )
+
+    #### Stop the app ----
+    app$stop()
   }
 )

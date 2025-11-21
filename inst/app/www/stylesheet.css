@@ -94,6 +94,16 @@ h1, h2, h3, h4 {
     border-color:#9dac7c; 
 }
 
+/* Radio button labels */ 
+
+#wrangle-wrangle label {
+  font-size: 14px;
+}
+
+#scan-analysis_scope label {
+  font-size: 14px;
+}
+
 /* Pagination */
 
 .page-link.active, 

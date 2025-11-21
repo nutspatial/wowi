@@ -1,6 +1,10 @@
 # ==============================================================================
-#  Test Suite: Spatial Scan
+# 📦 Shiny Module: Spatial Scan
 # ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 🔒 Internal:
+# ------------------------------------------------------------------------------
 
 ## ---- Spatial Scan: Single-area analysis for high-rates ----------------------
 
@@ -35,16 +39,16 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Now set the variable selectors ----
-    app$set_inputs("wrangle-sex" = "sex", wait_ = FALSE, timeout_ = 10000)
-    app$set_inputs("wrangle-weight" = "weight", wait_ = FALSE, timeout_ = 10000)
-    app$set_inputs("wrangle-height" = "height", wait_ = FALSE, timeout_ = 10000)
-    app$set_inputs("wrangle-oedema" = "", wait_ = FALSE, timeout_ = 10000)
+    app$set_inputs("wrangle-sex" = "sex", wait_ = FALSE)
+    app$set_inputs("wrangle-weight" = "weight", wait_ = FALSE)
+    app$set_inputs("wrangle-height" = "height", wait_ = FALSE)
+    app$set_inputs("wrangle-oedema" = "", wait_ = FALSE)
 
     ### Wait before clicking apply
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button
-    app$click("wrangle-apply_wrangle", wait_ = TRUE, timeout_ = 15000)
+    app$click("wrangle-apply_wrangle", wait_ = FALSE)
     Sys.sleep(5)
 
     ### Click on the "Data Wrangling" tab
@@ -71,17 +75,34 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button ----
-    app$click("scan-run_scan", wait_ = FALSE)
+    app$click(input = "scan-run_scan")
+    app$wait_for_value(output = "scan-clusters", timeout = 40000)
     Sys.sleep(5)
 
-    testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    cols <- app$get_js("
-    $('#scan-clusters thead th').map(function() {
-      return $(this).text();
-    }).get();
-  ") |> as.character()
 
-    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
+    ### Test suite ----
+    testthat::expect_true(!is.null(app$get_values(output = TRUE)))
+    
+    cols <- app$get_js("$('#scan-clusters thead th').map(function() {
+      return $(this).text();}).get();") |> as.character()
+    
+    ### Skip test on GitHub CI if SaTScan cannot be found ----
+    if (length(cols) == 0) {
+      skip_if_no_satscan()
+    } else {
+      testthat::expect_setequal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn"
+      )
+    )
+    }
+
+    #### Stop the app ----
+    app$stop()
   }
 )
 
@@ -154,25 +175,42 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button ----
-    app$click("scan-run_scan", wait_ = FALSE)
+    app$click(input = "scan-run_scan")
     Sys.sleep(5)
+    app$wait_for_value(output = "scan-clusters", timeout = 40000)
 
+
+    ### Test suite ----
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    cols <- app$get_js("
-    $('#scan-clusters thead th').map(function() {
-      return $(this).text();
-    }).get();
-  ") |> as.character()
 
-    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
+    cols <- app$get_js("$('#scan-clusters thead th').map(function() {
+      return $(this).text();}).get();") |> as.character()
+    
+    #### Skip test on GitHub CI if SaTScan cannot be found ----
+    if (length(cols) == 0) {
+      skip_if_no_satscan()
+    } else {
+      testthat::expect_setequal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn"
+      )
+    )
+    }
+
+    #### Stop the app ----
+    app$stop()
   }
 )
 
 
-## ---- Spatial Scan: Single-area analysis for high-rates ----------------------
+## ---- Spatial Scan: Multiple-area analysis for high-rates --------------------
 
 testthat::test_that(
-  desc = "Module spatial scan works great for single-area analysis for high rates",
+  desc = "Module spatial scan works great for multiple-area analysis for high rates",
   code = {
     ### Initialise app ----
     app <- shinytest2::AppDriver$new(
@@ -239,17 +277,34 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button ----
-    app$click("scan-run_scan", wait_ = FALSE)
+    app$click(input = "scan-run_scan")
+    app$wait_for_value(output = "scan-clusters", timeout = 40000)
     Sys.sleep(5)
 
-    testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    cols <- app$get_js("
-    $('#scan-clusters thead th').map(function() {
-      return $(this).text();
-    }).get();
-  ") |> as.character()
 
-    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
+    ### Test suite ----
+    testthat::expect_true(!is.null(app$get_values(output = TRUE)))
+
+    cols <- app$get_js("$('#scan-clusters thead th').map(function() {
+      return $(this).text();}).get();") |> as.character()
+    
+    #### Skip test on GitHub CI if SaTScan cannot be found ----
+    if (length(cols) == 0) {
+      skip_if_no_satscan()
+    } else {
+      testthat::expect_setequal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn", "area"
+      )
+    )
+    }
+
+    #### Stop the app ----
+    app$stop()
   }
 )
 
@@ -323,16 +378,33 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button ----
-    app$click("scan-run_scan", wait_ = FALSE)
+    app$click(input = "scan-run_scan")
+    app$wait_for_value(output = "scan-clusters", timeout = 60000)
     Sys.sleep(5)
 
-    testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    cols <- app$get_js("
-    $('#scan-clusters thead th').map(function() {
-      return $(this).text();
-    }).get();
-  ") |> as.character()
 
-    testthat::expect_true(all(cols %in% c("geo", "radius", "relative_risk")))
+    ### Test suite ----
+    testthat::expect_true(!is.null(app$get_values(output = TRUE)))
+
+    cols <- app$get_js("$('#scan-clusters thead th').map(function() {
+      return $(this).text();}).get();") |> as.character()
+    
+    #### Skip test on GitHub CI if SaTScan cannot be found ----
+    if (length(cols) == 0) {
+      skip_if_no_satscan()
+    } else {
+      testthat::expect_setequal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn", "area"
+      )
+    )
+    }
+
+    #### Stop the app ----
+    app$stop()
   }
 )
