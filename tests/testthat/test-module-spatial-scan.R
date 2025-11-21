@@ -72,10 +72,10 @@ testthat::test_that(
 
     ### Click apply button ----
     app$click("scan-run_scan", wait_ = FALSE)
+    app$wait_for_value(output = "scan-clusters", timeout = 40000)
     Sys.sleep(5)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    app$wait_for_js("$('#scan-clusters thead th').length > 0", timeout = 30000)
     cols <- app$get_js("
     $('#scan-clusters thead th').map(function() {
       return $(this).text();
@@ -168,9 +168,9 @@ testthat::test_that(
     ### Click apply button ----
     app$click("scan-run_scan", wait_ = FALSE)
     Sys.sleep(5)
+    app$wait_for_value(output = "scan-clusters", timeout = 40000)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    app$wait_for_js("$('#scan-clusters thead th').length > 0", timeout = 30000)
     cols <- app$get_js("
     $('#scan-clusters thead th').map(function() {
       return $(this).text();
@@ -265,10 +265,10 @@ testthat::test_that(
 
     ### Click apply button ----
     app$click("scan-run_scan", wait_ = FALSE)
+    app$wait_for_value(output = "scan-clusters", timeout = 40000)
     Sys.sleep(5)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    app$wait_for_js("$('#scan-clusters thead th').length > 0", timeout = 30000)
     cols <- app$get_js("
     $('#scan-clusters thead th').map(function() {
       return $(this).text();
@@ -363,9 +363,9 @@ testthat::test_that(
     ### Click apply button ----
     app$click("scan-run_scan", wait_ = FALSE)
     Sys.sleep(5)
+    app$wait_for_value(output = "scan-clusters", timeout = 60000)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    app$wait_for_js("$('#scan-clusters thead th').length > 0", timeout = 30000)
     cols <- app$get_js("
     $('#scan-clusters thead th').map(function() {
       return $(this).text();
