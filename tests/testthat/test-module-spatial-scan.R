@@ -75,21 +75,22 @@ testthat::test_that(
     Sys.sleep(5)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
+    app$wait_for_js("$('#scan-clusters thead th').length > 0", timeout = 30000)
     cols <- app$get_js("
     $('#scan-clusters thead th').map(function() {
       return $(this).text();
     }).get();
   ") |> as.character()
 
-    # testthat::expect_equal(
-    #   object = cols,
-    #   expected = c(
-    #     "survey_area", "nr_EAs", "total_children", "total_cases",
-    #     "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
-    #     "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
-    #     "log_lik_ratio", "pvalue", "ipc_amn"
-    #   )
-    # )
+    testthat::expect_setequal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn"
+      )
+    )
 
     #### Stop the app ----
     app$stop()
@@ -169,6 +170,7 @@ testthat::test_that(
     Sys.sleep(5)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
+    app$wait_for_js("$('#scan-clusters thead th').length > 0", timeout = 30000)
     cols <- app$get_js("
     $('#scan-clusters thead th').map(function() {
       return $(this).text();
@@ -176,15 +178,15 @@ testthat::test_that(
   ") |> as.character()
     Sys.sleep(5)
 
-    # testthat::expect_equal(
-    #   object = cols,
-    #   expected = c(
-    #     "survey_area", "nr_EAs", "total_children", "total_cases",
-    #     "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
-    #     "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
-    #     "log_lik_ratio", "pvalue", "ipc_amn"
-    #   )
-    # )
+    testthat::expect_setequal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn"
+      )
+    )
 
     #### Stop the app ----
     app$stop()
@@ -266,6 +268,7 @@ testthat::test_that(
     Sys.sleep(5)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
+    app$wait_for_js("$('#scan-clusters thead th').length > 0", timeout = 30000)
     cols <- app$get_js("
     $('#scan-clusters thead th').map(function() {
       return $(this).text();
@@ -273,15 +276,15 @@ testthat::test_that(
   ") |> as.character()
     Sys.sleep(5)
 
-    # testthat::expect_equal(
-    #   object = cols,
-    #   expected = c(
-    #     "survey_area", "nr_EAs", "total_children", "total_cases",
-    #     "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
-    #     "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
-    #     "log_lik_ratio", "pvalue", "ipc_amn", "area"
-    #   )
-    # )
+    testthat::expect_setequal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn", "area"
+      )
+    )
 
     #### Stop the app ----
     app$stop()
@@ -362,6 +365,7 @@ testthat::test_that(
     Sys.sleep(5)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
+    app$wait_for_js("$('#scan-clusters thead th').length > 0", timeout = 30000)
     cols <- app$get_js("
     $('#scan-clusters thead th').map(function() {
       return $(this).text();
@@ -369,15 +373,15 @@ testthat::test_that(
   ") |> as.character()
     Sys.sleep(5)
 
-    # testthat::expect_equal(
-    #   object = cols,
-    #   expected = c(
-    #     "survey_area", "nr_EAs", "total_children", "total_cases",
-    #     "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
-    #     "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
-    #     "log_lik_ratio", "pvalue", "ipc_amn", "area"
-    #   )
-    # )
+    testthat::expect_setequal(
+      object = cols,
+      expected = c(
+        "survey_area", "nr_EAs", "total_children", "total_cases",
+        "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
+        "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
+        "log_lik_ratio", "pvalue", "ipc_amn", "area"
+      )
+    )
 
     #### Stop the app ----
     app$stop()
