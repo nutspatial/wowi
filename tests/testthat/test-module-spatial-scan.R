@@ -71,24 +71,19 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button ----
-    app$click("scan-run_scan", wait_ = FALSE)
+    app$click(input = "scan-run_scan")
     app$wait_for_value(output = "scan-clusters", timeout = 40000)
     Sys.sleep(5)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    cols <- app$get_js("
-    $('#scan-clusters thead th').map(function() {
-      return $(this).text();
-    }).get();
-  ") |> as.character()
-
     testthat::expect_setequal(
-      object = cols,
+      object = app$get_js("$('#scan-clusters thead th').map(function() {
+      return $(this).text();}).get();") |> as.character(),
       expected = c(
         "survey_area", "nr_EAs", "total_children", "total_cases",
         "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
         "expected_cases", "observedExpected", "relative_risk", "%_cases_in_area",
-        "log_lik_ratio", "pvalue", "ipc_amn"
+        "log_lik_ratio", "pvalue", "ipc_amn", "area"
       )
     )
 
@@ -166,7 +161,7 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button ----
-    app$click("scan-run_scan", wait_ = FALSE)
+    app$click(input = "scan-run_scan")
     Sys.sleep(5)
     app$wait_for_value(output = "scan-clusters", timeout = 40000)
 
@@ -264,7 +259,7 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button ----
-    app$click("scan-run_scan", wait_ = FALSE)
+    app$click(input = "scan-run_scan")
     app$wait_for_value(output = "scan-clusters", timeout = 40000)
     Sys.sleep(5)
 
@@ -361,20 +356,14 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Click apply button ----
-    app$click("scan-run_scan", wait_ = FALSE)
-    Sys.sleep(5)
+    app$click(input = "scan-run_scan")
     app$wait_for_value(output = "scan-clusters", timeout = 60000)
+    Sys.sleep(5)
 
     testthat::expect_true(!is.null(app$get_values(output = TRUE)))
-    cols <- app$get_js("
-    $('#scan-clusters thead th').map(function() {
-      return $(this).text();
-    }).get();
-  ") |> as.character()
-    Sys.sleep(5)
-
     testthat::expect_setequal(
-      object = cols,
+      object = app$get_js("$('#scan-clusters thead th').map(function() {
+      return $(this).text();}).get();") |> as.character(),
       expected = c(
         "survey_area", "nr_EAs", "total_children", "total_cases",
         "%_cases", "location_ids", "geo", "radius", "span", "children", "n_cases",
