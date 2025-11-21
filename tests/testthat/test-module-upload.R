@@ -50,7 +50,7 @@ testthat::test_that(
     $('#upload_data-uploadedDataTable thead th').map(function() {
       return $(this).text();
     }).get();
-  ")[-1][-1][1:11] |> as.character(),
+  ")[-1][1:11] |> as.character(),
       expected = c(
         "district", "cluster", "sex", "age", "weight", "height", "oedema", "muac",
         "latitude", "longitude", "precision"
