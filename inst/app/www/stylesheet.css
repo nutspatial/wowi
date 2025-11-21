@@ -96,13 +96,10 @@ h1, h2, h3, h4 {
 
 /* Radio button labels */ 
 
-#wrangle-wrangle label {
+#wrangle-wrangle, #scan-analysis_scope, #scan-scan_for label {
   font-size: 14px;
 }
 
-#scan-analysis_scope label {
-  font-size: 14px;
-}
 
 /* Pagination */
 
