@@ -73,39 +73,36 @@ ui <- tagList(
           style = "padding: 1rem; background-color: #fbfdfd;",
           tags$html(
             tags$div(
+              # Outer wrapper
               style = "padding: 0.5rem 1rem;",
-
-              ### Title + Logo row ----
               tags$div(
+                class = "app-title",
                 style = "display: flex; justify-content: space-between; align-items: center;",
 
-                #### Title ----
-                tags$h3(
-                  style = "marging-top: 30px; font-weight: bold;",
-                  "
-                    Detecting Statistically Significant Spatial Clusters of
-                    Acute Malnutrition
-                    "
-                )
-              ),
+                # Left side: title + subtitle stacked
+                tags$div(
+                  style = "display: flex; flex-direction: column;",
+                  tags$h3(
+                    style = "margin: 0; font-weight: bold;",
+                    "Detecting Statistically Significant Spatial Clusters of Acute Malnutrition"
+                  ),
+                  tags$h4(
+                    style = "margin: 0; font-weight: normal; line-height: 1.2; padding-top: 4px;",
+                    list(
+                      "A simplified workflow of the ", tags$code("wowi"), " package for non-R users"
+                    )
+                  )
+                ),
 
-              ### Logo ----
-              tags$a(
-                href = "https://nutspatial.github.io/wowi/",
-                tags$img(
-                  src = "logo.png",
-                  height = "160px",
-                  alt = "wowi website",
-                  align = "right",
-                  style = " margin-top: -40px; margin-right: 20px;"
-                )
-              ),
-
-              ### Subtitle directly below, no spacing ----
-              tags$h4(
-                style = "fmargin: 0; font-weight: normal; line-height: 1.2;",
-                list(
-                  "A simplified workflow of the ", tags$code("wowi"), " package for non-R users"
+                # Right side: logo
+                tags$a(
+                  href = "https://nutspatial.github.io/wowi/",
+                  tags$img(
+                    src = "logo.png",
+                    height = "160px",
+                    alt = "wowi website",
+                    style = "margin-left: 1rem;"
+                  )
                 )
               )
             ),
@@ -140,12 +137,12 @@ ui <- tagList(
                 tags$li(tags$b("Spatial Scan"))
               )
             ),
+            tags$hr(),
 
             #### Data uploading ----
             tags$div(
               id = "sec2",
               style = "text-align: justify;",
-              tags$hr(),
               tags$p(tags$b("1. Data Upload")),
               tags$p(
                 "
