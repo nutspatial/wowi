@@ -27,7 +27,7 @@ ui <- tagList(
     title = tags$div(
       style = "display: flex; align-items: center; justify-content: space-between; width: 100%;",
 
-      ### Left side of the page navigation bar ----
+      ### Left side of the page navigation bar: app name and logo ----
       tags$div(
         style = "display: flex; align-items: center;",
         tags$span("wowi",
@@ -55,10 +55,11 @@ ui <- tagList(
     nav_panel(
       title = "Home",
       icon = icon("house"),
-      # Bootstrap 5 icon name
+
+      ### Left sidebar for contents ----
       layout_sidebar(
         sidebar = tags$div(
-          style = "padding: 1rem; align-items: end;",
+          style = "padding: 1rem;",
           tags$h4("Contents"),
           tags$h6(tags$a(href = "#sec1", "Welcome")),
           tags$h6(tags$a(href = "#sec2", "Data Upload")),
@@ -69,9 +70,10 @@ ui <- tagList(
           tags$h6(tags$a(href = "#sec7", "Useful Resources"))
         ),
         card(
-          style = "background-color: #fbfdfd;",
+          style = "padding: 1rem; background-color: #fbfdfd;",
           tags$html(
             tags$div(
+              style = "padding: 0.5rem 1rem;",
 
               ### Title + Logo row ----
               tags$div(
@@ -79,47 +81,46 @@ ui <- tagList(
 
                 #### Title ----
                 tags$h3(
-                  style = "margin: 0; font-weight: bold; line-height: 1.2", "Title",
-                    "
-                    Detecting Statistically Significant Spatial Clusters of 
+                  style = "marging-top: 30px; font-weight: bold;",
+                  "
+                    Detecting Statistically Significant Spatial Clusters of
                     Acute Malnutrition
                     "
-                ),
+                )
+              ),
 
-                #### Logo ----
-                tags$a(
-                  href = "https://nutspatial.github.io/wowi/",
-                  tags$img(
-                    src = "logo.png",
-                    height = "160px",
-                    alt = "wowi website",
-                    style = "margin-left: 1rem;"
-                  )
+              ### Logo ----
+              tags$a(
+                href = "https://nutspatial.github.io/wowi/",
+                tags$img(
+                  src = "logo.png",
+                  height = "160px",
+                  alt = "wowi website",
+                  align = "right",
+                  style = " margin-top: -40px; margin-right: 20px;"
                 )
               ),
 
               ### Subtitle directly below, no spacing ----
-              tags$p(tags$h4(
-                style = "font-weight: normal; align-items: flex-start;", "Subtitle",
+              tags$h4(
+                style = "fmargin: 0; font-weight: normal; line-height: 1.2;",
                 list(
                   "A simplified workflow of the ", tags$code("wowi"), " package for non-R users"
                 )
               )
-            )
             ),
-            tags$hr(),
             tags$div(
               id = "sec1",
-              style = "text-align: justify; gap; 0 !important;",
+              style = "text-align: justify;",
+              tags$hr(),
               tags$p(
                 "
                 This app is a lightweight, field-ready and handy tool thoughtful
-                conceived to help users detect spatial clusters - whether 
+                conceived to help users detect spatial clusters - whether
                 high-only or high and low rates - of acute malnutrition that are
                 unlikely to be ocurring by chance. It automates the key analysis
                 workflow of the package", tags$code("wowi"), "for non-R users.
                 "
-                
               ),
               tags$p(
                 "
@@ -129,7 +130,7 @@ ui <- tagList(
               ),
               tags$p(
                 "
-                  The app is divided into three easy-to-navigate tabs, apart from 
+                  The app is divided into three easy-to-navigate tabs, apart from
                   the Home - where you are now:
                   "
               ),
@@ -139,126 +140,126 @@ ui <- tagList(
                 tags$li(tags$b("Spatial Scan"))
               )
             ),
-            tags$hr(),
 
             #### Data uploading ----
             tags$div(
               id = "sec2",
-              style = "text-align: justify; gap; 0 !important;",
+              style = "text-align: justify;",
+              tags$hr(),
               tags$p(tags$b("1. Data Upload")),
               tags$p(
                 "
                 This is where the workflow begins. Upload the dataset saved in a
-                comma-separated-value format (.csv); this is the only accepted 
-                format. Click on the 'Browse' button to locate the file to be 
-                uploaded from your computer; it is as simple as that. 
+                comma-separated-value format (.csv); this is the only accepted
+                format. Click on the 'Browse' button to locate the file to be
+                uploaded from your computer; it is as simple as that.
                 Once uploaded, the first 20 rows will be priviewed on the right side.
                 "
               ),
               tags$p(
-                  tags$ul(
-                    tags$li(tags$b("Data requirements")),
-                    tags$p(
-                      "
+                tags$ul(
+                  tags$li(tags$b("Data requirements")),
+                  tags$p(
+                    "
                         The data to be uploaded must have been tidy up in accordance
                         to the below-described app's", tags$b("input file"), "and",
-                        tags$b("input variable"), "requirements:
+                    tags$b("input variable"), "requirements:
                         "
-                    ),
-                    tags$br(),
-                    tags$ul(
-                      tags$li(tags$b("Input file requirements"), 
+                  ),
+                  tags$br(),
+                  tags$ul(
+                    tags$li(
+                      tags$b("Input file requirements"),
                       tags$p(
                         tags$b("File naming:"), "the file name must use
                             underscore ( _ ) to separate words. Hyphen ( - ) or
                             simple spaces will lead to errors along the uploading
                             process. Consider the following naming example:",
-                              tags$em("my_file_to_upload.csv")
-                        )
+                        tags$em("my_file_to_upload.csv")
+                      )
                     ),
-
                     tags$br(),
-                      tags$li(tags$b("Aspatial Variables")),
-                      tags$span(
-                        style = "font-weight: normal; space-between;",
-                        "
-                        Acute malnutrition can be defined based on either 
-                        Weight-for-Heigth z-scores (WFHZ) or Mid-Upper Arm 
-                        Circumference (MUAC), or even based on the combination 
-                        of the former two - including or not bilateral oedema. 
+                    tags$li(tags$b("Aspatial Variables")),
+                    tags$span(
+                      style = "font-weight: normal; space-between;",
+                      "
+                        Acute malnutrition can be defined based on either
+                        Weight-for-Heigth z-scores (WFHZ) or Mid-Upper Arm
+                        Circumference (MUAC), or even based on the combination
+                        of the former two - including or not bilateral oedema.
                         On this note, the required variables to be uploaded
-                        will depend on the method to be considered in the first 
+                        will depend on the method to be considered in the first
                         place. Nonetheless, all in all:
                         "
-                      ),
-                      tags$ul(
-                        tags$div(
-                          style = "font-weight: normal;",
-                          tags$br(),
-                          tags$li(
-                            tags$b("Age:"),
-                            "
+                    ),
+                    tags$ul(
+                      tags$div(
+                        style = "font-weight: normal;",
+                        tags$br(),
+                        tags$li(
+                          tags$b("Age:"),
+                          "
                             values must be in months. Any values outside the
                             range of 6 to 59 months old will be set as 'not
                             applicable'. The variable name must be written in
                             lowercase ('age').
                             "
-                          ),
-                          tags$li(
-                            tags$b("Sex:"),
-                            "
+                        ),
+                        tags$li(
+                          tags$b("Sex:"),
+                          "
                             values must be given in 'm' for boys/male and 'f' for
                             girls/female. The variable name must be written in lowercase
                             ('sex').
                             "
-                          ),
-                          tags$li(
-                            tags$b("MUAC:"), 
-                            "
+                        ),
+                        tags$li(
+                          tags$b("MUAC:"),
+                          "
                             values must be given in millimetres. Ensure that there
                             no strange numbers, such as '114.1'. The presence of
                             decimal places (even if one case) will raise error
                             in the data wrangling tab and hault the app.
                             "
-                          ),
-                          tags$li(
-                            tags$b("Weight:"), "values must be given in Kilograms."
-                          ),
-                          tags$li(
-                            tags$b("Height:"), "values must be given in centimetres."
-                          ),
-                          tags$li(
-                            tags$b("Oedema:"), 
-                            "
+                        ),
+                        tags$li(
+                          tags$b("Weight:"), "values must be given in Kilograms."
+                        ),
+                        tags$li(
+                          tags$b("Height:"), "values must be given in centimetres."
+                        ),
+                        tags$li(
+                          tags$b("Oedema:"),
+                          "
                             values must be given in 'y' for yes and 'n' for no.
                             "
-                          )
                         )
                       )
-                    ),
-                    tags$br(),
-                    tags$ul(
-                      tags$li(tags$b("Spatial Variables")),
-                      tags$div(
-                        style = "font-weight: normal;",
-                        tags$ul(
-                          tags$li(
-                            tags$b("Latitude: x-axis")
-                          ),
-                          tags$li(
-                            tags$b("Longitude: y-axis")
-                          )
+                    )
+                  ),
+                  tags$br(),
+                  tags$ul(
+                    tags$li(tags$b("Spatial Variables")),
+                    tags$div(
+                      style = "font-weight: normal;",
+                      tags$ul(
+                        tags$li(
+                          tags$b("Latitude: x-axis")
+                        ),
+                        tags$li(
+                          tags$b("Longitude: y-axis")
                         )
                       )
                     )
                   )
+                )
               ),
-              tags$hr(),
 
               #### Data wrangling ----
               tags$div(
                 id = "sec3",
-                style = "text-align: justify; gap; 0 !important;",
+                style = "text-align: justify;",
+                tags$hr(),
                 tags$p(tags$b("Data Wrangling")),
                 tags$p(
                   "
@@ -276,12 +277,12 @@ ui <- tagList(
                 tags$p("In this process, the variable oedema is optional.")
               )
             ),
-            tags$hr(),
 
             #### Run Spatial Scan ----
             tags$div(
               id = "sec4",
-              style = "text-align: justify; gap; 0 !important;",
+              style = "text-align: justify;",
+              tags$hr(),
               tags$p(tags$b("Spatial Scan")),
               tags$p(
                 "
@@ -311,28 +312,28 @@ ui <- tagList(
               )
             )
           ),
-          tags$hr(),
 
           #### Authorship ----
           tags$div(
             id = "sec5",
             style = "text-align: justify;",
+            tags$hr(),
             tags$p(tags$b("Authorship")),
             tags$p("This app was developed and is maintained by Tomás Zaba.")
           ),
-          tags$hr(),
           tags$div(
             id = "sec6",
             style = "text-align: justify;",
+            tags$hr(),
             tags$p(tags$b("License")),
             tags$p("This app is licensed under the GPL (>=3) license.")
           ),
-          tags$hr(),
 
           #### Useful Resources ----
           tags$div(
             id = "sec6",
-            style = "text-align: justify; gap; 0 !important;",
+            style = "text-align: justify;",
+            tags$hr(),
             tags$p(tags$b("Useful Resources")),
             tags$p("Read more about:"),
             tags$ul(
