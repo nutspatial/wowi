@@ -133,16 +133,15 @@ module_server_run_spatial_scan <- function(id, .data) {
       })
 
       # Initialize the scanning reactive value (add this near your other reactive values)
-      scanning <- shiny::reactiveVal(FALSE)
+      vals$scanning <- shiny::reactiveVal(FALSE)
 
       ### Logic for calculations ----
       shiny::observeEvent(
         eventExpr = input$run_scan,
         {
-
-                    #### Clear previous results and start scanning ----
+          #### Clear previous results and start scanning ----
           vals$scanned <- NULL
-          scanning(TRUE)
+          vals$scanning(TRUE)
 
           #### Ensure data exists before rendering ----
           shiny::req(.data())
@@ -158,9 +157,48 @@ module_server_run_spatial_scan <- function(id, .data) {
             gam_based <- "combined"
           }
 
-          ## Containers for graceful error handling ----
-            msg <- NULL
-            valid <- TRUE
+          ### Handle error gracefully ----
+          #### Containers for graceful error handling ----
+          msg <- NULL
+          valid <- TRUE
+
+          #### Condition for when analysis scope is single area ----
+          if (input$analysis_scope == "single-area") {
+            if (any(!nzchar(c(
+              input$filename, input$directory, input$sslocation,
+              input$ssbatchfilename, input$satscan_version, input$scan_for,
+              input$latitude, input$longitude
+            )))) {
+              valid <- FALSE
+              msg <- "Please supply all required inputs indicated by *."
+            }
+
+            #### Raise error when condition is not met ----
+            if (!valid) {
+              shiny::showNotification(msg, type = "error")
+              vals$scanning(FALSE)
+              return()
+            }
+          }
+
+          #### Condition for when analysis scope is multiple area ----
+          if (input$analysis_scope == "multiple-area") {
+            if (any(!nzchar(c(
+              input$directory, input$sslocation,
+              input$ssbatchfilename, input$satscan_version, input$scan_for,
+              input$latitude, input$longitude
+            )))) {
+              valid <- FALSE
+              msg <- "Please supply all required inputs indicated by *."
+            }
+
+            #### Raise error when condition is not met ----
+            if (!valid) {
+              shiny::showNotification(msg, type = "error")
+              vals$scanning(FALSE)
+              return()
+            }
+          }
 
           #### Logic for single-area spatial scan ----
           if (input$analysis_scope == "single-area") {
@@ -171,19 +209,7 @@ module_server_run_spatial_scan <- function(id, .data) {
               input$latitude, input$longitude
             )
 
-            if (any(!nzchar(c(input$filename, input$directory, input$sslocation,
-              input$ssbatchfilename, input$satscan_version, input$scan_for,
-              input$latitude, input$longitude)))) {
-              valid <- FALSE
-              msg <- "Please supply all required inputs."
-            }
-
-            if (!valid) {
-          shiny::showNotification(msg, type = "error")
-          scanning(FALSE)
-          return()
-            }
-
+            ### Try execute operation and raise error in case not ----
             tryCatch(
               {
                 r <- mod_call_satscan(
@@ -210,26 +236,14 @@ module_server_run_spatial_scan <- function(id, .data) {
                 )
               }
             )
-            } else {
+          } else {
             #### Ensure that all parameters for single-area analysis are given ----
             shiny::req(
               input$directory, input$sslocation, input$ssbatchfilename,
               input$satscan_version, input$scan_for, input$latitude, input$longitude
             )
 
-            if (any(!nzchar(c(input$directory, input$sslocation,
-              input$ssbatchfilename, input$satscan_version, input$scan_for,
-              input$latitude, input$longitude)))) {
-              valid <- FALSE
-              msg <- "Please supply all required inputs."
-            }
-
-            if (!valid) {
-          shiny::showNotification(msg, type = "error")
-          scanning(FALSE)
-          return()
-            }
-
+            ### Try execute operation and raise error in case not ----
             tryCatch(
               {
                 r <- mod_call_satscan(
@@ -265,66 +279,41 @@ module_server_run_spatial_scan <- function(id, .data) {
           })
 
           # End scanning
-          scanning(FALSE)
+          vals$scanning(FALSE)
         }
       )
 
       #### Display a summary table of detected cluster and prettified ----
       output$clusters <- DT::renderDT({
         # Show scanning message while scanning is in progress
+        shiny::req(!vals$scanning()) # Let waiting spinner run until wrangling is done
+        shiny::req(vals$scanned)
 
-        if (scanning()) {
-          # Return a placeholder table while scanning
-          DT::datatable(
-            data = data.frame(Status = "Scanning in progress..."),
-            rownames = FALSE,
-            options = list(
-              dom = "t",
-              ordering = FALSE,
-              searching = FALSE,
-              info = FALSE,
-              paging = FALSE,
-              columnDefs = list(
-                list(className = "dt-center", targets = "_all")
-              )
-            ),
-            selection = "none"
-          ) |> DT::formatStyle(
-            columns = "Status",
-            fontSize = "16px",
-            fontWeight = "bold",
-            color = "#398DF3"
-          )
-        } else {
-          # Only render when not scanning and results exist
-          shiny::req(vals$scanned)
-
-          ##### Display the first 8 rows only ----
-          DT::datatable(
-            data = utils::head(vals$scanned$.df, 5),
-            rownames = FALSE,
-            options = list(
-              scrollX = FALSE,
-              scrolly = "800px",
-              columnDefs = list(list(className = "dt-center", targets = "_all"))
-            ),
-            caption = if (base::nrow(vals$scanned$.df) > 5) {
-              base::paste(
-                "Showing first 5 rows of", base::format(base::nrow(vals$scanned$.df), big.mark = ","),
-                "total rows"
-              )
-            } else {
-              base::paste("showing all", base::nrow(vals$scanned$.df), "rows")
-            }
-          ) |> DT::formatStyle(columns = base::colnames(vals$scanned$.df), fontSize = "13px")
-        }
+        ##### Display the first 8 rows only ----
+        DT::datatable(
+          data = utils::head(vals$scanned$.df, 5),
+          rownames = FALSE,
+          options = list(
+            scrollX = FALSE,
+            scrolly = "800px",
+            columnDefs = list(list(className = "dt-center", targets = "_all"))
+          ),
+          caption = if (base::nrow(vals$scanned$.df) > 5) {
+            base::paste(
+              "Showing first 5 rows of", base::format(base::nrow(vals$scanned$.df), big.mark = ","),
+              "total rows"
+            )
+          } else {
+            base::paste("showing all", base::nrow(vals$scanned$.df), "rows")
+          }
+        ) |> DT::formatStyle(columns = base::colnames(vals$scanned$.df), fontSize = "13px")
       })
 
       #### Download button to download table of detected clusters in .xlsx ----
       ##### Output into the UI ----
       output$download <- shiny::renderUI({
         shiny::req(vals$scanned)
-        shiny::req(!scanning())
+        shiny::req(!vals$scanning())
         htmltools::tags$div(
           style = "margin-bottom: 15px; text-align: right;",
           shiny::downloadButton(
