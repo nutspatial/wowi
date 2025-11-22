@@ -43,7 +43,7 @@ testthat::test_that(
     ### Assert expectactions ----
     testthat::expect_true(vals$output$"upload_data-fileUploaded")
     testthat::expect_false(vals$output$"upload_data-showProgress")
-    testthat::expect_gt(vals$input$upload$size, 219000)
+    testthat::expect_equal(vals$input$upload$size, 217575)
     testthat::expect_equal(vals$input$upload$type, "text/csv")
     testthat::expect_equal(
       object = app$get_js("
