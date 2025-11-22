@@ -111,3 +111,12 @@ h6 {
     background-color:#9dac7c;
     border-color:#9dac7c;
 }
+
+@layer htmltools {
+    .html-fill-container {
+        display: block;
+        flex-direction: column;
+        min-height: 0;
+        min-width: 0;
+    }
+}
