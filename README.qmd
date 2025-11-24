@@ -13,7 +13,7 @@ format: gfm
 [![Codecov test coverage](https://codecov.io/gh/nutspatial/wowi/graph/badge.svg)](https://app.codecov.io/gh/nutspatial/wowi)  
  <!-- badges: end -->
 
-Child acute malnutrition can lead to death if not identified and treated on time. Driven by a combination of diverse factors, it often exhibits spatial variation. The levels of acute malnutrition are commonly measured through surveys that are representative of the area of interest. Results are then used to inform programme responses — to find and treat the affected children. To that end, programme managers require actionable insights on where acute malnutrition is most prevalent; this is essential for prioritising interventions, especially when resources are limited. 
+Child acute malnutrition can lead to death if not identified and treated on time. Driven by a combination of diverse factors, it often exhibits spatial variation. The levels of acute malnutrition are commonly measured through surveys that are representative of the area of interest. Results are then used to inform programme responses — to find and treat the affected children. To that end, programme managers require actionable insights on where acute malnutrition is most prevalent; this is essential for prioritising interventions, especially when resources are limited.  
 
 `wowi` - an expression meaning *“where”* in Elómwè, a local language spoken in central-northern Mozambique - provides a set of convenient utilities for this purpose. It identifies locations across the survey area wherein acute malnutrition is significantly high (hotspots) or low (coldspots), and unlikely to be due to chance alone.  
 
@@ -25,7 +25,7 @@ To use `wowi`, you must have `SaTScan` installed on your machine, along with the
 
 `wowi` is not yet on CRAN but can be installed through:
 ```{r}
-#| label: installation-pak
+#| label: installation-using-pak
 #| echo: true
 #| eval: false
 pak::pkg_install(pkg = "nutspatial/wowi", dependencies = TRUE)
@@ -34,7 +34,7 @@ pak::pkg_install(pkg = "nutspatial/wowi", dependencies = TRUE)
 or through: 
 
 ```{r}
-#| label: installation-remotes
+#| label: installation-using-remotes
 #| echo: true
 #| eval: false
 remotes::install_github(repo = "nutspatial/wowi", dependencies = TRUE)
