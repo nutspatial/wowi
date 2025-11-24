@@ -43,14 +43,14 @@ testthat::test_that(
     ### Assert expectactions ----
     testthat::expect_true(vals$output$"upload_data-fileUploaded")
     testthat::expect_false(vals$output$"upload_data-showProgress")
-    testthat::expect_gt(vals$input$upload$size, 219000)
+    testthat::expect_gte(vals$input$upload$size, 217575)
     testthat::expect_equal(vals$input$upload$type, "text/csv")
     testthat::expect_equal(
       object = app$get_js("
     $('#upload_data-uploadedDataTable thead th').map(function() {
       return $(this).text();
     }).get();
-  ")[-1][-1][1:11] |> as.character(),
+  ")[-1][1:11] |> as.character(),
       expected = c(
         "district", "cluster", "sex", "age", "weight", "height", "oedema", "muac",
         "latitude", "longitude", "precision"

@@ -1,19 +1,19 @@
 #'
 #'
-#' Configure SaTScan for a Bernoulli purely spatial scan
+#' Configure SaTScan for Bernoulli purely spatial scan
 #'
 #' @description
-#' Defines the analysis parameters required by SaTScan's GUI to conduct a
-#' Bernoulli-based purely spatial scan, either to detect clusters of high rates
+#' Define the analysis parameters required by SaTScan's GUI to conduct a
+#' Bernoulli-based purely spatial scan to detect either clusters of high rates
 #' of acute malnutrition or both high and low rates.
 #'
-#' User input is limited to specifying the analysis area filename, the destination
+#' User's input is limited to specifying the analysis area filename, the destination
 #' directory for the parameters file, the SaTScan version in use, and the type of
 #' clusters to be detected. All other parameters are pre-defined by this function.
 #'
 #' @param filename A quoted string identifying the analysis area.
 #'
-#' @param params_dir A quoted string of the folder or directory where the
+#' @param params_dir A quoted string of the folder or directory in which the
 #' parameters file (produced by this function) should be saved. This can be
 #' the same directory as that specified in [ww_wrangle_data()].
 #'
@@ -24,7 +24,7 @@
 #' recommended to use the latest version.
 #'
 #' @param .scan_for A quoted string indicating the type of clusters to scan for.
-#' To scan for high-rate clusters only, set `.scan_for = "high-rates"`.
+#' To scan for clusters of high rates only, set `.scan_for = "high-rates"`.
 #' To scan for both high and low rates, set `.scan_for = "high-low-rates"`.
 #'
 #' @details

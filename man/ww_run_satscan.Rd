@@ -33,14 +33,14 @@ Used to identify the analysis area. The string should be quoted.}
 \item{dir}{A quoted string of the folder or directory in which the files
 should be saved.}
 
-\item{params_dir}{A quoted string of the folder or directory where the
+\item{params_dir}{A quoted string of the folder or directory in which the
 parameters file (produced by this function) should be saved.
 Defaults to the same value as \code{dir}.}
 
 \item{sslocation}{A quoted string indicating the path to the SaTScan
-GUI installation. This varies by operating system (OS). For macOS, it is
-typically \code{"/Applications/SaTScan.app/Contents/app"}; for Windows,
-\code{"C:/Program Files/SaTScan"}.}
+GUI installation. This varies depending on the operating system (OS).
+For macOS, it is typically \code{"/Applications/SaTScan.app/Contents/app"};
+for Windows, \code{"C:/Program Files/SaTScan"}.}
 
 \item{ssbatchfilename}{A quoted string specifying the SaTScan batch file
 name. For macOS, use \code{"satscan"}; for Windows, use \code{"SaTScanBatch64"}.}
@@ -51,13 +51,13 @@ installed on the user's computer. See \code{\link[=ww_configure_satscan]{ww_conf
 \item{.by_area}{Logical. If \code{TRUE}, area-wise scan is done. Defaults to \code{FALSE}.}
 
 \item{.scan_for}{A quoted string indicating the type of clusters to scan for.
-To scan for high-rate clusters only, set \code{.scan_for = "high-rates"}.
+To scan for clusters of high rates only, set \code{.scan_for = "high-rates"}.
 To scan for both high and low rates, set \code{.scan_for = "high-low-rates"}.}
 
 \item{.gam_based}{A quoted string indicating the criterion used to define acute
 malnutrition. This is used to identify the right vector where flagged values
-are identified, and for which should be excluded from the analysis. Default
-is \code{wfhz}.}
+are identified, and for which should be excluded from the analysis. Defaults
+to \code{wfhz}.}
 
 \item{latitude}{Geographical coordinates. An unquoted string for the variable
 containing the x-axis, also known as latitude (east-west direction). The

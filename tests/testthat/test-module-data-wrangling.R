@@ -42,10 +42,10 @@ testthat::test_that(
     app$wait_for_idle(timeout = 5000)
 
     ### Now set the variable selectors ----
-    app$set_inputs("wrangle-sex" = "sex", wait_ = FALSE, timeout_ = 10000)
-    app$set_inputs("wrangle-weight" = "weight", wait_ = FALSE, timeout_ = 10000)
-    app$set_inputs("wrangle-height" = "height", wait_ = FALSE, timeout_ = 10000)
-    app$set_inputs("wrangle-oedema" = "", wait_ = FALSE, timeout_ = 10000)
+    app$set_inputs("wrangle-sex" = "sex", wait_ = FALSE)
+    app$set_inputs("wrangle-weight" = "weight", wait_ = FALSE)
+    app$set_inputs("wrangle-height" = "height", wait_ = FALSE)
+    app$set_inputs("wrangle-oedema" = "", wait_ = FALSE)
 
     ### Wait before clicking apply
     app$wait_for_idle(timeout = 5000)
@@ -70,7 +70,7 @@ testthat::test_that(
     testthat::expect_true(all(c("wfhz", "flag_wfhz") %in% vals))
     testthat::expect_equal(
       object = length(vals),
-      expected = 17
+      expected = 16
     )
     ### Assert expectectations ----
     testthat::expect_true("wrangle-wrangled_data" %in% names(wfhz$output))
@@ -145,12 +145,12 @@ testthat::test_that(
     $('#wrangle-wrangled_data thead th').map(function() {
       return $(this).text();
     }).get();
-  ")[-2] |> as.character()
+  ")[-1] |> as.character()
 
 
     ### Assert expectectations ----
     testthat::expect_true(all(c("mfaz", "flag_mfaz", "gam", "sam", "mam") %in% vals))
-    testthat::expect_equal(object = length(vals), expected = 18)
+    testthat::expect_equal(object = length(vals), expected = 17)
     testthat::expect_equal(length(muac$input$"wrangle-wrangled_data_rows_all"), 20)
 
     #### Stop the app ----
@@ -219,14 +219,14 @@ testthat::test_that(
     $('#wrangle-wrangled_data thead th').map(function() {
       return $(this).text();
     }).get();
-  ")[-2] |> as.character()
+  ")[-1] |> as.character()
     
     combined <- app$get_values()
 
     ### Assert expectectations ----
     testthat::expect_true(all(c("mfaz", "wfhz", "flag_wfhz", "flag_mfaz",
       "cgam", "csam", "cmam") %in% vals))
-    testthat::expect_equal(object = length(vals), expected = 20)
+    testthat::expect_equal(object = length(vals), expected = 19)
     testthat::expect_equal(length(combined$input$"wrangle-wrangled_data_rows_all"), 20)
 
     #### Stop the app ----

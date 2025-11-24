@@ -296,7 +296,7 @@ module_server_wrangle_data <- function(id, data) {
                   ) |>
                   mwana::mw_wrangle_wfhz(
                     sex = .data$sex,
-                    .recode_sex = FALSE,
+                    .recode_sex = TRUE,
                     weight = .data$weight,
                     height = .data$height
                   ) |>
@@ -322,7 +322,7 @@ module_server_wrangle_data <- function(id, data) {
                   mwana::mw_wrangle_age(age = .data$age) |>
                   mwana::mw_wrangle_muac(
                     sex = .data$sex,
-                    .recode_sex = FALSE,
+                    .recode_sex = TRUE,
                     muac = .data$muac,
                     .recode_muac = FALSE,
                     .to = "none",
@@ -354,7 +354,7 @@ module_server_wrangle_data <- function(id, data) {
                   ) |>
                   mwana::mw_wrangle_wfhz(
                     sex = .data$sex,
-                    .recode_sex = FALSE,
+                    .recode_sex = TRUE,
                     weight = .data$weight,
                     height = .data$height
                   ) |>

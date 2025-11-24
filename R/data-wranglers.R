@@ -50,12 +50,12 @@ wrangle_data <- function(
 #'
 #'
 #'
-#' Prepare SaTScan-required input data files for a Bernoulli spatial scan
+#' Prepare SaTScan-required input data files for Bernoulli spatial scan
 #' analysis and save them in a user-defined working directory
 #'
 #' @description
 #' SaTScan's Bernoulli-based spatial scan requires the input data to be split
-#' into cases, controls, and geographical coordinates files, saved in a format
+#' into cases, controls, and geographical coordinates files, then saved in a format
 #'  readable by the software, and placed in a directory it can access.
 #'
 #' `ww_wrangle_data()` is a convenient function designed for this task. It
@@ -72,8 +72,8 @@ wrangle_data <- function(
 #'
 #' @param .gam_based A quoted string indicating the criterion used to define acute
 #' malnutrition. This is used to identify the right vector where flagged values
-#' are identified, and for which should be excluded from the analysis. Default
-#' is `wfhz`.
+#' are identified, and for which should be excluded from the analysis. Defaults 
+#' to `wfhz`.
 #'
 #' @param latitude Geographical coordinates. An unquoted string for the variable
 #'  containing the Y-axis, also known as latitude (north-south direction). The
@@ -84,8 +84,8 @@ wrangle_data <- function(
 #' variable must be named "latitude".
 #'
 #' @returns
-#' Three files are created and saved in the user-defined directory as defined
-#' by `dir`: a `.cas` file for cases, a `.ctl` for controls, and
+#' Three files are created and saved in the user-defined directory as specifiie 
+#' in the `dir` argument: a `.cas` file for cases, a `.ctl` for controls, and
 #' a `.geo` file for geographical coordinates. The full filenames will incorporate
 #' the use-defined `filename` string.
 #'

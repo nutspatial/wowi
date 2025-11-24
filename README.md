@@ -16,39 +16,45 @@ coverage](https://codecov.io/gh/nutspatial/wowi/graph/badge.svg)](https://app.co
 <!-- badges: end -->
 
 Child acute malnutrition can lead to death if not identified and treated
-in time. Driven by a combination of diverse factors, it often exhibits
+on time. Driven by a combination of diverse factors, it often exhibits
 spatial variation. The levels of acute malnutrition are commonly
 measured through surveys that are representative of the area of
-interest. These survey results are then used to inform programme
-responses — to find and treat affected children. To that end, programme
-managers require actionable insights on where acute malnutrition is most
-prevalent. This is essential for prioritising interventions, especially
-when resources are limited.
+interest. Results are then used to inform programme responses — to find
+and treat the affected children. To that end, programme managers require
+actionable insights on where acute malnutrition is most prevalent; this
+is essential for prioritising interventions, especially when resources
+are limited.
 
 `wowi` - an expression meaning *“where”* in Elómwè, a local language
-spoken in central-northern Mozambique - provides convenient utilities
-for this purpose. It identifies locations across the survey area where
-acute malnutrition is significantly high (hotspots) or low (coldspots),
-and unlikely to be due to chance alone.
+spoken in central-northern Mozambique - provides a set of convenient
+utilities for this purpose. It identifies locations across the survey
+area wherein acute malnutrition is significantly high (hotspots) or low
+(coldspots), and unlikely to be due to chance alone.
 
 `wowi` is a wrapper package built on top of the
 [`rsatscan`](https://cran.r-project.org/web/packages/rsatscan/index.html)
-package, which enables the use of the
-[`SaTScan`](https://www.satscan.org) software from within R. While
-`rsatscan` provides general-purpose functionality, wowi was specifically
-made for acute malnutrition analysis, tailoring the tools to the needs
-of nutrition-focused spatial investigations.
+package that enables the use of the [`SaTScan`](https://www.satscan.org)
+software from within R. While `rsatscan` provides general-purpose
+functionality, `wowi` was thoughtfully designed for acute malnutrition
+analysis.
 
-To use `wowi`, you must have SaTScan installed on your machine, along
-with the [`mwana`](https://nutriverse.io/mwana/dev/) R package for
-preprocessing anthropometric data.
+To use `wowi`, you must have `SaTScan` installed on your machine, along
+with the [`mwana`](https://nutriverse.io/mwana/dev/) R package that is
+used under the hood to wrangle anthropometric data. The latter gets
+installed during `wowi` installation.
 
 ## Installation
 
 `wowi` is not yet on CRAN but can be installed through:
 
 ``` r
-pak::pak(pkg = "nutspatial/wowi")
+pak::pkg_install(pkg = "nutspatial/wowi", dependencies = TRUE)
+```
+
+or through:
+
+``` r
+remotes::install_github(repo = "nutspatial/wowi", dependencies = TRUE)
 ```
 
 ## What does `wowi` do?
@@ -57,14 +63,14 @@ It takes a dataset with GPS coordinates (latitude and longitude), scans
 for clusters of acute malnutrition — either high or low, depending on
 the user’s specification — across the survey area, and returns three
 main outputs: (1) an interactive HTML map displaying the detected
-clusters (previewed below); (2) a .txt file containing the results; and
-(3) a table with summary statistics and metadata parsed from the .txt
-file.
+clusters (previewed below); (2) a `.txt` file containing the results;
+and (3) a table with summary statistics and metadata parsed from the
+`.txt` file.
 
-This package is particularly handy when working with datasets that span
+The package is particularly handy when working with datasets that span
 multiple areas or administrative units, enabling consistent, area-wise
-detection of hotspots and coldspots. It also generates additional
-GIS-based files (e.g., shapefiles), which can be useful for further
+detection of hotspots and coldspots. Moreover, it generates additional
+GIS-based files (e.g., shapefiles) that can be useful for further
 geospatial manipulation or integration into other mapping workflows.
 
 ### A glimpse of detected hotspots and coldspots
@@ -85,14 +91,14 @@ of the spot.](man/figures/detected-clusters.png)
 
 ### Shiny App
 
-To use the included Shiny App, run the following function in R:
+`wowi` comes with a lightweight, field-ready and handy built-in
+web-based application that enables users to upload their data and
+benefit from the utilities needless to write code or be well versed in
+R. The app can be launched by running the bellow-given command:
 
 ``` r
 ww_run_app()
 ```
-
-This will initiate the app through the web browser installed on your
-machine.
 
 ## Citation
 
@@ -107,7 +113,7 @@ citation("wowi")
 
       Tomás Zaba (2025). _wowi: Utilities for detecting statistically
       significant spatial clusters of high acute malnutrition rates using
-      SaTScan's Bernoulli spatial-scan model_. R package version 1.0.0,
+      SaTScan's Bernoulli spatial-scan model_. R package version 1.0.1,
       <https://nutspatial.github.io/wowi/>.
 
     A BibTeX entry for LaTeX users is
@@ -116,7 +122,7 @@ citation("wowi")
         title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model},
         author = {{Tomás Zaba}},
         year = {2025},
-        note = {R package version 1.0.0},
+        note = {R package version 1.0.1},
         url = {https://nutspatial.github.io/wowi/},
       }
 
