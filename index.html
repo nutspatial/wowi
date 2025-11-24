@@ -11,23 +11,24 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <link rel="icon" sizes="any" href="favicon.ico">
 <link rel="manifest" href="site.webmanifest">
-<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="lightswitch.js"></script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Detect Spatial Clusters of High Acute Malnutrition Rates">
 <meta name="description" content="Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model.">
 <meta property="og:description" content="Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model.">
+<meta property="og:image" content="https://nutspatial.github.io/wowi/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
-    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+    <nav class="navbar navbar-expand-lg fixed-top " aria-label="Site navigation"><div class="container">
 
     <a class="navbar-brand me-2" href="index.html">wowi</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,7 +41,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="articles/introduction-to-wowi.html">Introduction to wowi</a></li>
+<li><a class="dropdown-item" href="articles/how-to-use-wowi.html">Using wowi</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="news/index.html">Changelog</a></li>
@@ -50,6 +51,14 @@
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/nutspatial/wowi/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
+<li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="dark"><span class="fa fa-moon"></span> Dark</button></li>
+    <li><button class="dropdown-item" data-bs-theme-value="auto"><span class="fa fa-adjust"></span> Auto</button></li>
+  </ul>
+</li>
       </ul>
 </div>
 
@@ -58,38 +67,43 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="wowi-utilities-for-detecting-statistically-significant-spatial-clusters-of-high-acute-malnutrition-rates-using-satscans-bernoulli-spatial-scan-model-">wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="reference/figures/logo.jpg" align="right" height="200px" alt="wowi website"></a>
+<div class="page-header">
+<img src="logo.png" class="logo" alt=""><h1 id="wowi-utilities-for-detecting-statistically-significant-spatial-clusters-of-high-acute-malnutrition-rates-using-satscans-bernoulli-spatial-scan-model-">wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model 
 <a class="anchor" aria-label="anchor" href="#wowi-utilities-for-detecting-statistically-significant-spatial-clusters-of-high-acute-malnutrition-rates-using-satscans-bernoulli-spatial-scan-model-"></a>
-</h1></div>
+</h1>
+</div>
 <!-- badges: start -->
 
-<p>Child acute malnutrition can lead to death if not identified and treated in time. Driven by a combination of diverse factors, it often exhibits spatial variation. The levels of acute malnutrition are commonly measured through surveys that are representative of the area of interest. These survey results are then used to inform programme responses — to find and treat affected children. To that end, programme managers require actionable insights on where acute malnutrition is most prevalent. This is essential for prioritising interventions, especially when resources are limited.</p>
-<p><code>wowi</code> - an expression meaning <em>“where”</em> in Elómwè, a local language spoken in central-northern Mozambique - provides convenient utilities for this purpose. It identifies locations across the survey area where acute malnutrition is significantly high (hotspots) or low (coldspots), and unlikely to be due to chance alone.</p>
-<p><code>wowi</code> is a wrapper package built on top of the <a href="https://cran.r-project.org/web/packages/rsatscan/index.html" class="external-link"><code>rsatscan</code></a> package, which enables the use of the <a href="https://www.satscan.org" class="external-link"><code>SaTScan</code></a> software from within R. While <code>rsatscan</code> provides general-purpose functionality, wowi was specifically made for acute malnutrition analysis, tailoring the tools to the needs of nutrition-focused spatial investigations.</p>
-<p>To use <code>wowi</code>, you must have SaTScan installed on your machine, along with the <a href="https://nutriverse.io/mwana/dev/" class="external-link"><code>mwana</code></a> R package for preprocessing anthropometric data.</p>
+<p>Child acute malnutrition can lead to death if not identified and treated on time. Driven by a combination of diverse factors, it often exhibits spatial variation. The levels of acute malnutrition are commonly measured through surveys that are representative of the area of interest. Results are then used to inform programme responses — to find and treat the affected children. To that end, programme managers require actionable insights on where acute malnutrition is most prevalent; this is essential for prioritising interventions, especially when resources are limited.</p>
+<p><code>wowi</code> - an expression meaning <em>“where”</em> in Elómwè, a local language spoken in central-northern Mozambique - provides a set of convenient utilities for this purpose. It identifies locations across the survey area wherein acute malnutrition is significantly high (hotspots) or low (coldspots), and unlikely to be due to chance alone.</p>
+<p><code>wowi</code> is a wrapper package built on top of the <a href="https://cran.r-project.org/web/packages/rsatscan/index.html" class="external-link"><code>rsatscan</code></a> package that enables the use of the <a href="https://www.satscan.org" class="external-link"><code>SaTScan</code></a> software from within R. While <code>rsatscan</code> provides general-purpose functionality, <code>wowi</code> was thoughtfully designed for acute malnutrition analysis.</p>
+<p>To use <code>wowi</code>, you must have <code>SaTScan</code> installed on your machine, along with the <a href="https://nutriverse.io/mwana/dev/" class="external-link"><code>mwana</code></a> R package that is used under the hood to wrangle anthropometric data. The latter gets installed during <code>wowi</code> installation.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p><code>wowi</code> is not yet on CRAN but can be installed through:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"nutspatial/wowi"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"nutspatial/wowi"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p>or through:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span>repo <span class="op">=</span> <span class="st">"nutspatial/wowi"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="what-does-wowi-do">What does <code>wowi</code> do?<a class="anchor" aria-label="anchor" href="#what-does-wowi-do"></a>
 </h2>
-<p>It takes a dataset with GPS coordinates (latitude and longitude), scans for clusters of acute malnutrition — either high or low, depending on the user’s specification — across the survey area, and returns three main outputs: (1) an interactive HTML map displaying the detected clusters (previewed below); (2) a .txt file containing the results; and (3) a table with summary statistics and metadata parsed from the .txt file.</p>
-<p>This package is particularly handy when working with datasets that span multiple areas or administrative units, enabling consistent, area-wise detection of hotspots and coldspots. It also generates additional GIS-based files (e.g., shapefiles), which can be useful for further geospatial manipulation or integration into other mapping workflows.</p>
+<p>It takes a dataset with GPS coordinates (latitude and longitude), scans for clusters of acute malnutrition — either high or low, depending on the user’s specification — across the survey area, and returns three main outputs: (1) an interactive HTML map displaying the detected clusters (previewed below); (2) a <code>.txt</code> file containing the results; and (3) a table with summary statistics and metadata parsed from the <code>.txt</code> file.</p>
+<p>The package is particularly handy when working with datasets that span multiple areas or administrative units, enabling consistent, area-wise detection of hotspots and coldspots. Moreover, it generates additional GIS-based files (e.g., shapefiles) that can be useful for further geospatial manipulation or integration into other mapping workflows.</p>
 <div class="section level3">
 <h3 id="a-glimpse-of-detected-hotspots-and-coldspots">A glimpse of detected hotspots and coldspots<a class="anchor" aria-label="anchor" href="#a-glimpse-of-detected-hotspots-and-coldspots"></a>
 </h3>
-<figure><img src="reference/figures/detected-clusters.png" alt="Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot."><figcaption aria-hidden="true">
-Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot.
-</figcaption></figure>
+<div class="float">
+<img src="reference/figures/detected-clusters.png" alt="Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot."><div class="figcaption">Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot.</div>
+</div>
 </div>
 <div class="section level3">
 <h3 id="a-glimpse-of-the-summary-table">A glimpse of the summary table<a class="anchor" aria-label="anchor" href="#a-glimpse-of-the-summary-table"></a>
 </h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## # A tibble: 2 × 18</span></span>
 <span><span class="co">##  survey_area nr_EAs total_children total_cases `%_cases` location_ids   geo   radius span  children n_cases expected_cases observedExpected relative_risk</span></span>
 <span><span class="co">##  &lt;chr&gt;        &lt;int&gt;          &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;int&gt;   &lt;int&gt;          &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;</span></span>
@@ -100,34 +114,33 @@ Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot
 <div class="section level3">
 <h3 id="shiny-app">Shiny App<a class="anchor" aria-label="anchor" href="#shiny-app"></a>
 </h3>
-<p>To use the included Shiny App, run the following function in R:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p><code>wowi</code> comes with a lightweight, field-ready and handy built-in web-based application that enables users to upload their data and benefit from the utilities needless to write code or be well versed in R. The app can be launched by running the bellow-given command:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ww_run_app.html">ww_run_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>This will initiate the app through the web browser installed on your machine.</p>
 </div>
 </div>
 <div class="section level2">
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>If you use <code>wowi</code> package in your work, please cite using the suggested citation provided by a call to <code><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation()</a></code> function as follows:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"wowi"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; To cite wowi in publications use:</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   Tomás Zaba (2025). _wowi: Utilities for detecting statistically</span></span>
-<span><span class="co">#&gt;   significant spatial clusters of high acute malnutrition rates using</span></span>
-<span><span class="co">#&gt;   SaTScan's Bernoulli spatial-scan model_. R package version 1.0.0,</span></span>
-<span><span class="co">#&gt;   &lt;https://nutspatial.github.io/wowi/&gt;.</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;   @Manual{,</span></span>
-<span><span class="co">#&gt;     title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model},</span></span>
-<span><span class="co">#&gt;     author = {{Tomás Zaba}},</span></span>
-<span><span class="co">#&gt;     year = {2025},</span></span>
-<span><span class="co">#&gt;     note = {R package version 1.0.0},</span></span>
-<span><span class="co">#&gt;     url = {https://nutspatial.github.io/wowi/},</span></span>
-<span><span class="co">#&gt;   }</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"wowi"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>To cite wowi <span class="cf">in</span> publications use<span class="sc">:</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  Tomás <span class="fu">Zaba</span> (<span class="dv">2025</span>). _wowi<span class="sc">:</span> Utilities <span class="cf">for</span> detecting statistically</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  significant spatial clusters of high acute malnutrition rates using</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  SaTScan<span class="st">'s Bernoulli spatial-scan model_. R package version 1.0.1,</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="st">  &lt;https://nutspatial.github.io/wowi/&gt;.</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="st">A BibTeX entry for LaTeX users is</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="st">  @Manual{,</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="st">    title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan'</span>s Bernoulli spatial<span class="sc">-</span>scan model<span class="er">}</span>,</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    author <span class="ot">=</span> {{Tomás Zaba}},</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2025</span>},</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>    note <span class="ot">=</span> {R package version <span class="dv">1</span>.<span class="fl">0.1</span>},</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>    url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>nutspatial.github.io<span class="sc">/</span>wowi<span class="sc">/</span>},</span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  <span class="er">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="community-guidelines">Community guidelines<a class="anchor" aria-label="anchor" href="#community-guidelines"></a>
@@ -194,7 +207,7 @@ Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of the spot
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

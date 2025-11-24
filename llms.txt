@@ -1,0 +1,163 @@
+# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model
+
+Child acute malnutrition can lead to death if not identified and treated
+on time. Driven by a combination of diverse factors, it often exhibits
+spatial variation. The levels of acute malnutrition are commonly
+measured through surveys that are representative of the area of
+interest. Results are then used to inform programme responses — to find
+and treat the affected children. To that end, programme managers require
+actionable insights on where acute malnutrition is most prevalent; this
+is essential for prioritising interventions, especially when resources
+are limited.
+
+`wowi` - an expression meaning *“where”* in Elómwè, a local language
+spoken in central-northern Mozambique - provides a set of convenient
+utilities for this purpose. It identifies locations across the survey
+area wherein acute malnutrition is significantly high (hotspots) or low
+(coldspots), and unlikely to be due to chance alone.
+
+`wowi` is a wrapper package built on top of the
+[`rsatscan`](https://cran.r-project.org/web/packages/rsatscan/index.html)
+package that enables the use of the [`SaTScan`](https://www.satscan.org)
+software from within R. While `rsatscan` provides general-purpose
+functionality, `wowi` was thoughtfully designed for acute malnutrition
+analysis.
+
+To use `wowi`, you must have `SaTScan` installed on your machine, along
+with the [`mwana`](https://nutriverse.io/mwana/dev/) R package that is
+used under the hood to wrangle anthropometric data. The latter gets
+installed during `wowi` installation.
+
+## Installation
+
+`wowi` is not yet on CRAN but can be installed through:
+
+``` r
+pak::pkg_install(pkg = "nutspatial/wowi", dependencies = TRUE)
+```
+
+or through:
+
+``` r
+remotes::install_github(repo = "nutspatial/wowi", dependencies = TRUE)
+```
+
+## What does `wowi` do?
+
+It takes a dataset with GPS coordinates (latitude and longitude), scans
+for clusters of acute malnutrition — either high or low, depending on
+the user’s specification — across the survey area, and returns three
+main outputs: (1) an interactive HTML map displaying the detected
+clusters (previewed below); (2) a `.txt` file containing the results;
+and (3) a table with summary statistics and metadata parsed from the
+`.txt` file.
+
+The package is particularly handy when working with datasets that span
+multiple areas or administrative units, enabling consistent, area-wise
+detection of hotspots and coldspots. Moreover, it generates additional
+GIS-based files (e.g., shapefiles) that can be useful for further
+geospatial manipulation or integration into other mapping workflows.
+
+### A glimpse of detected hotspots and coldspots
+
+![Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span
+of the spot.](reference/figures/detected-clusters.png)
+
+Red bubble: hotspot; blue bubble: coldspot; Size of the bubble: span of
+the spot.
+
+### A glimpse of the summary table
+
+``` r
+## # A tibble: 2 × 18
+##  survey_area nr_EAs total_children total_cases `%_cases` location_ids   geo   radius span  children n_cases expected_cases observedExpected relative_risk
+##  <chr>        <int>          <int>       <int>     <dbl> <chr>          <chr> <chr>  <chr>    <int>   <int>          <dbl>            <dbl>         <dbl>
+## 1 District        36            532         104        19 23,24,26,25,3… 13.6… 1.43 … 1.88…      170       4           33.2             0.12         0.085
+## 2 District        36            532         104        19 16,20,14,12,1… 13.8… 26.24… 43.5…      258      84           50.4             1.67         4.46
+## # ℹ 4 more variables: `%_cases_in_area` <dbl>, log_lik_ratio <dbl>, pvalue <dbl>, ipc_amn <chr>
+```
+
+### Shiny App
+
+`wowi` comes with a lightweight, field-ready and handy built-in
+web-based application that enables users to upload their data and
+benefit from the utilities needless to write code or be well versed in
+R. The app can be launched by running the bellow-given command:
+
+``` r
+ww_run_app()
+```
+
+## Citation
+
+If you use `wowi` package in your work, please cite using the suggested
+citation provided by a call to
+[`citation()`](https://rdrr.io/r/utils/citation.html) function as
+follows:
+
+``` r
+citation("wowi")
+```
+
+``` R
+To cite wowi in publications use:
+
+  Tomás Zaba (2025). _wowi: Utilities for detecting statistically
+  significant spatial clusters of high acute malnutrition rates using
+  SaTScan's Bernoulli spatial-scan model_. R package version 1.0.1,
+  <https://nutspatial.github.io/wowi/>.
+
+A BibTeX entry for LaTeX users is
+
+  @Manual{,
+    title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model},
+    author = {{Tomás Zaba}},
+    year = {2025},
+    note = {R package version 1.0.1},
+    url = {https://nutspatial.github.io/wowi/},
+  }
+```
+
+## Community guidelines
+
+Feedback, bug reports and feature requests are welcome; file issues or
+seek support [here](https://github.com/nutspatial/wowi/issues). If you
+would like to contribute to the package, please see the [contributing
+guidelines](https://nutspatial.github.io/wowi/CONTRIBUTING.html).
+
+# Package index
+
+## Description
+
+- [`wowi`](https://nutspatial.github.io/wowi/reference/wowi-package.md)
+  [`wowi-package`](https://nutspatial.github.io/wowi/reference/wowi-package.md)
+  : wowi: Detect Spatial Clusters of High Acute Malnutrition Rates
+
+## Main functions
+
+- [`ww_run_satscan()`](https://nutspatial.github.io/wowi/reference/ww_run_satscan.md)
+  : Run SaTScan for Bernoulli purely spatial scan to detect
+  statistically significant clusters of acute malnutrition
+- [`ww_run_app()`](https://nutspatial.github.io/wowi/reference/ww_run_app.md)
+  : Initialise built-in Shiny application
+
+## Other functions
+
+- [`ww_wrangle_data()`](https://nutspatial.github.io/wowi/reference/ww_wrangle_data.md)
+  : Prepare SaTScan-required input data files for Bernoulli spatial scan
+  analysis and save them in a user-defined working directory
+- [`ww_configure_satscan()`](https://nutspatial.github.io/wowi/reference/ww_configure_satscan.md)
+  : Configure SaTScan for Bernoulli purely spatial scan
+
+## Dataset
+
+- [`anthro`](https://nutspatial.github.io/wowi/reference/anthro.md) :
+  Sample data set of district-level SMART surveys with geographical
+  coordinates
+
+# Articles
+
+### All vignettes
+
+- [Using
+  wowi](https://nutspatial.github.io/wowi/articles/how-to-use-wowi.md):
