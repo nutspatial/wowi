@@ -43,7 +43,7 @@ ui <- tagList(
       ),
 
       ### Right side of the page navigation bar ----
-      tags$span("v.1.0.0",
+      tags$span("v.1.0.1",
         id = "app-version",
         style = "font-size: 12.5px; color:  rgba(31, 42, 68, 0.58);
         position: fixed; top: 40px; right: 20px;"
