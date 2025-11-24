@@ -2,7 +2,7 @@
 % Please edit documentation in R/satscan-configuration.R
 \name{ww_configure_satscan}
 \alias{ww_configure_satscan}
-\title{Configure SaTScan for a Bernoulli purely spatial scan}
+\title{Configure SaTScan for Bernoulli purely spatial scan}
 \usage{
 ww_configure_satscan(
   filename = character(),
@@ -14,7 +14,7 @@ ww_configure_satscan(
 \arguments{
 \item{filename}{A quoted string identifying the analysis area.}
 
-\item{params_dir}{A quoted string of the folder or directory where the
+\item{params_dir}{A quoted string of the folder or directory in which the
 parameters file (produced by this function) should be saved. This can be
 the same directory as that specified in \code{\link[=ww_wrangle_data]{ww_wrangle_data()}}.}
 
@@ -25,15 +25,15 @@ to SaTScan’s website. Although the analysis is not interrupted, it is
 recommended to use the latest version.}
 
 \item{.scan_for}{A quoted string indicating the type of clusters to scan for.
-To scan for high-rate clusters only, set \code{.scan_for = "high-rates"}.
+To scan for clusters of high rates only, set \code{.scan_for = "high-rates"}.
 To scan for both high and low rates, set \code{.scan_for = "high-low-rates"}.}
 }
 \description{
-Defines the analysis parameters required by SaTScan's GUI to conduct a
-Bernoulli-based purely spatial scan, either to detect clusters of high rates
+Define the analysis parameters required by SaTScan's GUI to conduct a
+Bernoulli-based purely spatial scan to detect either clusters of high rates
 of acute malnutrition or both high and low rates.
 
-User input is limited to specifying the analysis area filename, the destination
+User's input is limited to specifying the analysis area filename, the destination
 directory for the parameters file, the SaTScan version in use, and the type of
 clusters to be detected. All other parameters are pre-defined by this function.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/data-wranglers.R
 \name{ww_wrangle_data}
 \alias{ww_wrangle_data}
-\title{Prepare SaTScan-required input data files for a Bernoulli spatial scan
+\title{Prepare SaTScan-required input data files for Bernoulli spatial scan
 analysis and save them in a user-defined working directory}
 \usage{
 ww_wrangle_data(
@@ -33,12 +33,12 @@ should be saved.}
 
 \item{.gam_based}{A quoted string indicating the criterion used to define acute
 malnutrition. This is used to identify the right vector where flagged values
-are identified, and for which should be excluded from the analysis. Default
-is \code{wfhz}.}
+are identified, and for which should be excluded from the analysis. Defaults
+to \code{wfhz}.}
 }
 \value{
-Three files are created and saved in the user-defined directory as defined
-by \code{dir}: a \code{.cas} file for cases, a \code{.ctl} for controls, and
+Three files are created and saved in the user-defined directory as specifiie
+in the \code{dir} argument: a \code{.cas} file for cases, a \code{.ctl} for controls, and
 a \code{.geo} file for geographical coordinates. The full filenames will incorporate
 the use-defined \code{filename} string.
 
@@ -54,7 +54,7 @@ latitude, and longitude.
 }
 \description{
 SaTScan's Bernoulli-based spatial scan requires the input data to be split
-into cases, controls, and geographical coordinates files, saved in a format
+into cases, controls, and geographical coordinates files, then saved in a format
 readable by the software, and placed in a directory it can access.
 
 \code{ww_wrangle_data()} is a convenient function designed for this task. It
