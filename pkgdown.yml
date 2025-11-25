@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   how-to-use-wowi: how-to-use-wowi.html
-last_built: 2025-11-24T22:44Z
+last_built: 2025-11-25T07:58Z
 urls:
   reference: https://nutspatial.github.io/wowi/reference
   article: https://nutspatial.github.io/wowi/articles
