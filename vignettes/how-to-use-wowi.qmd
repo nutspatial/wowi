@@ -119,7 +119,7 @@ Hereafter, you can check the quality of the data. Learn how to do so [here](http
 
 ### Running the spatial scan
 
-This is handled by the `ww_run_satscan()` function. Read its full documentation by typing `?ww_run_satscan` in your console or by clicking [here](https://nutspatial.github.io/wowi/reference/ww_run_satscan.html).  
+This is handled by the `ww_run_satscan()` function. Read its full documentation by typing `?ww_run_satscan` in your console or by clicking [here](https://tiwowi.github.io/wowi/reference/ww_run_satscan.html).  
 
 You can run the analysis on either a single-area or a multiple-area dataset. We will begin with the former, followed by the latter. 
 

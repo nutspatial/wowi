@@ -34,7 +34,7 @@ ui <- tagList(
           style = "margin-right: 10px; font-family: Arial, sans-serif; font-size: 50px;"
         ),
         tags$a(
-          href = "https://nutspatial.github.io/wowi/",
+          href = "https://tiwowi.github.io/wowi/",
           tags$span(
             tags$img(src = "logo.png", height = "40px"),
             style = "margin-right: 20px;"
@@ -96,7 +96,7 @@ ui <- tagList(
 
                 # Right side: logo
                 tags$a(
-                  href = "https://nutspatial.github.io/wowi/",
+                  href = "https://tiwowi.github.io/wowi/",
                   tags$img(
                     src = "logo.png",
                     height = "160px",
@@ -340,7 +340,7 @@ ui <- tagList(
               ),
               tags$li(
                 tags$code("wowi"),
-                tags$a(href = "https://nutspatial.github.io/wowi/", "click here")
+                tags$a(href = "https://tiwowi.github.io/wowi/", "click here")
               ),
               tags$li(
                 tags$code("SaTScan"),

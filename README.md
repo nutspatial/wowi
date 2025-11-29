@@ -2,7 +2,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model <a href="https://nutspatial.github.io/wowi/"><img src="man/figures/logo.png" align="right" width="200px" alt="wowi website" /></a>
+# wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan’s Bernoulli spatial-scan model <a href="https://tiwowi.github.io/wowi/"><img src="man/figures/logo.png" align="right" width="200px" alt="wowi website" /></a>
 
 <!-- badges: start -->  
 [![Project Status: WIP – Initial development is in progress, but there
@@ -10,9 +10,9 @@ has not yet been a stable, usable release suitable for the
 public.](https://www.repostatus.org/badges/latest/wip.svg)](https://www.repostatus.org/#wip)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![R-CMD-check](https://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/tiwowi/wowi/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tiwowi/wowi/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/nutspatial/wowi/graph/badge.svg)](https://app.codecov.io/gh/nutspatial/wowi)  
+coverage](https://codecov.io/gh/tiwowi/wowi/graph/badge.svg)](https://app.codecov.io/gh/tiwowi/wowi)  
 <!-- badges: end -->
 
 Child acute malnutrition can lead to death if not identified and treated
@@ -48,13 +48,13 @@ installed during `wowi` installation.
 `wowi` is not yet on CRAN but can be installed through:
 
 ``` r
-pak::pkg_install(pkg = "nutspatial/wowi", dependencies = TRUE)
+pak::pkg_install(pkg = "tiwowi/wowi", dependencies = TRUE)
 ```
 
 or through:
 
 ``` r
-remotes::install_github(repo = "nutspatial/wowi", dependencies = TRUE)
+remotes::install_github(repo = "tiwowi/wowi", dependencies = TRUE)
 ```
 
 ## What does `wowi` do?
@@ -114,7 +114,7 @@ citation("wowi")
       Tomás Zaba (2025). _wowi: Utilities for detecting statistically
       significant spatial clusters of high acute malnutrition rates using
       SaTScan's Bernoulli spatial-scan model_. R package version 1.0.1,
-      <https://nutspatial.github.io/wowi/>.
+      <https://tiwowi.github.io/wowi/>.
 
     A BibTeX entry for LaTeX users is
 
@@ -123,12 +123,12 @@ citation("wowi")
         author = {{Tomás Zaba}},
         year = {2025},
         note = {R package version 1.0.1},
-        url = {https://nutspatial.github.io/wowi/},
+        url = {https://tiwowi.github.io/wowi/},
       }
 
 ## Community guidelines
 
 Feedback, bug reports and feature requests are welcome; file issues or
-seek support [here](https://github.com/nutspatial/wowi/issues). If you
+seek support [here](https://github.com/tiwowi/wowi/issues). If you
 would like to contribute to the package, please see the [contributing
-guidelines](https://nutspatial.github.io/wowi/CONTRIBUTING.html).
+guidelines](https://tiwowi.github.io/wowi/CONTRIBUTING.html).

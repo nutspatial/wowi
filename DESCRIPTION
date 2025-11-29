@@ -16,8 +16,8 @@ LazyData: true
 Language: en-GB
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
-URL: https://github.com/nutspatial/wowi, https://nutspatial.github.io/wowi/
-BugReports: https://github.com/nutspatial/wowi/issues
+URL: https://github.com/tiwowi/wowi, https://tiwowi.github.io/wowi/
+BugReports: https://github.com/tiwowi/wowi/issues
 Imports: 
     dplyr (>= 1.1.4),
     rlang (>= 1.1.6),
