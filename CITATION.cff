@@ -24,9 +24,9 @@ preferred-citation:
   - name: Tomás Zaba
   year: '2025'
   notes: R package version 1.0.1
-  url: https://nutspatial.github.io/wowi/
-repository-code: https://github.com/nutspatial/wowi
-url: https://nutspatial.github.io/wowi/
+  url: https://tiwowi.github.io/wowi/
+repository-code: https://github.com/tiwowi/wowi
+url: https://tiwowi.github.io/wowi/
 contact:
 - family-names: Zaba
   given-names: Tomás

@@ -13,9 +13,9 @@ Utilities for detecting statistically significant spatial clusters of high acute
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/nutspatial/wowi}
-  \item \url{https://nutspatial.github.io/wowi/}
-  \item Report bugs at \url{https://github.com/nutspatial/wowi/issues}
+  \item \url{https://github.com/tiwowi/wowi}
+  \item \url{https://tiwowi.github.io/wowi/}
+  \item Report bugs at \url{https://github.com/tiwowi/wowi/issues}
 }
 
 }
