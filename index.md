@@ -33,13 +33,7 @@ installed during `wowi` installation.
 `wowi` is not yet on CRAN but can be installed through:
 
 ``` r
-pak::pkg_install(pkg = "nutspatial/wowi", dependencies = TRUE)
-```
-
-or through:
-
-``` r
-remotes::install_github(repo = "nutspatial/wowi", dependencies = TRUE)
+remotes::install_github(repo = "tiwowi/wowi", dependencies = TRUE)
 ```
 
 ## What does `wowi` do?
@@ -121,6 +115,6 @@ A BibTeX entry for LaTeX users is
 ## Community guidelines
 
 Feedback, bug reports and feature requests are welcome; file issues or
-seek support [here](https://github.com/nutspatial/wowi/issues). If you
-would like to contribute to the package, please see the [contributing
-guidelines](https://nutspatial.github.io/wowi/CONTRIBUTING.html).
+seek support [here](https://github.com/tiwowi/wowi/issues). If you would
+like to contribute to the package, please see the [contributing
+guidelines](https://tiwowi.github.io/wowi/CONTRIBUTING.html).

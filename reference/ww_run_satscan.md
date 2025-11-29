@@ -4,9 +4,9 @@ Detect statistically significant spatial clusters of acute malnutrition
 rates, including high-only or high-and-low clusters. `ww_run_satscan()`
 is a wrapper function that interacts with the SaTScan GUI via the
 `{rsatscan}` package. It internally calls both
-[`ww_wrangle_data()`](https://nutspatial.github.io/wowi/reference/ww_wrangle_data.md)
+[`ww_wrangle_data()`](https://tiwowi.github.io/wowi/reference/ww_wrangle_data.md)
 and
-[`ww_configure_satscan()`](https://nutspatial.github.io/wowi/reference/ww_configure_satscan.md),
+[`ww_configure_satscan()`](https://tiwowi.github.io/wowi/reference/ww_configure_satscan.md),
 allowing users to skip these two steps in the workflow and instead call
 `ww_run_satscan()` directly.
 
@@ -71,7 +71,7 @@ ww_run_satscan(
 
   A quoted string indicating the version of SaTScan installed on the
   user's computer. See
-  [`ww_configure_satscan()`](https://nutspatial.github.io/wowi/reference/ww_configure_satscan.md)
+  [`ww_configure_satscan()`](https://tiwowi.github.io/wowi/reference/ww_configure_satscan.md)
   for details.
 
 - .by_area:

@@ -9,7 +9,7 @@ into cases, controls, and geographical coordinates files, then saved in a format
 readable by the software, and placed in a directory it can access.
 ww_wrangle_data() is a convenient function designed for this task. It
 assumes that the input anthropometric data has been pre-processed using the
-{mwana} data wrangling functions."><meta property="og:image" content="https://nutspatial.github.io/wowi/logo.png"></head><body>
+{mwana} data wrangling functions."><meta property="og:image" content="https://tiwowi.github.io/wowi/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -33,7 +33,7 @@ assumes that the input anthropometric data has been pre-processed using the
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/nutspatial/wowi/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/tiwowi/wowi/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch"><li><button class="dropdown-item" data-bs-theme-value="light"><span class="fa fa-sun"></span> Light</button></li>
@@ -48,7 +48,7 @@ assumes that the input anthropometric data has been pre-processed using the
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Prepare SaTScan-required input data files for Bernoulli spatial scan analysis and save them in a user-defined working directory</h1>
-      <small class="dont-index">Source: <a href="https://github.com/nutspatial/wowi/blob/v1.0.1/R/data-wranglers.R" class="external-link"><code>R/data-wranglers.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tiwowi/wowi/blob/main/R/data-wranglers.R" class="external-link"><code>R/data-wranglers.R</code></a></small>
       <div class="d-none name"><code>ww_wrangle_data.Rd</code></div>
     </div>
 
@@ -158,7 +158,7 @@ latitude, and longitude.</p>
 <span class="r-in"><span>  latitude <span class="op">=</span> <span class="va">latitude</span>,</span></span>
 <span class="r-in"><span>  longitude <span class="op">=</span> <span class="va">longitude</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpkFxltk/file1f9e1c010b40/input-files/Locality"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "/tmp/RtmpbpnR9V/file1fad709f599e/input-files/Locality"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Show created files ----</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="va">tmp</span>, <span class="st">"input-files"</span><span class="op">)</span><span class="op">)</span></span></span>

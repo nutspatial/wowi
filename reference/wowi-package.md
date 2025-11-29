@@ -8,11 +8,11 @@ model.
 
 Useful links:
 
-- <https://github.com/nutspatial/wowi>
+- <https://github.com/tiwowi/wowi>
 
-- <https://nutspatial.github.io/wowi/>
+- <https://tiwowi.github.io/wowi/>
 
-- Report bugs at <https://github.com/nutspatial/wowi/issues>
+- Report bugs at <https://github.com/tiwowi/wowi/issues>
 
 ## Author
 

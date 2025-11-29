@@ -150,11 +150,11 @@ Hereafter, you can check the quality of the data. Learn how to do so
 ### Running the spatial scan
 
 This is handled by the
-[`ww_run_satscan()`](https://nutspatial.github.io/wowi/reference/ww_run_satscan.md)
+[`ww_run_satscan()`](https://tiwowi.github.io/wowi/reference/ww_run_satscan.md)
 function. Read its full documentation by typing
-[`?ww_run_satscan`](https://nutspatial.github.io/wowi/reference/ww_run_satscan.md)
+[`?ww_run_satscan`](https://tiwowi.github.io/wowi/reference/ww_run_satscan.md)
 in your console or by clicking
-[here](https://nutspatial.github.io/wowi/reference/ww_run_satscan.html).
+[here](https://tiwowi.github.io/wowi/reference/ww_run_satscan.html).
 
 You can run the analysis on either a single-area or a multiple-area
 dataset. We will begin with the former, followed by the latter.
@@ -235,7 +235,7 @@ defined by the string provided in the `filename` argument.
 
 Furthermore, we can view the results in a text-based format. To do this,
 we access the object to which we assigned the results of
-[`ww_run_satscan()`](https://nutspatial.github.io/wowi/reference/ww_run_satscan.md).
+[`ww_run_satscan()`](https://tiwowi.github.io/wowi/reference/ww_run_satscan.md).
 In our demo, this object is called results.
 
 To see the text-based results, we use `results$.txt`. As this file is
@@ -295,7 +295,7 @@ quite long, for the purposes of this demo we will only display the first
 
 This file isn’t very convenient if we want to perform further
 manipulation. Don’t worry —
-[`ww_run_satscan()`](https://nutspatial.github.io/wowi/reference/ww_run_satscan.md)
+[`ww_run_satscan()`](https://tiwowi.github.io/wowi/reference/ww_run_satscan.md)
 has got you covered ☂️. It parses the text-based results into a tidy
 table that you can easily work with 😎. To access it, simply subset the
 results object like this: `results$.df`:

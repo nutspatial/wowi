@@ -18,7 +18,7 @@
 <script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Detect Spatial Clusters of High Acute Malnutrition Rates">
 <meta name="description" content="Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model.">
 <meta property="og:description" content="Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan's Bernoulli spatial-scan model.">
-<meta property="og:image" content="https://nutspatial.github.io/wowi/logo.png">
+<meta property="og:image" content="https://tiwowi.github.io/wowi/logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -50,7 +50,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/nutspatial/wowi/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/tiwowi/wowi/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -83,10 +83,7 @@
 </h2>
 <p><code>wowi</code> is not yet on CRAN but can be installed through:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pkg_install.html" class="external-link">pkg_install</a></span><span class="op">(</span>pkg <span class="op">=</span> <span class="st">"nutspatial/wowi"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>or through:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span>repo <span class="op">=</span> <span class="st">"nutspatial/wowi"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span>repo <span class="op">=</span> <span class="st">"tiwowi/wowi"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="what-does-wowi-do">What does <code>wowi</code> do?<a class="anchor" aria-label="anchor" href="#what-does-wowi-do"></a>
@@ -103,7 +100,7 @@
 <div class="section level3">
 <h3 id="a-glimpse-of-the-summary-table">A glimpse of the summary table<a class="anchor" aria-label="anchor" href="#a-glimpse-of-the-summary-table"></a>
 </h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## # A tibble: 2 × 18</span></span>
 <span><span class="co">##  survey_area nr_EAs total_children total_cases `%_cases` location_ids   geo   radius span  children n_cases expected_cases observedExpected relative_risk</span></span>
 <span><span class="co">##  &lt;chr&gt;        &lt;int&gt;          &lt;int&gt;       &lt;int&gt;     &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt; &lt;chr&gt;  &lt;chr&gt;    &lt;int&gt;   &lt;int&gt;          &lt;dbl&gt;            &lt;dbl&gt;         &lt;dbl&gt;</span></span>
@@ -115,7 +112,7 @@
 <h3 id="shiny-app">Shiny App<a class="anchor" aria-label="anchor" href="#shiny-app"></a>
 </h3>
 <p><code>wowi</code> comes with a lightweight, field-ready and handy built-in web-based application that enables users to upload their data and benefit from the utilities needless to write code or be well versed in R. The app can be launched by running the bellow-given command:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/ww_run_app.html">ww_run_app</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
@@ -123,39 +120,39 @@
 <h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
 </h2>
 <p>If you use <code>wowi</code> package in your work, please cite using the suggested citation provided by a call to <code><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation()</a></code> function as follows:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"wowi"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>To cite wowi <span class="cf">in</span> publications use<span class="sc">:</span></span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  Tomás <span class="fu">Zaba</span> (<span class="dv">2025</span>). _wowi<span class="sc">:</span> Utilities <span class="cf">for</span> detecting statistically</span>
-<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  significant spatial clusters of high acute malnutrition rates using</span>
-<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>  SaTScan<span class="st">'s Bernoulli spatial-scan model_. R package version 1.0.1,</span></span>
-<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="st">  &lt;https://nutspatial.github.io/wowi/&gt;.</span></span>
-<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a></span>
-<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="st">A BibTeX entry for LaTeX users is</span></span>
-<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="st">  @Manual{,</span></span>
-<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="st">    title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan'</span>s Bernoulli spatial<span class="sc">-</span>scan model<span class="er">}</span>,</span>
-<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>    author <span class="ot">=</span> {{Tomás Zaba}},</span>
-<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2025</span>},</span>
-<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>    note <span class="ot">=</span> {R package version <span class="dv">1</span>.<span class="fl">0.1</span>},</span>
-<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>    url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>nutspatial.github.io<span class="sc">/</span>wowi<span class="sc">/</span>},</span>
-<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  <span class="er">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>To cite wowi <span class="cf">in</span> publications use<span class="sc">:</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>  Tomás <span class="fu">Zaba</span> (<span class="dv">2025</span>). _wowi<span class="sc">:</span> Utilities <span class="cf">for</span> detecting statistically</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>  significant spatial clusters of high acute malnutrition rates using</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>  SaTScan<span class="st">'s Bernoulli spatial-scan model_. R package version 1.0.1,</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="st">  &lt;https://nutspatial.github.io/wowi/&gt;.</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="st">A BibTeX entry for LaTeX users is</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="st">  @Manual{,</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="st">    title = {wowi: Utilities for detecting statistically significant spatial clusters of high acute malnutrition rates using SaTScan'</span>s Bernoulli spatial<span class="sc">-</span>scan model<span class="er">}</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>    author <span class="ot">=</span> {{Tomás Zaba}},</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>    year <span class="ot">=</span> {<span class="dv">2025</span>},</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>    note <span class="ot">=</span> {R package version <span class="dv">1</span>.<span class="fl">0.1</span>},</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>    url <span class="ot">=</span> {https<span class="sc">:</span><span class="er">//</span>nutspatial.github.io<span class="sc">/</span>wowi<span class="sc">/</span>},</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  <span class="er">}</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="community-guidelines">Community guidelines<a class="anchor" aria-label="anchor" href="#community-guidelines"></a>
 </h2>
-<p>Feedback, bug reports and feature requests are welcome; file issues or seek support <a href="https://github.com/nutspatial/wowi/issues" class="external-link">here</a>. If you would like to contribute to the package, please see the <a href="https://nutspatial.github.io/wowi/CONTRIBUTING.html">contributing guidelines</a>.</p>
+<p>Feedback, bug reports and feature requests are welcome; file issues or seek support <a href="https://github.com/tiwowi/wowi/issues" class="external-link">here</a>. If you would like to contribute to the package, please see the <a href="https://tiwowi.github.io/wowi/CONTRIBUTING.html">contributing guidelines</a>.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/nutspatial/wowi/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/nutspatial/wowi/issues" class="external-link">Report a bug</a></li>
+<li><a href="https://github.com/tiwowi/wowi/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/tiwowi/wowi/issues" class="external-link">Report a bug</a></li>
 <li><a href="https://cran.r-project.org/web/packages/rsatscan/index.html" class="external-link">Read more about rsatscan</a></li>
 <li><a href="https://www.satscan.org" class="external-link">Read more about SaTScan</a></li>
-<li><a href="https://nutriverse.io/mwana/dev/" class="external-link">Read more about mwana</a></li>
+<li><a href="https://mphimo.github.io/mwana/" class="external-link">Read more about mwana</a></li>
 </ul>
 </div>
 
@@ -193,8 +190,8 @@
 <ul class="list-unstyled">
 <li><a href="https://www.repostatus.org/#wip" class="external-link"><img src="https://www.repostatus.org/badges/latest/wip.svg" alt="Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public."></a></li>
 <li><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/nutspatial/wowi/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://app.codecov.io/gh/nutspatial/wowi" class="external-link"><img src="https://codecov.io/gh/nutspatial/wowi/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/tiwowi/wowi/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/tiwowi/wowi/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://app.codecov.io/gh/tiwowi/wowi" class="external-link"><img src="https://codecov.io/gh/tiwowi/wowi/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 

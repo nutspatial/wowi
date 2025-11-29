@@ -31,7 +31,7 @@ ww_configure_satscan(
   A quoted string of the folder or directory in which the parameters
   file (produced by this function) should be saved. This can be the same
   directory as that specified in
-  [`ww_wrangle_data()`](https://nutspatial.github.io/wowi/reference/ww_wrangle_data.md).
+  [`ww_wrangle_data()`](https://tiwowi.github.io/wowi/reference/ww_wrangle_data.md).
 
 - satscan_version:
 
@@ -90,7 +90,7 @@ ww_wrangle_data(
   latitude = latitude,
   longitude = longitude
 )
-#> [1] "/tmp/RtmpkFxltk/file1f9e275feb3a/input-files/Locality"
+#> [1] "/tmp/RtmpbpnR9V/file1fad584cf118/input-files/Locality"
 
 library(rsatscan) # important to make `{wowi}` access `{rsatscan}`-specific eviroment
 #> rsatscan only does anything useful if you have SaTScan
