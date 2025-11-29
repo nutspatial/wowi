@@ -336,7 +336,7 @@ ui <- tagList(
             tags$ul(
               tags$li(
                 tags$code("mwana"),
-                tags$a(href = "https://nutriverse.io/mwana/dev/", "click here")
+                tags$a(href = "https://mphimo.github.io/mwana/", "click here")
               ),
               tags$li(
                 tags$code("wowi"),
