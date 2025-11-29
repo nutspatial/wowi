@@ -48,12 +48,6 @@ installed during `wowi` installation.
 `wowi` is not yet on CRAN but can be installed through:
 
 ``` r
-pak::pkg_install(pkg = "tiwowi/wowi", dependencies = TRUE)
-```
-
-or through:
-
-``` r
 remotes::install_github(repo = "tiwowi/wowi", dependencies = TRUE)
 ```
 
@@ -114,7 +108,7 @@ citation("wowi")
       Tomás Zaba (2025). _wowi: Utilities for detecting statistically
       significant spatial clusters of high acute malnutrition rates using
       SaTScan's Bernoulli spatial-scan model_. R package version 1.0.1,
-      <https://tiwowi.github.io/wowi/>.
+      <https://nutspatial.github.io/wowi/>.
 
     A BibTeX entry for LaTeX users is
 
@@ -123,12 +117,12 @@ citation("wowi")
         author = {{Tomás Zaba}},
         year = {2025},
         note = {R package version 1.0.1},
-        url = {https://tiwowi.github.io/wowi/},
+        url = {https://nutspatial.github.io/wowi/},
       }
 
 ## Community guidelines
 
 Feedback, bug reports and feature requests are welcome; file issues or
-seek support [here](https://github.com/tiwowi/wowi/issues). If you
-would like to contribute to the package, please see the [contributing
+seek support [here](https://github.com/tiwowi/wowi/issues). If you would
+like to contribute to the package, please see the [contributing
 guidelines](https://tiwowi.github.io/wowi/CONTRIBUTING.html).
